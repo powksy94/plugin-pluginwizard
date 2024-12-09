@@ -53,6 +53,7 @@ import fr.paris.lutece.portal.business.file.File;
 
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -126,13 +127,16 @@ public final class ${business_class.businessClass}Home
         return _dao.select${business_class.businessClass}sList( _plugin );
     }
     
-    /**
+        /**
      * Load the id of all the ${business_class.instanceName} objects and returns them as a list
-     * @return the list which contains the id of all the ${business_class.instanceName} objects
+     * @param mapFilterCriteria contains search bar names/values inputs 
+     * @param strColumnToOrder contains the column name to use for orderBy statement in case of sorting request (must be null)
+     * @param strSortMode contains the sortMode in case of sorting request : ASC or DESC (must be null)
+     * @return the list which contains the id of all the project objects
      */
-    public static List&lt;Integer&gt; getId${business_class.businessClass}sList( )
+    public static List&lt;Integer&gt; getId${business_class.businessClass}sList( Map &lt;String,String&gt; mapFilterCriteria, String strColumnToOrder, String strSortMode )
     {
-        return _dao.selectId${business_class.businessClass}sList( _plugin );
+        return _dao.selectId${business_class.businessClass}sList( _plugin,mapFilterCriteria,strColumnToOrder,strSortMode );
     }
     
     /**
@@ -160,7 +164,7 @@ public final class ${business_class.businessClass}Home
      * @param listIds liste of ids
      * @return the list which contains the data of all the avant objects
      */
-    public static List&lt;${business_class.businessClass}&gt; get${business_class.businessClass}sListByIds( List<Integer> listIds )
+    public static List<${business_class.businessClass}> get${business_class.businessClass}sListByIds( List<Integer> listIds )
     {
         return _dao.select${business_class.businessClass}sListByIds( _plugin, listIds );
     }

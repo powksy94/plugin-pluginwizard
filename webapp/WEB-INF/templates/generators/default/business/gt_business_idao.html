@@ -37,6 +37,7 @@ package fr.paris.lutece.plugins.${radical_package}.business;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.util.ReferenceList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -81,14 +82,17 @@ public interface I${business_class.businessClass}DAO
      * @param plugin the Plugin
      * @return The list which contains the data of all the ${business_class.instanceName} objects
      */
-    List&lt;${business_class.businessClass}&gt; select${business_class.businessClass}sList( Plugin plugin );
+    List<${business_class.businessClass}> select${business_class.businessClass}sList( Plugin plugin );
     
-    /**
+       /**
      * Load the id of all the ${business_class.instanceName} objects and returns them as a list
      * @param plugin the Plugin
-     * @return The list which contains the id of all the ${business_class.instanceName} objects
+     * @param mapFilterCriteria contains search bar names/values inputs 
+     * @param strColumnToOrder contains the column name to use for orderBy statement in case of sorting request (must be null)
+     * @param strSortMode contains the sortMode in case of sorting request : ASC or DESC (must be null)
+     * @return The list which contains the id of all the project objects fitting with the seach criteria.
      */
-    List&lt;Integer&gt; selectId${business_class.businessClass}sList( Plugin plugin );
+    List<Integer> selectId${business_class.businessClass}sList( Plugin plugin, Map <String,String> mapFilterCriteria, String strColumnToOrder, String strSortMode );
     
     /**
      * Load the data of all the ${business_class.instanceName} objects and returns them as a referenceList
@@ -103,5 +107,5 @@ public interface I${business_class.businessClass}DAO
      * @param listIds liste of ids
      * @return The list which contains the data of all the avant objects
      */
-	List&lt;${business_class.businessClass}&gt; select${business_class.businessClass}sListByIds( Plugin _plugin, List<Integer> listIds );
+	List<${business_class.businessClass}> select${business_class.businessClass}sListByIds( Plugin _plugin, List<Integer> listIds );
 }

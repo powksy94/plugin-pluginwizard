@@ -51,7 +51,7 @@ public class AdminJspBeanGenerator extends AbstractGenerator
 {
     private static final String PATH_JAVA = "java/fr/paris/lutece/plugins/{plugin_name}/web/";
     private static final String PATH_KOTLIN = "kotlin/fr/paris/lutece/plugins/{plugin_name}/web/";
-    private static final String PREFIX_JSPBEAN = "AbstractPaginator";
+    private static final String PREFIX_JSPBEAN = "Abstract";
     private static final String PREFIX_JSPBEAN_PATH = "src/";
 
     private static final String SUFFIX_JAVA_EXTENSION = ".java";

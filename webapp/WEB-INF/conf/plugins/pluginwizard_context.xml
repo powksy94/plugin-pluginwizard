@@ -300,6 +300,7 @@
       <constructor-arg>
          <list>
             <ref bean="pluginwizard.business.class" />
+            <ref bean="pluginwizard.business.abstractFilterDao" />
             <ref bean="pluginwizard.business.dao" />
             <ref bean="pluginwizard.business.idao" />
             <ref bean="pluginwizard.business.home" />
@@ -336,6 +337,14 @@
    <bean id="pluginwizard.business.class" class="fr.paris.lutece.plugins.pluginwizard.service.generator.BusinessFileConfig">
       <property name="template">
          <value>/generators/default/business/gt_business_class.html</value>
+      </property>
+   </bean>
+   <bean id="pluginwizard.business.abstractFilterDao" class="fr.paris.lutece.plugins.pluginwizard.service.generator.BusinessFileConfig">
+      <property name="prefix">
+         <value>AbstractFilterDao</value>
+      </property>
+      <property name="template">
+         <value>/generators/default/business/gt_business_abstractFilterDao.html</value>
       </property>
    </bean>
    <bean id="pluginwizard.business.dao" class="fr.paris.lutece.plugins.pluginwizard.service.generator.BusinessFileConfig">

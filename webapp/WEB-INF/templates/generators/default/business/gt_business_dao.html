@@ -47,15 +47,19 @@ import java.sql.Statement;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 <#if hasFile?? && hasFile>
 import fr.paris.lutece.portal.business.file.File;
 </#if>
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * This class provides Data Access methods for ${business_class.businessClass} objects
  */
-public final class ${business_class.businessClass}DAO implements I${business_class.businessClass}DAO
+public final class ${business_class.businessClass}DAO extends AbstractFilterDao implements I${business_class.businessClass}DAO
 {
     // Constants
     private static final String SQL_QUERY_INSERT = "INSERT INTO ${business_class.businessTableName} ( <#if business_class.attributes??><#list business_class.attributes as attribute>${attribute.attributeName}<#if attribute_has_next>, </#if></#list></#if> ) VALUES ( <#if business_class.attributes??><#list business_class.attributes as attribute>?<#if attribute_has_next>, </#if></#list></#if> ) ";
@@ -67,6 +71,15 @@ public final class ${business_class.businessClass}DAO implements I${business_cla
 
     private static final String SQL_QUERY_SELECTALL_BY_IDS = SQL_QUERY_SELECTALL + " WHERE ${business_class.primaryKey} IN (  ";
 	private static final String SQL_QUERY_SELECT_BY_ID = SQL_QUERY_SELECTALL + " WHERE ${business_class.primaryKey} = ?";
+
+
+	/**
+     * Constructor
+     */
+	public ${business_class.businessClass}DAO() {
+
+		initMapSql(${business_class.businessClass}.class); //Maps with name and type of each databases column associated to the business class attributes 
+	}
 
     /**
      * {@inheritDoc }
@@ -169,9 +182,9 @@ public final class ${business_class.businessClass}DAO implements I${business_cla
      * {@inheritDoc }
      */
     @Override
-    public List&lt;${business_class.businessClass}&gt; select${business_class.businessClass}sList( Plugin plugin )
+    public List<${business_class.businessClass}> select${business_class.businessClass}sList( Plugin plugin )
     {
-        List&lt;${business_class.businessClass}&gt; ${business_class.instanceName}List = new ArrayList&lt;&gt;(  );
+        List<${business_class.businessClass}> ${business_class.instanceName}List = new ArrayList<>(  );
         try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin ) )
         {
 	        daoUtil.executeQuery(  );
@@ -189,11 +202,24 @@ public final class ${business_class.businessClass}DAO implements I${business_cla
      * {@inheritDoc }
      */
     @Override
-    public List&lt;Integer&gt; selectId${business_class.businessClass}sList( Plugin plugin )
+    public List<Integer> selectId${business_class.businessClass}sList( Plugin plugin,  Map <String,String> mapFilterCriteria, String strColumnToOrder, String strSortMode )
     {
-        List&lt;Integer&gt; ${business_class.instanceName}List = new ArrayList&lt;&gt;( );
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL_ID, plugin ) )
+        List<Integer> ${business_class.instanceName}List = new ArrayList<>( );
+        
+        String strSelectStatement =  prepareSelectStatement(SQL_QUERY_SELECTALL_ID, mapFilterCriteria, strColumnToOrder, strSortMode);  
+        
+        try( DAOUtil daoUtil = new DAOUtil( strSelectStatement, plugin ) )
         {
+        
+        	int nIndex = 1;
+    	        
+   	        for(Map.Entry<String, String> filter : mapFilterCriteria.entrySet()) {
+   	        	
+   	        	if(StringUtils.isNotBlank(filter.getValue())  && _mapSql.containsKey(filter.getKey())) {
+   	        		daoUtil.setString( nIndex++ , filter.getValue() );
+   	        	}
+   	        }
+    	        
 	        daoUtil.executeQuery(  );
 	
 	        while ( daoUtil.next(  ) )
@@ -229,8 +255,8 @@ public final class ${business_class.businessClass}DAO implements I${business_cla
      * {@inheritDoc }
      */
 	@Override
-	public List&lt;${business_class.businessClass}&gt; select${business_class.businessClass}sListByIds( Plugin plugin, List&lt;Integer&gt; listIds ) {
-		List&lt;${business_class.businessClass}&gt; ${business_class.instanceName}List = new ArrayList&lt;&gt;(  );
+	public List<${business_class.businessClass}> select${business_class.businessClass}sListByIds( Plugin plugin, List<Integer> listIds ) {
+		List<${business_class.businessClass}> ${business_class.instanceName}List = new ArrayList<>(  );
 		
 		StringBuilder builder = new StringBuilder( );
 

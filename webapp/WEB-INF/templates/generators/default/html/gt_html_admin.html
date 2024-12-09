@@ -21,17 +21,17 @@
         <${macro}input type="hidden" value="${bra_open}token${bra_close}" name="token" />
 
 		<#list business_class.attributes as attribute>
-		<${macro}formGroup labelFor='${attribute.paramName}' labelKey='${i18n_open}${plugin_name}.${business_class.businessClass?lower_case}.label${attribute.name}${i18n_close}' mandatory=true>
-        	<#if attribute.type = "File">
-          	<${macro}input type='file' id='${attribute.paramName}' name='${attribute.paramName}' <#if attribute.maxLength &gt; 0> maxlength=${attribute.maxLength}</#if> value='${bra_open}${business_class.businessClass?lower_case}.${attribute.name?uncap_first}!\'\'${bra_close}' tabIndex='${attribute_index}' />
-		<#elseif attribute.type = "boolean">	
-          	<${macro}checkBox id="${attribute.paramName}" name="${attribute.paramName}" <#if attribute.maxLength &gt; 0> maxlength=${attribute.maxLength}</#if> value="1" checked=${business_class.businessClass?lower_case}.${attribute.name?uncap_first}!'false' tabIndex='${attribute_index}' />
-		<#elseif attribute.type = "Date">
-          	<${macro}input type='date' id='${attribute.paramName}' name='${attribute.paramName}' <#if attribute.maxLength &gt; 0> maxlength=${attribute.maxLength}</#if> value=${business_class.businessClass?lower_case}.${attribute.name?uncap_first}!'' tabIndex='${attribute_index}' />
-		<#else>
-			<${macro}input type='text' id='${attribute.paramName}' name='${attribute.paramName}' <#if attribute.maxLength &gt; 0> maxlength=${attribute.maxLength}</#if> value='${bra_open}${business_class.businessClass?lower_case}.${attribute.name?uncap_first}!\'\'${bra_close}' tabIndex='${attribute_index}' />
-	    </#if>
-		</${macro}formGroup>
+			<${macro}formGroup labelFor='${attribute.paramName}' labelKey='${i18n_open}${plugin_name}.${business_class.businessClass?lower_case}.label${attribute.name}${i18n_close}' mandatory=true>
+	        	<#if attribute.type = "File">
+	          		<${macro}input type='file' id='${attribute.paramName}' name='${attribute.paramName}' <#if attribute.maxLength &gt; 0> maxlength=${attribute.maxLength}</#if> value=${business_class.businessClass?lower_case}.${attribute.name?uncap_first}!'' tabIndex='${attribute_index}' />
+				<#elseif attribute.type = "boolean">	
+		          	<${macro}checkBox id="${attribute.paramName}" name="${attribute.paramName}" <#if attribute.maxLength &gt; 0> maxlength=${attribute.maxLength}</#if> value="1" checked=${business_class.businessClass?lower_case}.${attribute.name?uncap_first}!false tabIndex='${attribute_index}' />
+				<#elseif attribute.type = "Date">
+		          	<${macro}input type='date' id='${attribute.paramName}' name='${attribute.paramName}' <#if attribute.maxLength &gt; 0> maxlength=${attribute.maxLength}</#if> value=${business_class.businessClass?lower_case}.${attribute.name?uncap_first}!'' tabIndex='${attribute_index}' />
+				<#else>
+					<${macro}input type='text' id='${attribute.paramName}' name='${attribute.paramName}' <#if attribute.maxLength &gt; 0> maxlength=${attribute.maxLength}</#if> value=${business_class.businessClass?lower_case}.${attribute.name?uncap_first}!'' tabIndex='${attribute_index}' />
+		    	</#if>
+			</${macro}formGroup>
 		</#list>
 				
 		<${macro}actionButtons button1Name="action_create${business_class.businessClass}" button2Name="view_manage${business_class.businessClass}"/>
@@ -58,13 +58,13 @@
 			<#list business_class.attributes as attribute>
 			<${macro}formGroup labelFor='${attribute.paramName}' labelKey='${i18n_open}${plugin_name}.${business_class.businessClass?lower_case}.label${attribute.name}${i18n_close}' <#if attribute.type != "File">mandatory=true</#if>>
           	<#if attribute.type = "File">
-				<${macro}input type='file' id="${attribute.paramName}" name="${attribute.paramName}" tabIndex="${attribute_index}" showFileUrl=true fileURL="${bra_open}${business_class.businessClass?lower_case}.${attribute.name?uncap_first}.url!${bra_close}" fileName="${bra_open}${business_class.businessClass?lower_case}.${attribute.name?uncap_first}.title!${bra_close}" value="${bra_open}${business_class.businessClass?lower_case}.${attribute.name?uncap_first}.fileKey!\'\'}" />
+				<${macro}input type='file' id="${attribute.paramName}" name="${attribute.paramName}" tabIndex="${attribute_index}" showFileUrl=true fileURL="${bra_open}${business_class.businessClass?lower_case}.${attribute.name?uncap_first}.url!${bra_close}" fileName="${bra_open}${business_class.businessClass?lower_case}.${attribute.name?uncap_first}.title!${bra_close}" value=${business_class.businessClass?lower_case}.${attribute.name?uncap_first}.fileKey!'' />
 			<#elseif attribute.type = "boolean">
-				<${macro}checkBox id="${attribute.paramName}" name="${attribute.paramName}" <#if attribute.maxLength &gt; 0> maxlength=${attribute.maxLength}</#if> value="1" checked=${business_class.businessClass?lower_case}.${attribute.name?uncap_first}!'false' tabIndex='${attribute_index}' />
+				<${macro}checkBox id="${attribute.paramName}" name="${attribute.paramName}" <#if attribute.maxLength &gt; 0> maxlength=${attribute.maxLength}</#if> value="1" checked=${business_class.businessClass?lower_case}.${attribute.name?uncap_first}!false tabIndex='${attribute_index}' />
 			<#elseif attribute.type = "Date">
           		<${macro}input type='date' id='${attribute.paramName}' name='${attribute.paramName}' <#if attribute.maxLength &gt; 0> maxlength=${attribute.maxLength}</#if> value=${business_class.businessClass?lower_case}.${attribute.name?uncap_first}!'' tabIndex='${attribute_index}' />	
 			<#else>
-				<${macro}input type='text' id='${attribute.paramName}' name='${attribute.paramName}' <#if attribute.maxLength &gt; 0> maxlength=${attribute.maxLength}</#if> value='${bra_open}${business_class.businessClass?lower_case}.${attribute.name?uncap_first}!\'\'${bra_close}' tabIndex='${attribute_index}' />
+				<${macro}input type='text' id='${attribute.paramName}' name='${attribute.paramName}' <#if attribute.maxLength &gt; 0> maxlength=${attribute.maxLength}</#if> value=${business_class.businessClass?lower_case}.${attribute.name?uncap_first}!'' tabIndex='${attribute_index}' />
 			</#if>
 			</${macro}formGroup>
 			</#list>
@@ -83,7 +83,7 @@
 </#if>
 
 <${macro}box>
-	<${macro}boxHeader title='${i18n_open}${plugin_name}.manage_${business_class.businessClass?lower_case}.title${i18n_close}' boxTools=true>
+	<${macro}boxHeader title='${i18n_open}${plugin_name}.manage_${business_class.businessClass?lower_case}s.title${i18n_close}' boxTools=true>
 		<${macro}tform class='form-inline pull-right' name='manage_${business_class.businessClass?lower_case}' action='jsp/admin/plugins/${pluginPath}/Manage${business_class.businessClass}s.jsp'>
 			<${macro}button type='submit' name='view_create${business_class.businessClass}' buttonIcon='plus' title='${i18n_open}${plugin_name}.manage_${business_class.businessClass?lower_case}s.buttonAdd${i18n_close}' />
 		</${macro}tform>
@@ -92,10 +92,54 @@
     <${macro}messages infos=infos />
     <${macro}paginationAdmin paginator=paginator combo=1 />
     <div class="clearfix"></div>
+    
+    <${macro}offcanvas id='search_${business_class.businessClass?lower_case}' title='#i18n{portal.users.manage_users.search_users.buttonSearch}' position='end' btnTitle='#i18n{portal.users.manage_users.search_users.buttonSearch}' btnIcon='search me-1'>
+    <${macro}tform id='${business_class.businessClass?lower_case}_search_form' name='${business_class.businessClass?lower_case}_search_form' class='border-bottom pb-3' method='get' action='jsp/admin/plugins/${pluginPath}/Manage${business_class.businessClass}s.jsp' >
+		<${macro}messages errors=errors />
+    		
+    		<#assign count_tab_index = 1>
+    		<#list business_class.attributes as attribute>
+    			<#if attribute.type == "Date" || attribute.type == "int" || attribute.type == "String">
+	    			<${macro}formGroup labelFor='filter_${attribute.paramName}' labelKey='${i18n_open}${plugin_name}.manage_${business_class.businessClass?lower_case}s.column${attribute.name}${i18n_close}'>
+						<#if attribute.type == "Date">
+	          				<${macro}input type='date' id='filter_${attribute.paramName}' name='filter_${attribute.paramName}' placeHolder='${i18n_open}${plugin_name}.manage_${business_class.businessClass?lower_case}s.column${attribute.name}${i18n_close}' tabIndex='${count_tab_index}' />
+				    	<#elseif attribute.type == "int">
+				    		<${macro}input type='number' id='filter_${attribute.paramName}' name='filter_${attribute.paramName}' placeHolder='${i18n_open}${plugin_name}.manage_${business_class.businessClass?lower_case}s.column${attribute.name}${i18n_close}' value=mapFilterCriteria["${attribute.paramName}"]!'' tabIndex='${count_tab_index}' />
+	    				<#elseif attribute.type == "String">
+				    		<${macro}input type='text' id='filter_${attribute.paramName}' name='filter_${attribute.paramName}' <#if attribute.maxLength &gt; 0> maxlength=${attribute.maxLength}</#if>  placeHolder='${i18n_open}${plugin_name}.manage_${business_class.businessClass?lower_case}s.column${attribute.name}${i18n_close}' value=mapFilterCriteria["${attribute.paramName}"]!'' tabIndex='${count_tab_index}' />
+				    	</#if>
+				    </${macro}formGroup>
+		    	<#assign count_tab_index = count_tab_index + 1>
+		    	</#if>
+			</#list>
+			<#list business_class.attributes as attribute>
+				<#if attribute.type == "boolean">	
+					<${macro}formGroup labelFor='filter_${attribute.paramName}' >										
+						<${macro}checkBox id='filter_${attribute.paramName}' name='filter_${attribute.paramName}' value='1' labelKey='${i18n_open}${plugin_name}.manage_${business_class.businessClass?lower_case}s.column${attribute.name}${i18n_close}' tabIndex='${count_tab_index}' />
+			    	</${macro}formGroup>
+			    <#assign count_tab_index = count_tab_index + 1>
+			    </#if>
+			</#list>
+			
+		<${macro}button type='submit' title='#i18n{portal.users.manage_users.search_users.buttonSearch}' buttonIcon='search'/>							
+    </${macro}tform>
+    </${macro}offcanvas>
+    
+
+    <${variable}list mapFilterCriteria?keys as key> 
+    	<${variable}if mapFilterCriteria[key]!="">
+	    	<span class="badge bg-primary px-2" > 
+	 			${bra_open}key${bra_close} <a href='jsp/admin/plugins/${pluginPath}/Manage${business_class.businessClass}s.jsp?clean_filter=1<${variable}list mapFilterCriteria?keys as x><${variable}if "${bra_open}x${bra_close}"!="${bra_open}key${bra_close}">&filter_${bra_open}x${bra_close}=${bra_open}mapFilterCriteria["${bra_open}x${bra_close}"]${bra_close} </${variable}if></${variable}list>' class='icon-block'><i class='fas fa-times-circle' style="color:white" ></i></a>
+			</span>
+		</${variable}if> 
+	</${variable}list>
+
+	
+    <div class="clearfix"></div>
     <${macro}table>
         <tr>
             <#list business_class.attributes as attribute>
-            <th>${i18n_open}${plugin_name}.manage_${business_class.businessClass?lower_case}s.column${attribute.name}${i18n_close}</th>
+             <th>${i18n_open}${plugin_name}.manage_${business_class.businessClass?lower_case}s.column${attribute.name}${i18n_close}&nbsp;<a href='jsp/admin/plugins/${pluginPath}/Manage${business_class.businessClass}s.jsp?orderBy=${attribute.paramName}'><i class='fas fa-sort'></i></a></th>
             </#list>
             <th>${i18n_open}portal.util.labelActions${i18n_close}</th>
         </tr>
@@ -105,11 +149,11 @@
             <#list business_class.attributes as attribute>
             <td>
            	<#if attribute.type = "boolean">
-				${bra_open}${business_class.businessClass?lower_case}.${attribute.name?uncap_first}?c${bra_close}
+				${bra_open}${business_class.businessClass?lower_case}.${attribute.name?uncap_first}?c!''${bra_close}
 			<#elseif attribute.type = "File">
 				<${macro}link href="${bra_open}${business_class.businessClass?lower_case}.${attribute.name?uncap_first}.url!${bra_close}">${bra_open}${business_class.businessClass?lower_case}.${attribute.name?uncap_first}.title!${bra_close}</${macro}link>
 			<#else>
-				${bra_open}${business_class.businessClass?lower_case}.${attribute.name?uncap_first}${bra_close}
+				${bra_open}${business_class.businessClass?lower_case}.${attribute.name?uncap_first}!''${bra_close}
 			</#if>
 			</td>
         	</#list>

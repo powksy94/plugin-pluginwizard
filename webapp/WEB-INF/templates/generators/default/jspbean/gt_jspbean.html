@@ -60,12 +60,16 @@ import fr.paris.lutece.util.url.UrlItem;
 import fr.paris.lutece.util.html.AbstractPaginator;
 
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.StringUtils;
+
 <#if hasFile?? && hasFile>
 import fr.paris.lutece.portal.service.util.AppException;
 import fr.paris.lutece.portal.service.util.AppLogService;
@@ -73,9 +77,9 @@ import fr.paris.lutece.portal.service.file.FileService;
 import fr.paris.lutece.portal.service.file.IFileStoreServiceProvider;
 import fr.paris.lutece.portal.web.upload.MultipartHttpServletRequest;
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.lang3.StringUtils;
 import fr.paris.lutece.portal.business.file.File;
 </#if>
+
 <#if business_class??>
 import fr.paris.lutece.plugins.${radicalPackage}.business.${business_class.businessClass?cap_first};
 import fr.paris.lutece.plugins.${radicalPackage}.business.${business_class.businessClass?cap_first}Home;
@@ -84,7 +88,7 @@ import fr.paris.lutece.plugins.${radicalPackage}.business.${business_class.busin
  * This class provides the user interface to manage ${business_class.businessClass} features ( manage, create, modify, remove )
  */
 @Controller( controllerJsp = "Manage${business_class.businessClass}s.jsp", controllerPath = "jsp/admin/plugins/${radicalPackage?replace(".","/")}/", right = "${feature_right}" )
-public class ${business_class.businessClass}JspBean extends AbstractPaginatorJspBean <Integer, ${business_class.businessClass}>
+public class ${business_class.businessClass}JspBean extends AbstractJspBean <Integer, ${business_class.businessClass}>
 {
 
 	// Rights
@@ -137,6 +141,8 @@ public class ${business_class.businessClass}JspBean extends AbstractPaginatorJsp
     // Session variable to store working values
     private ${business_class.businessClass} _${business_class.businessClass?lower_case};
     private List<Integer> _listId${business_class.businessClass}s;
+    private HashMap<String,String> _mapFilterCriteria = new HashMap<>();
+    private String _optionOrderBy;
     
     /**
      * Build the Manage View
@@ -148,14 +154,37 @@ public class ${business_class.businessClass}JspBean extends AbstractPaginatorJsp
     {
         _${business_class.businessClass?lower_case} = null;
         
-        if ( request.getParameter( AbstractPaginator.PARAMETER_PAGE_INDEX) == null || _listId${business_class.businessClass}s.isEmpty( ) )
+        // new search only if in pagination mode
+        if ( request.getParameter( AbstractPaginator.PARAMETER_PAGE_INDEX) == null )
         {
-        	_listId${business_class.businessClass}s = ${business_class.businessClass}Home.getId${business_class.businessClass}sList(  );
+        	// if sorting request : new search with the existing filter criteria, ordered 
+        	// example of order by parameter : orderby=name
+        	if ( StringUtils.isNotBlank( (String)request.getParameter(PARAMETER_SEARCH_ORDER_BY) ) )
+        	{
+        		
+        		String strOrderByColumn =  (String)request.getParameter(PARAMETER_SEARCH_ORDER_BY);
+        		String strSortMode = getSortMode(); 
+        		
+        		_listId${business_class.businessClass}s = ${business_class.businessClass}Home.getId${business_class.businessClass}sList( _mapFilterCriteria, strOrderByColumn, strSortMode );
+               	
+	       	}
+	       	else
+	       	{
+	       		// reload the filter criteria and search
+	       		_mapFilterCriteria = (HashMap<String, String>) getFilterCriteriaFromRequest( request );
+	       		_listId${business_class.businessClass}s = ${business_class.businessClass}Home.getId${business_class.businessClass}sList( _mapFilterCriteria, null ,null);
+	       	}
+        	
+        	//set CurrentPageIndex of Paginator to null in aim of displays the first page of results
+        	resetCurrentPageIndexOfPaginator();
         }
-        
-        Map<String, Object> model = getPaginatedListModel( request, MARK_${business_class.businessClass?upper_case}_LIST, _listId${business_class.businessClass}s, JSP_MANAGE_${business_class.businessClass?upper_case}S );
-
+       	
+       	Map<String, Object> model = getPaginatedListModel( request, MARK_${business_class.businessClass?upper_case}_LIST, _listId${business_class.businessClass}s, JSP_MANAGE_${business_class.businessClass?upper_case}S );
+             
+        addSearchParameters(model,_mapFilterCriteria); //allow the persistence of search values in inputs search bar inputs
+                     
         return getPage( PROPERTY_PAGE_TITLE_MANAGE_${business_class.businessClass?upper_case}S, TEMPLATE_MANAGE_${business_class.businessClass?upper_case}S, model );
+
     }
 
 	/**

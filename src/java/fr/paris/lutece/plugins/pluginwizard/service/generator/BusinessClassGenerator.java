@@ -50,6 +50,7 @@ public class BusinessClassGenerator extends AbstractGenerator
 {
     private static final String PATH = "SOURCE/java/fr/paris/lutece/plugins/";
     private static final String PATH_SUFFIX = "/business/";
+    private static final String SUFFIX_FILE_NAME_ABSTRACT_FILTER_DAO = "abstractFilterDao.html"; //must be unique
     private List<BusinessFileConfig> _listFiles;
 
     /**
@@ -82,12 +83,27 @@ public class BusinessClassGenerator extends AbstractGenerator
         String strPluginName = pm.getPluginNameAsPackage( );
         String strRadicalPackage = pm.getPluginNameAsRadicalPackage( );
         String strRadicalPath = pm.getPluginNameAsRadicalPath( );
+        
+        int counterFilterDao = 0; //Must be max at one because we want an unic general abstractFilterDao file 
 
         for ( BusinessClass businessClass : listAllBusinessClasses )
         {
             for ( BusinessFileConfig file : _listFiles )
-            {
-                String strClassName = file.getPrefix( ) + businessClass.getBusinessClass( ) + file.getSuffix( );
+            {	
+            	String strClassName;
+            	
+            	//Corresponds to the first time the abstractFilterDao file is created.
+            	if(file.getTemplate( ).endsWith(SUFFIX_FILE_NAME_ABSTRACT_FILTER_DAO) && counterFilterDao<1 ) {
+            		strClassName = file.getPrefix( );
+            		counterFilterDao=1;
+            	//If abstractFilterDao already exists.
+            	}else if(file.getTemplate( ).endsWith(SUFFIX_FILE_NAME_ABSTRACT_FILTER_DAO) && counterFilterDao>=1 ) {
+            		continue;
+            	//Creation of each business file except abstractFilterDao
+            	}else {
+	                strClassName = file.getPrefix( ) + businessClass.getBusinessClass( ) + file.getSuffix( );
+            	}
+            	
                 String strFilename = strClassName + ".java";
                 String strSourceCode = getSourceCode( strPluginName, businessClass, file.getTemplate( ), strRadicalPackage, pm.getPluginName( ) );
                 strSourceCode = strSourceCode.replace( "&lt;", "<" );
@@ -99,7 +115,7 @@ public class BusinessClassGenerator extends AbstractGenerator
                 map.put( getFilePath( pm, strPath, strFilename ), strSourceCode );
             }
         }
-
+        
         return map;
     }
 
