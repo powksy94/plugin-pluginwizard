@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-${.now?string('yyyy')}, City of Paris
+ * Copyright (c) 2002-2022, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,53 +23,44 @@
  * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
  * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES LOSS OF USE, DATA, OR PROFITS OR BUSINESS
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
  * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * License 1.0
- */ 
- 
-package fr.paris.lutece.plugins.${radical_package}.business
+ */
+package fr.paris.lutece.plugins.pluginwizard.web.formbean;
 
-import javax.validation.constraints.*
-import org.hibernate.validator.constraints.*
-import java.io.Serializable
-<#list business_class.attributes as attribute>
-    <#if attribute.type == "Date">
-        <#assign hasDate=true>
-    </#if>
-</#list>
-<#if hasDate?? && hasDate>
-import java.sql.Date
-</#if>
+import java.io.Serializable;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 
 /**
- * This is the business class for the object ${business_class.businessClass}
- * @property id The ID
-<#list business_class.attributes as attribute>
- * @property ${attribute.javaName} ${attribute.labelName} 
-</#list>
- */ 
-class ${business_class.businessClass} : Serializable
+ * Form name
+ */
+public class WorkflowTaskNameFormBean implements Serializable, FormBean
 {
-    // The object ID
-    var id: Int = 0
-    
-    <#list business_class.attributes as attribute>
-    // ${attribute.labelName}
-    ${attribute.constraint!}
-    <#if attribute.type == "String">
-    <#if attribute.notNull >
-    @NotEmpty( message = "@i18n{${plugin_name}.validation.${business_class.businessClass?lower_case}.${attribute.name}.notEmpty}" )
-    </#if>
-    <#if attribute.maxLength &gt; 0 >
-    @Size( max = ${attribute.maxLength} , message = "@i18n{${plugin_name}.validation.${business_class.businessClass?lower_case}.${attribute.name}.size}" ) 
-    </#if>
-    </#if>
-    var ${attribute.javaName}: ${attribute.type}? = null 
-    </#list>
-   
+    @NotEmpty( message = "pluginwizard.error.workflowtask.name.notEmpty" )
+    @Pattern( regexp = "([a-z]*)", message = "pluginwizard.error.workflowtask.name.pattern" )
+    private String _strName;
+
+    /**
+     * @return the name
+     */
+    public String getName( )
+    {
+        return _strName;
+    }
+
+    /**
+     * @param strName
+     *            the name to set
+     */
+    public void setName( String strName )
+    {
+        _strName = strName;
+    }
 }

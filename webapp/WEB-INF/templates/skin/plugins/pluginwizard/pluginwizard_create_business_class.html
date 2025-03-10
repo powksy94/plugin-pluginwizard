@@ -1,54 +1,88 @@
-<#include "sidebar.html" />   
+<#include "sidebar.html" />
 
 <div class="row">
-	<div class="container">
-		<div class="panel panel-default">
-			<div class="panel-body">
-				<div class="col-md-3">             
-					<@sidebar step="model" />
-					<div class="well">
-						#i18n{pluginwizard.pluginwizard_create_business_class.pageHelp}   
-					</div>  
-				</div>
+	<div class="container mt-4 wizard-main-container">
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					
+					<!-- Side Bar-->
+					<div class="col-md-3">
+                        <@sidebar step="model" />
+                        <div class="card bg-light mt-2">
+                            <div class="card-body">
+                                <div class="card-text">
+                                    #i18n{pluginwizard.pluginwizard_create_business_class.pageHelp}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+					<!-- End Side Bar-->
 
-				<div class="col-md-9">
+					<!-- Card Content-->
+                    <div class="col-md-9">
+                        <form id="create-business-class-form" class="form-horizontal" method="post" action="jsp/site/Portal.jsp">
+                            <fieldset>
+                                <legend>#i18n{pluginwizard.pluginwizard_create_business_class.pageTitle}</legend>
+                                
+                                <#include "errors_handler.html" />
+								
+								<input type="hidden" name="page" value="pluginwizard" />
+								<input type="hidden" id="plugin_name" value="${plugin_model.pluginName!''}" /> 
+								
+                                <!-- Group form business class name -->
+                                <@formGroup labelFor='businessClassName' labelKey='#i18n{pluginwizard.pluginwizard_create_business_class.labelBusinessClass} * :' formStyle='fullwidth'>
+	                                    <@input type='text' id='businessClassName' name='business_class' size="30" maxlength=51 placeHolder="#i18n{pluginwizard.pluginwizard_create_business_class.placeholderBusinessClass}"
+                                         	patternValidationRules=[{'name':'businessClassNameRule','regex':'^[A-Z][a-zA-Z]+$','message':'#i18n{pluginwizard.pluginwizard_create_business_class.helpRulesBusinessClass}'},
+                                         							{'name':'businessClassNameSizeRule','regex':'^.{1,51}$','message':'#i18n{pluginwizard.pluginwizard_create_business_class.helpRulesBusinessClassSize}'}
+                                         						   ] />                                       
+                                </@formGroup>
+                                
+                                <!-- Group form plural business class name -->
+                                <@formGroup labelFor='pluralBusinessClassName' labelKey='#i18n{pluginwizard.pluginwizard_create_business_class.labelPluralBusinessClass} * :' formStyle='fullwidth'>
+									 	<@input type='text' id='pluralBusinessClassName' name='plural_business_class' size="30" maxlength=100 />
+                                        <div id="pluralBusinessClassName-help-message-div" class="mt-2 text-muted">
+                                        	<span id='pluralBusinessClassNameRule' class="d-block"><i class="ti ti-info-circle mx-1"></i>#i18n{pluginwizard.pluginwizard_create_business_class.helpRulesPluralBusinessClass}</span>
+                                        	<span id='infoPluralBusinessClassNameRule' class="d-block"><i class="ti ti-info-circle mx-1"></i>#i18n{pluginwizard.pluginwizard_create_business_class.infoPluralBusinessClass}</span>
+										</div>
+								</@formGroup>
 
-					<form class="form-horizontal" method="post" action="jsp/site/Portal.jsp" >                    
-						<input type="hidden" name="page" value="pluginwizard" />        
-						<fieldset>
-							<legend>#i18n{pluginwizard.pluginwizard_create_business_class.pageTitle}</legend>
-
-							 <#include "errors_handler.html" />
-
-							 <div class="form-group">
-								<label class="col-md-3 control-label">#i18n{pluginwizard.pluginwizard_create_business_class.labelBusinessClass} *:</label>      
-								<div class="col-md-9">    
-									<input class="form-control input-md" type="text" name="business_class" value="" size="30" />      
-								</div>  
-							</div>
-
-							<div class="form-group">
-								<label class="col-md-3 control-label">#i18n{pluginwizard.pluginwizard_create_business_class.labelBusinessTableName} *:</label>      
-								<div class="col-md-9"> 
-									 <input class="form-control input-md" type="text" name="business_table_name" value="${plugin_model.pluginName?replace("-", "_")}_" size="30" />      
-								</div>  
-							</div>
-			 
-							<div class="form-group">
-								<div class="col-md-offset-3 col-md-9">
-								<button type="submit" name="action_createBusinessClass" class="btn btn-primary">
-									#i18n{pluginwizard.pluginwizard_create_business_class.buttonCreateClass}
-								</button>                    
-								<button type="submit" name="view_manageBusinessClasses" class="btn btn-default">
-									#i18n{pluginwizard.pluginwizard_create_business_class.buttonBack}
-								</button>
-								</div>
-							</div>    
-						</fieldset>
-					</form>        
-				</div>
-				<div class="clearfix"></div>
-			</div>
-		</div>
-	</div>
+                                <!-- Group form database table name -->
+                                <@formGroup labelFor='businessTableName' labelKey='#i18n{pluginwizard.pluginwizard_create_business_class.labelBusinessTableName} * :' formStyle='fullwidth'>
+                                    	<#assign name_plugin="${plugin_model.pluginName?replace('-', '_')}_"/>
+                                    	<@input type='text' id='businessTableName' name='business_table_name' size="30" maxlength=64
+                                    	    value="${name_plugin}" placeHolder="${name_plugin}"
+                                         	patternValidationRules=[{'name':'businessTableNamePrefixRule','regex':'^${name_plugin}.*$','message':'#i18n{pluginwizard.pluginwizard_create_business_class.helpRulesBusinessTableNamePrefix} ${name_plugin}'},
+                                         							{'name':'businessTableNameRule','regex':'^(?!_+$)[a-z_]+$','message':'#i18n{pluginwizard.pluginwizard_create_business_class.helpRulesBusinessTableName}'},
+                                         							{'name':'businessTableNameSizeRule','regex':'^.{1,64}$','message':'#i18n{pluginwizard.pluginwizard_create_business_class.helpRulesBusinessTableNameSize}'}
+                                         						   ] /> 
+                                </@formGroup>
+								
+								<!-- Submit Buttons -->
+                                <div class="row mb-3">
+                                    <div class="col-md-9 offset-md-3">
+                                        <button type="submit" name="action_createBusinessClass" class="btn btn-primary me-2">
+                                            #i18n{pluginwizard.pluginwizard_create_business_class.buttonCreateClass}
+                                        </button>
+                                        <button type="submit" name="view_manageBusinessClasses" class="btn btn-secondary">
+                                            #i18n{pluginwizard.pluginwizard_create_business_class.buttonBack}
+                                        </button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <!-- End Card Content-->
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+<script src='js/plugins/pluginwizard/pluralize.js'></script>
+<script src='js/plugins/pluginwizard/wizard-utils.js'></script>
+<script>
+	document.getElementById('businessClassName').addEventListener('blur', function(){ 
+		autoFillBusinessClassForm();
+	});
+</script>

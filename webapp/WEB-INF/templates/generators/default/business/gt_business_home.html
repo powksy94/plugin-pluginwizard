@@ -38,7 +38,7 @@
     </#if>
 </#list>
 
- package fr.paris.lutece.plugins.${radical_package}.business;
+package fr.paris.lutece.plugins.${radical_package}.business;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
@@ -50,7 +50,6 @@ import fr.paris.lutece.portal.service.file.IFileStoreServiceProvider;
 import org.apache.commons.fileupload.FileItem;
 import fr.paris.lutece.portal.business.file.File;
 </#if>
-
 
 import java.util.List;
 import java.util.Map;
@@ -77,6 +76,7 @@ public final class ${business_class.businessClass}Home
 
     /**
      * Create an instance of the ${business_class.instanceName} class
+     *
      * @param ${business_class.instanceName} The instance of the ${business_class.businessClass} which contains the informations to store
      * @return The  instance of ${business_class.instanceName} which has been created with its primary key.
      */
@@ -89,6 +89,7 @@ public final class ${business_class.businessClass}Home
 
     /**
      * Update of the ${business_class.instanceName} which is specified in parameter
+     *
      * @param ${business_class.instanceName} The instance of the ${business_class.businessClass} which contains the data to store
      * @return The instance of the  ${business_class.instanceName} which has been updated
      */
@@ -101,6 +102,7 @@ public final class ${business_class.businessClass}Home
 
     /**
      * Remove the ${business_class.instanceName} whose identifier is specified in parameter
+     *
      * @param nKey The ${business_class.instanceName} Id
      */
     public static void remove( int nKey )
@@ -110,6 +112,7 @@ public final class ${business_class.businessClass}Home
 
     /**
      * Returns an instance of a ${business_class.instanceName} whose identifier is specified in parameter
+     *
      * @param nKey The ${business_class.instanceName} primary key
      * @return an instance of ${business_class.businessClass}
      */
@@ -120,6 +123,7 @@ public final class ${business_class.businessClass}Home
 
     /**
      * Load the data of all the ${business_class.instanceName} objects and returns them as a list
+     *
      * @return the list which contains the data of all the ${business_class.instanceName} objects
      */
     public static List&lt;${business_class.businessClass}&gt; get${business_class.businessClass}sList( )
@@ -127,8 +131,9 @@ public final class ${business_class.businessClass}Home
         return _dao.select${business_class.businessClass}sList( _plugin );
     }
     
-        /**
+    /**
      * Load the id of all the ${business_class.instanceName} objects and returns them as a list
+     *
      * @param mapFilterCriteria contains search bar names/values inputs 
      * @param strColumnToOrder contains the column name to use for orderBy statement in case of sorting request (must be null)
      * @param strSortMode contains the sortMode in case of sorting request : ASC or DESC (must be null)
@@ -141,6 +146,7 @@ public final class ${business_class.businessClass}Home
     
     /**
      * Load the data of all the ${business_class.instanceName} objects and returns them as a referenceList
+     *
      * @return the referenceList which contains the data of all the ${business_class.instanceName} objects
      */
     public static ReferenceList get${business_class.businessClass}sReferenceList( )
@@ -157,10 +163,11 @@ public final class ${business_class.businessClass}Home
     {
 		return _fileStoreService;
     }
+
 	</#if>
-	
     /**
      * Load the data of all the avant objects and returns them as a list
+     *
      * @param listIds liste of ids
      * @return the list which contains the data of all the avant objects
      */
@@ -168,6 +175,5 @@ public final class ${business_class.businessClass}Home
     {
         return _dao.select${business_class.businessClass}sListByIds( _plugin, listIds );
     }
-
 }
 

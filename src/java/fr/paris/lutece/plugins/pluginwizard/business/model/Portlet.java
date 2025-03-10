@@ -57,6 +57,8 @@ public class Portlet implements Serializable
     private String _strPortletTypeName;
     @NotEmpty( message = "pluginwizard.error.portlet.jspBaseName.notEmpty" )
     @Pattern( regexp = "Portlet[A-Z][a-zA-Z.]*", message = "pluginwizard.error.portlet.jspBaseName.pattern" )
+    @Pattern( regexp = "Portlet[A-Z].*", message = "pluginwizard.error.portlet.jspBaseName.firstLetterInCapitalize" )
+    @Pattern( regexp = "^[A-Za-z]*$", message = "pluginwizard.error.portlet.jspBaseName.forbiddenCaracters" )
     private String _strJspBaseName;
 
     /**

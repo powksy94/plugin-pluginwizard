@@ -1,112 +1,126 @@
-<#include "sidebar.html" />   
+<#include "sidebar.html" />
 
 <div class="row">
-	<div class="container">
-		<div class="panel panel-default">
-			<div class="panel-body">
-				<div class="col-md-3">       
-					<@sidebar step="description" />
-					<div class="well">
-						#i18n{pluginwizard.pluginwizard_create_plugin_description.pageHelp}
-					</div>
-				</div>
+	<div class="container mt-4 wizard-main-container">
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					
+					<!-- Side Bar-->
+					<div class="col-md-3">
+                        <@sidebar step="description" />
+                        <div class="card bg-light mt-2">
+                            <div class="card-body">
+                                <div class="card-text">
+                                    #i18n{pluginwizard.pluginwizard_create_plugin_description.pageHelp}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Side Bar-->
 
-				<div class="col-md-9">
-					<form class="form-horizontal" method="post" action="jsp/site/Portal.jsp" >    
-						<input type="hidden" name="id_plugin" value="${plugin_id}" />
-						<fieldset>
-							<h4>#i18n{pluginwizard.pluginwizard_create_plugin_description.pageTitle}</h4>                 
+                    <!-- Card Content-->
+                    <div class="col-md-9">
+                        <form id="create-description-form" class="form-horizontal" method="post" action="jsp/site/Portal.jsp">
+                            <fieldset>
+                                <legend>#i18n{pluginwizard.pluginwizard_create_plugin_description.pageTitle}</legend>
+                                
+                                <#include "errors_handler.html" />
 
-							<input type="hidden" name="page" value="pluginwizard" />                
+                            	<input type="hidden" name="page" value="pluginwizard" />
+                            	<input type="hidden" name="id_plugin" value="${plugin_id}" />
 
-							<#include "errors_handler.html" />
-
-							<div class="form-group">
-								<label class="col-md-3 control-label">                         	            	                        
-									#i18n{pluginwizard.pluginwizard_create_plugin_description.labelPluginName} :
-								</label>       
-								<div class="col-md-9">                
-									 <input class="form-control" type="text" name="plugin_name" value="${plugin_model.pluginName!''}" readonly />       
+                                <!-- Group form Plugin Name -->
+                                <@formGroup labelFor='pluginName' labelKey='#i18n{pluginwizard.pluginwizard_create_plugin_description.labelPluginName} * :' formStyle='fullwidth'>
+								<div class="col-md-10">
+									 <@input type='text' id='pluginName' name='plugin_name' value="${plugin_model.pluginName!''}" class="wizard-readonly" readonly=true/>
 								</div>
-							</div>
+								</@formGroup>
 
-							<div class="form-group">
-								<label class="col-md-3 control-label">Type :</label>            
-								<div class="col-md-9">
-									<select class="form-control" name="type">    				
-										<option value="PLUGIN">Plugin</option>
-                                                                                <option value="MODULE"
-										 <#if ( (plugin_model.type?? && plugin_model.type== 'MODULE') || (plugin_model.pluginName?? && plugin_model.pluginName?contains('-')) ) > selected </#if>
-                                                                                >Module</option>		
-									</select>     
-								</div>                   	
-							</div>  
-
-							<div class="form-group">
-								<label class="col-md-3 control-label">#i18n{pluginwizard.pluginwizard_create_plugin_description.labelPluginDescription} : </label>
-								<div class="col-md-9">
-									 <input class="form-control" type="text" name="plugin_description" value="" />
+                                <!-- Group form Plugin Type -->
+								<#if ((plugin_model.type?? && plugin_model.type == 'MODULE') || (plugin_model.pluginName?? && plugin_model.pluginName?contains('-')))> 
+                                	<#assign type="#i18n{pluginwizard.pluginwizard_create_plugin_description.labelModule}"/>
+                                <#else> 
+                                	<#assign type="#i18n{pluginwizard.pluginwizard_create_plugin_description.labelPlugin}"/> 
+                                </#if>
+								<@formGroup labelFor='pluginType' labelKey='#i18n{pluginwizard.pluginwizard_create_plugin_description.labelPluginType} * :'formStyle='fullwidth'>
+								<div class="col-md-10">
+									 <@input type='text' id='pluginType' name='type' value="${type}" class="wizard-readonly" readonly=true/>
 								</div>
-							</div>
-
-							<div class="form-group">
-								<label class="col-md-3 control-label">#i18n{pluginwizard.pluginwizard_create_plugin_description.labelPluginProvider} : </label>
-								<div class="col-md-9">
-									 <input class="form-control" type="text" name="plugin_provider" value="" placeholder="#i18n{pluginwizard.pluginwizard_create_plugin_description.placeholderPluginProvider}"/>
+								</@formGroup>
+								
+								<!-- Group form Plugin Description -->
+								<@formGroup labelFor='pluginDescription' labelKey='#i18n{pluginwizard.pluginwizard_create_plugin_description.labelPluginDescription} * :' formStyle='fullwidth'>
+								<div class="col-md-10">
+									 <@input type='text' id='pluginDescription' name='plugin_description' maxlength=255
+                                         	patternValidationRules=[{'name':'pluginDescriptionRule','regex':'^.{5,255}$','message':'#i18n{pluginwizard.pluginwizard_create_plugin_description.helpRulesPluginDescription}'}] />
 								</div>
-							</div>
+								</@formGroup>
 
-							<div class="form-group">
-								<label class="col-md-3 control-label">#i18n{pluginwizard.pluginwizard_create_plugin_description.labelPluginVersion} : </label>       
-								<div class="col-md-9">
-									 <input class="form-control" type="text" name="plugin_version"  value="1.0.0" />
-								</div>                                                                              
-							</div>
-
-							<div class="form-group">
-								<label class="col-md-3 control-label">#i18n{pluginwizard.pluginwizard_create_plugin_description.labelPluginCopyright} : </label>       
-								<div class="col-md-9">
-                                                                    <input class="form-control" type="text" name="plugin_copyright" value="" placeholder="#i18n{pluginwizard.pluginwizard_create_plugin_description.placeholderPluginCopyright} " />
-								</div>  
-							</div>
-
-							<div class="form-group">
-								<label class="col-md-3 control-label">#i18n{pluginwizard.pluginwizard_create_plugin_description.labelPluginProviderUrl} :</label>       
-								<div class="col-md-9">
-									 <input class="form-control" type="text" name="plugin_provider_url"  value="" placeholder="#i18n{pluginwizard.pluginwizard_create_plugin_description.placeholderPluginProviderUrl}" /> 
-								</div>              
-							</div>
-
-							<div class="form-group">
-								<label class="col-md-3 control-label">#i18n{pluginwizard.pluginwizard_create_plugin_description.labelPlugindbPoolRequired} :</label>            
-								<div class="col-md-9">
-									<select class="form-control" name="plugin_db_pool_required">    				
-										<option value="1">#i18n{pluginwizard.pluginwizard_create_plugin_description.labelTrue}
-										</option>    				
-										<option value="0">#i18n{pluginwizard.pluginwizard_create_plugin_description.labelFalse}
-										</option>				
-									</select>     
-								</div>                   	
-							</div>                                                                                   
-
-							<div class="form-group">
-								<div class="col-md-offset-3 col-md-9">
-								<button type="submit" name="action_descriptionPrevious" class="btn btn-primary">
-									<i class="glyphicon glyphicon-chevron-left"></i>
-									#i18n{pluginwizard.pluginwizard_create_plugin_description.buttonBack}
-								</button>                        
-								<button type="submit" name="action_descriptionNext" class="btn btn-primary">
-									#i18n{pluginwizard.pluginwizard_create_plugin_description.buttonNext}
-									<i class="glyphicon glyphicon-chevron-right"></i>
-								</button>
+                                <!-- Group form Plugin Provider -->
+								<@formGroup labelFor='pluginProvider' labelKey='#i18n{pluginwizard.pluginwizard_create_plugin_description.labelPluginProvider} * :' formStyle='fullwidth'>
+								<div class="col-md-10">
+  									<@input type='text' id='pluginProvider' name='plugin_provider' placeHolder="#i18n{pluginwizard.pluginwizard_create_plugin_description.placeholderPluginProvider}" maxlength=255
+                                         	patternValidationRules=[{'name':'pluginProviderRule','regex':'^.{3,255}$','message':'#i18n{pluginwizard.pluginwizard_create_plugin_description.helpRulesPluginProvider}'}] />
 								</div>
-							</div>                                              		
+								</@formGroup>
 
-						</fieldset>
-					</form>		 		
-				</div>	
-				<div class="clearfix"></div>
-			</div>		 		
-		</div>		 		
-	</div>
+                                <!-- Group form Plugin Version -->
+                                <@formGroup labelFor='pluginVersion' labelKey='#i18n{pluginwizard.pluginwizard_create_plugin_description.labelPluginVersion} * :' formStyle='fullwidth'>
+								<div class="col-md-10">
+  									<@input type='text' id='pluginVersion' name='plugin_version' value='1.0.0' placeHolder='#i18n{pluginwizard.pluginwizard_create_plugin_description.placeholderPluginVersion}' maxlength=255
+                                         	patternValidationRules=[{'name':'pluginVersionRule','regex':'^\\d.\\d.\\d$','message':'#i18n{pluginwizard.pluginwizard_create_plugin_description.helpRulesPluginVersion}'}] />
+								</div>
+								</@formGroup>
+
+                                <!-- Group form Plugin Copyright -->
+                                <@formGroup labelFor='pluginCopyright' labelKey='#i18n{pluginwizard.pluginwizard_create_plugin_description.labelPluginCopyright} * :' formStyle='fullwidth'>
+								<div class="col-md-10">
+									 <@input type='text' id='pluginCopyright' name='plugin_copyright' placeHolder='#i18n{pluginwizard.pluginwizard_create_plugin_description.placeholderPluginCopyright}' maxlength=255 
+                                         	patternValidationRules=[{'name':'pluginCopyrightRule','regex':'^.{1,255}$','message':'#i18n{pluginwizard.pluginwizard_create_plugin_description.helpRulesPluginCopyright}'}] />
+								</div>
+								</@formGroup>
+
+                                <!-- Group form Plugin Url -->
+                                <@formGroup labelFor='pluginProviderUrl' labelKey='#i18n{pluginwizard.pluginwizard_create_plugin_description.labelPluginProviderUrl} * :'  formStyle='fullwidth'>
+								<div class="col-md-10">
+									 <@input type='text' id='pluginProviderUrl' name='plugin_provider_url' placeHolder='#i18n{pluginwizard.pluginwizard_create_plugin_description.placeholderPluginProviderUrl}' maxlength=255 
+                                         	patternValidationRules=[{'name':'pluginProviderUrlRule','regex':'url','message':'#i18n{pluginwizard.pluginwizard_create_plugin_description.helpRulesPluginProviderUrl}'}] />
+								</div>
+								</@formGroup>
+
+                                <!-- Group form Plugin Pool required -->
+                                <@formGroup labelFor='pluginDbPoolRequired' labelKey='#i18n{pluginwizard.pluginwizard_create_plugin_description.labelPlugindbPoolRequired} * :' formStyle='fullwidth'>
+									<div class="col-md-10">
+										<@select id='pluginDbPoolRequired' name='plugin_db_pool_required' default_value='1' items=[{'name':'#i18n{pluginwizard.pluginwizard_create_plugin_description.labelTrue}','code':'1'},{'name':'#i18n{pluginwizard.pluginwizard_create_plugin_description.labelFalse}','code':'0'}]/>
+										<div id="pluginDbPoolRequired-help-message-div" class="mt-2 text-muted" aria-live="polite" role="alert">
+											<span id="pluginDbPoolRequired-help-message-span" class="d-block">
+												<i class="ti ti-info-circle mx-1"></i>
+												#i18n{pluginwizard.pluginwizard_create_plugin_description.helpRulesPluginDbPoolRequired}
+											</span>
+										</div>
+									</div>
+								</@formGroup>
+                              
+						        <!-- Submit Buttons -->
+                                <div class="row mb-3">
+                                    <div class="col-md-9 offset-md-3">
+                                        <button type="submit" name="view_createPlugin" class="btn btn-primary me-2">
+                                            <i class="ti ti-chevron-left"></i>
+                                            #i18n{pluginwizard.pluginwizard_create_plugin_description.buttonBack}
+                                        </button>
+                                        <button type="submit" name="action_descriptionNext" class="btn btn-primary">
+                                            #i18n{pluginwizard.pluginwizard_create_plugin_description.buttonNext}
+                                            <i class="ti ti-chevron-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <!-- End Card Content-->
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

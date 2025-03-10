@@ -66,7 +66,7 @@ public class ResourcesGenerator extends AbstractGenerator
             "created", "updated", "removed"
     };
     private static String [ ] _titlePrefix = {
-    		"create", "modify"
+            "create", "modify"
     };
 
     /**
@@ -229,15 +229,16 @@ public class ResourcesGenerator extends AbstractGenerator
             {
                 sb.append( strPrefix ).append( "column" ).append( attribute.getName( ) ).append( "=" ).append( attribute.getLabelName( ) ).append( "\n" );
             }
-            
-            for ( String strTitlePrefix : _titlePrefix ) {
-            	strPrefix = strTitlePrefix + "_" + bc.getBusinessClass( ).toLowerCase( ) + ".";
-                sb.append( strPrefix ).append("title=").append( getLabel("title." + strTitlePrefix, strLanguage, bc.getBusinessClass( ) ) ).append("\n");
-            }            
+
+            for ( String strTitlePrefix : _titlePrefix )
+            {
+                strPrefix = strTitlePrefix + "_" + bc.getBusinessClass( ).toLowerCase( ) + ".";
+                sb.append( strPrefix ).append( "title=" ).append( getLabel( "title." + strTitlePrefix, strLanguage, bc.getBusinessClass( ) ) ).append( "\n" );
+            }
 
             for ( String strBasePrefix : _prefix )
             {
-                strPrefix = strBasePrefix + (strBasePrefix.isEmpty() ? "" : "_") + bc.getBusinessClass( ).toLowerCase( ) + ".";
+                strPrefix = strBasePrefix + ( strBasePrefix.isEmpty( ) ? "" : "_" ) + bc.getBusinessClass( ).toLowerCase( ) + ".";
                 sb.append( strPrefix ).append( "pageTitle=" ).append( bc.getBusinessClass( ) ).append( "\n" );
 
                 for ( Attribute attribute : bc.getAttributes( ) )
@@ -247,7 +248,6 @@ public class ResourcesGenerator extends AbstractGenerator
                             .append( " (" ).append( getLabel( "helpText", strLanguage ) ).append( ")\n" );
                 }
             }
-
 
             sb.append( "\nmessage.confirmRemove" ).append( bc.getBusinessClass( ) ).append( "=" )
                     .append( getLabel( "confirmRemove", strLanguage, bc.getBusinessClass( ) ) ).append( "\n" );

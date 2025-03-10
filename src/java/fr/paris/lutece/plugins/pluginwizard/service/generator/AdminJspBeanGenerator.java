@@ -90,10 +90,10 @@ public class AdminJspBeanGenerator extends AbstractGenerator
      */
     public Map<String, String> generate( PluginModel pm, String generationSchemeName )
     {
-        HashMap<String, String> map = new HashMap<>( );      
+        HashMap<String, String> map = new HashMap<>( );
         String strFilesPath = ( isKotlin( ) ) ? PATH_KOTLIN : PATH_JAVA;
         String strSuffix = SUFFIX_JSPBEAN_CLASS + ( ( isKotlin( ) ) ? SUFFIX_KOTLIN_EXTENSION : SUFFIX_JAVA_EXTENSION );
-        
+
         for ( Feature feature : pm.getFeatures( ) )
         {
             Collection<BusinessClass> listBusinessClasses = ModelService.getBusinessClassesByFeature( pm, feature.getId( ) );
@@ -128,8 +128,7 @@ public class AdminJspBeanGenerator extends AbstractGenerator
             }
         }
         String strPath = getFilePath( pm, PREFIX_JSPBEAN_PATH + strFilesPath, PREFIX_JSPBEAN + strSuffix );
-        String strSourceCode = getAbstractJspBeanCode( pm, pm.getPluginNameAsRadicalPackage( ),
-                pm.getPluginName( ) );
+        String strSourceCode = getAbstractJspBeanCode( pm, pm.getPluginNameAsRadicalPackage( ), pm.getPluginName( ) );
         map.put( strPath, strSourceCode );
 
         return map;
@@ -156,7 +155,7 @@ public class AdminJspBeanGenerator extends AbstractGenerator
         model.put( Markers.MARK_BUSINESS_CLASS, business );
         model.put( Markers.MARK_FEATURE_NAME, strFeatureName );
         model.put( Markers.MARK_FEATURE_RIGHT, strFeatureRight );
-        
+
         model.put( Markers.MARK_RADICAL_PACKAGE, strRadicalPackage );
         model.put( Markers.MARK_BEAN_NAME, strBeanName );
 
@@ -183,7 +182,7 @@ public class AdminJspBeanGenerator extends AbstractGenerator
 
         model.put( Markers.MARK_FEATURE_NAME, strFeatureName );
         model.put( Markers.MARK_FEATURE_RIGHT, strFeatureRight );
-        
+
         model.put( Markers.MARK_RADICAL_PACKAGE, strRadicalPackage );
         model.put( Markers.MARK_BEAN_NAME, strBeanName );
 

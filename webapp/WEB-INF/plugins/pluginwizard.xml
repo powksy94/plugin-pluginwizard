@@ -36,4 +36,18 @@
         </application>
     </applications>
 
+  	<!-- Javascript files -->
+    
+    <javascript-files>
+        <javascript-files-scope>pluginwizard</javascript-files-scope>
+        <javascript-file>pluginwizard/wizard-utils.js</javascript-file>
+        <javascript-file>pluginwizard/pluralize.js</javascript-file>
+    </javascript-files>  
+    
+      	<!-- css files -->
+    
+    <css-stylesheets>
+    	<css-stylesheet>pluginwizard/wizard-css.css</css-stylesheet>
+    </css-stylesheets>
+  
 </plug-in>

@@ -1,58 +1,71 @@
 <#include "sidebar.html" />   
 
 <div class="row">
-	<div class="container">
-		<div class="panel panel-default">
-			<div class="panel-body">
-				<div class="col-md-3">             
-					<@sidebar step="portlet" />
-					<div class="well">         
-						#i18n{pluginwizard.pluginwizard_modify_portlet.pageHelp} 
-					</div>  
+	<div class="container mt-4 wizard-main-container">
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+
+					<!-- Side Bar-->
+					<div class="col-md-3">
+						<@sidebar step="portlet" />
+						<div class="card bg-light mt-2">
+							<div class="card-body">
+								<div class="card-text">        
+									#i18n{pluginwizard.pluginwizard_modify_portlet.pageHelp} 
+								</div>  
+							</div>
+						</div>
+					</div>
+					<!-- End Side Bar-->
+
+					<!-- Card Content-->
+					<div class="col-md-9">
+	
+						<form id="modify-portlet-form" class="form-horizontal" method="post" action="jsp/site/Portal.jsp" >
+							<fieldset>
+								<legend>#i18n{pluginwizard.pluginwizard_modify_portlet.pageTitle}</legend>
+
+								<#include "errors_handler.html" />	
+								
+								<input type="hidden" name="page" value="pluginwizard" />
+								<input type="hidden" name="id" value="${portlet.id}" />  
+	
+								<!-- Group form Portlet class Name -->
+								<@formGroup labelFor='portletClass' labelKey='#i18n{pluginwizard.pluginwizard_modify_portlet.labelPortletClass} * :' formStyle='fullwidth'>
+		                           		   <@input type='text' id='portletClass' name='portlet_class' value="${portlet.portletClass}" size="30" maxlength=100 placeHolder="#i18n{pluginwizard.pluginwizard_modify_portlet.placeholderPortletClass}"
+                                         	patternValidationRules=[{'name':'portletClassRule','regex':'^[A-Z][a-zA-Z]*Portlet$','message':'#i18n{pluginwizard.pluginwizard_modify_portlet.helpRulesPortletClass}'},
+                                         							{'name':'portletClassSizeRule','regex':'^.{1,100}$','message':'#i18n{pluginwizard.pluginwizard_modify_portlet.helpRulesPortletClassSize}'}
+                                         						   ] />  
+								</@formGroup>
+								
+								<!-- Group form Portlet Type Name -->
+								<@formGroup labelFor='portletTypeName' labelKey='#i18n{pluginwizard.pluginwizard_modify_portlet.labelPortletTypeName} * :' formStyle='fullwidth'>
+		                            	<@input type='text' id='portletTypeName' name='portlet_type_name' value="${portlet.portletTypeName}" maxlength=100 placeHolder="#i18n{pluginwizard.pluginwizard_modify_portlet.placeholderPortletTypeName}"
+                                         	patternValidationRules=[{'name':'portletTypeNameRule','regex':'^[A-Z_]*_PORTLET$','message':'#i18n{pluginwizard.pluginwizard_modify_portlet.helpRulesPortletTypeName}'}
+                                         						   ] />
+								</@formGroup>
+								
+								<!-- Group form Jsp Base Name -->
+								<@formGroup labelFor='portletJspName' labelKey='#i18n{pluginwizard.pluginwizard_modify_portlet.labelJspBaseName} * :' formStyle='fullwidth'>
+		                           		<@input type='text' id='portletJspName' name='jsp_base_name' value='${portlet.jspBaseName}' maxlength=100 placeHolder="#i18n{pluginwizard.pluginwizard_modify_portlet.placeholderPortletJspName}"
+                                         	patternValidationRules=[{'name':'portletJspNameRule','regex':'^Portlet[A-Z][a-zA-Z]*$','message':'#i18n{pluginwizard.pluginwizard_modify_portlet.helpRulesPortletJspName}'},
+                                         							{'name':'portletJspNameSizeRule','regex':'^.{1,100}$','message':'#i18n{pluginwizard.pluginwizard_modify_portlet.helpRulesPortletJspNameSize}'}
+                                         						   ] />   
+								</@formGroup>
+								
+                                <!-- Submit Buttons -->
+								<div class="row mb-3">
+									<div class="col-md-10 offset-md-2">
+										<button type="submit" name="action_modifyPortlet" class="btn btn-primary">#i18n{pluginwizard.pluginwizard_modify_portlet.buttonModifyPortlet}</button>
+										<button type="submit" name="view_managePortlets" class="btn btn-secondary">#i18n{pluginwizard.pluginwizard_modify_portlet.buttonBack}</button>
+									</div>
+								</div> 
+							</fieldset>
+						</form>
+					</div>
+					<!-- End Card Content -->
 				</div>
-
-				<div class="col-md-9">
-
-					<form class="form form-horizontal" method="post" action="jsp/site/Portal.jsp" >
-						<fieldset>
-							<legend>#i18n{pluginwizard.pluginwizard_modify_portlet.pageTitle}</legend>
-
-							<input type="hidden" name="page" value="pluginwizard" />
-							<input type="hidden" name="id" value="${portlet.id}" />  
-
-							 <#include "errors_handler.html" />
-
-							<div class="form-group">
-								<label class="control-label col-md-3">#i18n{pluginwizard.pluginwizard_modify_portlet.labelPortletClass} :</label>
-								<div class="col-md-9">
-									 <input class="form-control" type="text" name="portlet_class" size="30" value="${portlet.portletClass}"  />
-								</div>  
-							</div>
-
-							<div class="form-group">
-								<label class="control-label col-md-3">#i18n{pluginwizard.pluginwizard_modify_portlet.labelPortletTypeName} :</label>
-								<div class="col-md-9">
-									 <input class="form-control" type="text" name="portlet_type_name"  size="30"  value="${portlet.portletTypeName}"/>
-								</div>  
-							</div>
-
-							<div class="form-group">
-								<label class="control-label col-md-3">#i18n{pluginwizard.pluginwizard_modify_portlet.labelJspBaseName} :</label>
-								<div class="col-md-9">
-									 <input class="form-control" type="text" name="jsp_base_name" value="${portlet.jspBaseName}" />
-								</div>  
-							</div>
-
-							<div class="form-group">
-								<div class="col-md-offset-3 col-md-9">
-									<button type="submit" name="action_modifyPortlet" class="btn btn-primary">#i18n{pluginwizard.pluginwizard_modify_portlet.buttonModifyPortlet}</button>
-									<button type="submit" name="view_managePortlets" class="btn">#i18n{pluginwizard.pluginwizard_modify_portlet.buttonBack}</button>
-								</div>
-							</div> 
-						</fieldset>
-					</form>
-				</div>
-				<div class="clearfix"></div>
 			</div>
 		</div>
 	</div>

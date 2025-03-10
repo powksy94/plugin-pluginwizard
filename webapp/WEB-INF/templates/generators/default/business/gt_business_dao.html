@@ -72,13 +72,12 @@ public final class ${business_class.businessClass}DAO extends AbstractFilterDao 
     private static final String SQL_QUERY_SELECTALL_BY_IDS = SQL_QUERY_SELECTALL + " WHERE ${business_class.primaryKey} IN (  ";
 	private static final String SQL_QUERY_SELECT_BY_ID = SQL_QUERY_SELECTALL + " WHERE ${business_class.primaryKey} = ?";
 
-
 	/**
      * Constructor
      */
-	public ${business_class.businessClass}DAO() {
-
-		initMapSql(${business_class.businessClass}.class); //Maps with name and type of each databases column associated to the business class attributes 
+	public ${business_class.businessClass}DAO( ) 
+	{
+		initMapSql( ${business_class.businessClass}.class ); //Maps with name and type of each databases column associated to the business class attributes 
 	}
 
     /**
@@ -87,7 +86,7 @@ public final class ${business_class.businessClass}DAO extends AbstractFilterDao 
     @Override
     public void insert( ${business_class.businessClass} ${business_class.instanceName}, Plugin plugin )
     {
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, Statement.RETURN_GENERATED_KEYS, plugin ) )
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, Statement.RETURN_GENERATED_KEYS, plugin ) )
         {
             int nIndex = 1;
             <#list business_class.attributes as attribute>
@@ -106,12 +105,12 @@ public final class ${business_class.businessClass}DAO extends AbstractFilterDao 
             </#list>
             
             daoUtil.executeUpdate( );
+            
             if ( daoUtil.nextGeneratedKey( ) ) 
             {
                 ${business_class.instanceName}.setId( daoUtil.getGeneratedKeyInt( 1 ) );
             }
-        }
-        
+        }        
     }
 
     /**
@@ -120,7 +119,7 @@ public final class ${business_class.businessClass}DAO extends AbstractFilterDao 
     @Override
     public Optional<${business_class.businessClass}> load( int nKey, Plugin plugin )
     {
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_BY_ID, plugin ) )
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_BY_ID, plugin ) )
         {
 	        daoUtil.setInt( 1 , nKey );
 	        daoUtil.executeQuery( );
@@ -141,7 +140,7 @@ public final class ${business_class.businessClass}DAO extends AbstractFilterDao 
     @Override
     public void delete( int nKey, Plugin plugin )
     {
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin ) )
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin ) )
         {
 	        daoUtil.setInt( 1 , nKey );
 	        daoUtil.executeUpdate( );
@@ -154,7 +153,7 @@ public final class ${business_class.businessClass}DAO extends AbstractFilterDao 
     @Override
     public void store( ${business_class.businessClass} ${business_class.instanceName}, Plugin plugin )
     {
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin ) )
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin ) )
         {
 	        int nIndex = 1;
 	        
@@ -185,7 +184,7 @@ public final class ${business_class.businessClass}DAO extends AbstractFilterDao 
     public List<${business_class.businessClass}> select${business_class.businessClass}sList( Plugin plugin )
     {
         List<${business_class.businessClass}> ${business_class.instanceName}List = new ArrayList<>(  );
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin ) )
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin ) )
         {
 	        daoUtil.executeQuery(  );
 	
@@ -206,25 +205,27 @@ public final class ${business_class.businessClass}DAO extends AbstractFilterDao 
     {
         List<Integer> ${business_class.instanceName}List = new ArrayList<>( );
         
-        String strSelectStatement =  prepareSelectStatement(SQL_QUERY_SELECTALL_ID, mapFilterCriteria, strColumnToOrder, strSortMode);  
+        String strSelectStatement = prepareSelectStatement( SQL_QUERY_SELECTALL_ID, mapFilterCriteria, strColumnToOrder, strSortMode );  
         
-        try( DAOUtil daoUtil = new DAOUtil( strSelectStatement, plugin ) )
+        try ( DAOUtil daoUtil = new DAOUtil( strSelectStatement, plugin ) )
         {
         
         	int nIndex = 1;
     	        
-   	        for(Map.Entry<String, String> filter : mapFilterCriteria.entrySet()) {
+   	        for ( Map.Entry<String, String> filter : mapFilterCriteria.entrySet( ) ) 
+   	        {
    	        	
-   	        	if(StringUtils.isNotBlank(filter.getValue())  && _mapSql.containsKey(filter.getKey())) {
-   	        		daoUtil.setString( nIndex++ , filter.getValue() );
+   	        	if ( StringUtils.isNotBlank( filter.getValue( ) )  && _mapSql.containsKey( filter.getKey( ) ) ) 
+   	        	{
+   	        		daoUtil.setString( nIndex++ , filter.getValue( ) );
    	        	}
    	        }
     	        
-	        daoUtil.executeQuery(  );
+	        daoUtil.executeQuery( );
 	
-	        while ( daoUtil.next(  ) )
+	        while ( daoUtil.next( ) )
 	        {
-	            ${business_class.instanceName}List.add( daoUtil.getInt( 1 ) );
+	        	${business_class.instanceName}List.add( daoUtil.getInt( 1 ) );
 	        }
 	
 	        return ${business_class.instanceName}List;
@@ -237,8 +238,8 @@ public final class ${business_class.businessClass}DAO extends AbstractFilterDao 
     @Override
     public ReferenceList select${business_class.businessClass}sReferenceList( Plugin plugin )
     {
-        ReferenceList ${business_class.instanceName}List = new ReferenceList();
-        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin ) )
+        ReferenceList ${business_class.instanceName}List = new ReferenceList( );
+        try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin ) )
         {
 	        daoUtil.executeQuery(  );
 	
@@ -255,25 +256,28 @@ public final class ${business_class.businessClass}DAO extends AbstractFilterDao 
      * {@inheritDoc }
      */
 	@Override
-	public List<${business_class.businessClass}> select${business_class.businessClass}sListByIds( Plugin plugin, List<Integer> listIds ) {
+	public List<${business_class.businessClass}> select${business_class.businessClass}sListByIds( Plugin plugin, List<Integer> listIds ) 
+	{
 		List<${business_class.businessClass}> ${business_class.instanceName}List = new ArrayList<>(  );
 		
 		StringBuilder builder = new StringBuilder( );
 
 		if ( !listIds.isEmpty( ) )
 		{
-			for( int i = 0 ; i < listIds.size(); i++ ) {
+			for ( int i = 0 ; i < listIds.size(); i++ ) 
+			{
 			    builder.append( "?," );
 			}
 	
-			String placeHolders =  builder.deleteCharAt( builder.length( ) -1 ).toString( );
+			String placeHolders = builder.deleteCharAt( builder.length( ) -1 ).toString( );
 			String stmt = SQL_QUERY_SELECTALL_BY_IDS + placeHolders + ")";
-			
 			
 	        try ( DAOUtil daoUtil = new DAOUtil( stmt, plugin ) )
 	        {
 	        	int index = 1;
-				for( Integer n : listIds ) {
+				
+				for ( Integer n : listIds ) 
+				{
 					daoUtil.setInt(  index++, n ); 
 				}
 	        	
@@ -284,21 +288,21 @@ public final class ${business_class.businessClass}DAO extends AbstractFilterDao 
 		        }
 	        }
 	    }
-		return ${business_class.instanceName}List;
-		
+		return ${business_class.instanceName}List;		
 	}
 
 
-	private ${business_class.businessClass} loadFromDaoUtil (DAOUtil daoUtil) {
+	private ${business_class.businessClass} loadFromDaoUtil (DAOUtil daoUtil) 
+	{
 		
-		${business_class.businessClass} ${business_class.instanceName} = new ${business_class.businessClass}(  );
+		${business_class.businessClass} ${business_class.instanceName} = new ${business_class.businessClass}( );
 		int nIndex = 1;
 		
 		${business_class.instanceName}.setId( daoUtil.getInt( nIndex++ ) );
 		<#list business_class.attributes as attribute>
 		<#if attribute_has_next>
 		<#if attribute.type == "File">
-		File ${attribute.variableName} = new File();
+		File ${attribute.variableName} = new File( );
 		${attribute.variableName}.setFileKey( daoUtil.getString( nIndex++ ) );
 		${business_class.instanceName}.set${attribute.name}( ${attribute.variableName} );
 		<#else>
@@ -306,7 +310,7 @@ public final class ${business_class.businessClass}DAO extends AbstractFilterDao 
 		</#if>
 		<#else>
 		<#if attribute.type == "File">
-		File ${attribute.variableName} = new File();
+		File ${attribute.variableName} = new File( );
 		${attribute.variableName}.setFileKey( daoUtil.getString( nIndex ) );
 		${business_class.instanceName}.set${attribute.name}( ${attribute.variableName} );
 		<#else>

@@ -63,7 +63,7 @@ public class SqlCodeGenerator extends AbstractGenerator
 
         for ( int i = 0; i < _prefix.length; i++ )
         {
-            if ( ! ( _suffix [i].equals( "_portlet.sql" ) && pm.getPortlets( ).isEmpty( ) ) )
+            if ( !( _suffix [i].equals( "_portlet.sql" ) && pm.getPortlets( ).isEmpty( ) ) )
             {
                 String strSqlFile = getSqlFileName( pm.getPluginName( ).toLowerCase( ), i );
 

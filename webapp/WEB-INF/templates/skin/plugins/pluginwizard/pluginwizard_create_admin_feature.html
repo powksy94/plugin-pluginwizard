@@ -1,105 +1,138 @@
-<#include "sidebar.html" />   
+<#include "sidebar.html" />
 
 <div class="row">
-	<div class="container">
-		<div class="panel panel-default">
-			<div class="panel-body">
-				<div class="col-md-3">             
-					<@sidebar step="administration" />
-					<div class="well">         
-						#i18n{pluginwizard.pluginwizard_create_admin_feature.pageHelp}
-					</div>  
-				</div>
-
-				<div class="col-md-9">
-					<form class="form form-horizontal well" method="post" action="jsp/site/Portal.jsp" > 
-						<fieldset>
-							<legend>#i18n{pluginwizard.pluginwizard_create_admin_feature.pageTitle}</legend>                           
-							<input type="hidden" name="page" value="pluginwizard" />                         
-
-							 <#include "errors_handler.html" />
-
-							<div class="form-group">
-								<label class="col-md-3 control-label">#i18n{pluginwizard.pluginwizard_create_admin_feature.labelFeatureTitle} : </label>                
-								<div class="col-md-9">      
-									 <input class="form-control input-md" type="text" name="feature_title" value="${feature.featureTitle!''}" />                                         
+	<div class="container mt-4 wizard-main-container">
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					
+					<!-- Side Bar-->
+					<div class="col-md-3">
+						<@sidebar step="administration" />
+						<div class="card bg-light mt-2">
+							<div class="card-body">
+								<div class="card-text">
+									#i18n{pluginwizard.pluginwizard_create_admin_feature.pageHelp}
 								</div>
 							</div>
+						</div>
+					</div>
+					<!-- End Side Bar-->
 
-							<div class="form-group">                                                         
-								<label class="col-md-3 control-label">#i18n{pluginwizard.pluginwizard_create_admin_feature.labelFeatureDescription} : </label>                 
-								<div class="col-md-9">        
-									 <input class="form-control input-md" type="text" name="feature_description" value="${feature.featureDescription!''}" />                           
-								</div>
-							</div>
+					<!-- Card Content-->
+					<div class="col-md-9">
+						<form id="create-admin-feature-form" class="form-horizontal" method="post" action="jsp/site/Portal.jsp">
+							<fieldset>
+								<legend>#i18n{pluginwizard.pluginwizard_create_admin_feature.pageTitle}</legend>
 
-							<div class="form-group">
-								<label class="col-md-3 control-label">#i18n{pluginwizard.pluginwizard_create_admin_feature.labelFeatureName} :         
-								</label>          
-								<div class="col-md-9">           
-									 <input class="form-control input-md" type="text" name="feature_name" value="<#if feature.featureName??>${feature.featureName}<#else>Manage${plugin_model.pluginName?keep_after("-")?cap_first}</#if>" />                     
-								</div>             
-							</div> 
+								<#include "errors_handler.html" />
+								
+								<input type="hidden" name="page" value="pluginwizard" />
+				                <input type="hidden" name="plugin_name" value="${plugin_model.pluginName}" />
 
-							<div class="form-group">
-								<label class="col-md-3 control-label">#i18n{pluginwizard.pluginwizard_create_admin_feature.labelFeatureManagement} : </label>                
-								<div class="col-md-9">    
-									<input type="text" class="form-control input-md" name="feature_right" value="<#if feature.featureRight??>${feature.featureRight}<#else>${plugin_model.pluginName?replace("-","_")?upper_case}_MANAGEMENT</#if>"  />      
-								</div>    
-							</div>
+								<!-- Group form Title -->
+								<#if feature.featureTitle??>
+									<#assign title="${feature.featureTitle}"/>
+								<#else>
+									<#assign title=""/>
+								</#if>
+								<@formGroup labelFor='adminFeatureTitle' labelKey='#i18n{pluginwizard.pluginwizard_create_admin_feature.labelFeatureTitle} * :' formStyle='fullwidth'>
+                           		    <@input type='text' id='adminFeatureTitle' name='feature_title' value='${title}' maxlength=80 
+                                        	patternValidationRules=[{'name':'adminFeatureTitleRule','regex':'^.{10,80}$','message':'#i18n{pluginwizard.pluginwizard_create_admin_feature.helpRulesFeatureTitle}'}] />
+                                </@formGroup>
+								
+								<!-- Group form Description -->
+								<#if feature.featureDescription??>
+									<#assign description="${feature.featureDescription}"/>
+								<#else>
+									<#assign description=""/>
+								</#if> 
+								<@formGroup labelFor='adminFeatureDescription' labelKey='#i18n{pluginwizard.pluginwizard_create_admin_feature.labelFeatureDescription} * :' formStyle='fullwidth'>                                    
+                          				<@input type='text' id='adminFeatureDescription' name='feature_description' value='${description}' maxlength=255
+                                       		patternValidationRules=[{'name':'adminFeatureDescriptionRule','regex':'^.{10,255}$','message':'#i18n{pluginwizard.pluginwizard_create_admin_feature.helpRulesFeatureDescription}'}] />
+								</@formGroup>
 
-							<div class="form-group">
-								<label class="col-md-3 control-label">#i18n{pluginwizard.pluginwizard_create_admin_feature.labelFeatureLevel} :  </label>               
-								<div class="col-md-9">            
-									<select class="form-control input-md" name="feature_level">    				           
-										<option value="0" >#i18n{pluginwizard.pluginwizard_create_admin_feature.labelLevel0}           
-										</option>    				           
-										<option value="1" >#i18n{pluginwizard.pluginwizard_create_admin_feature.labelLevel1}           
-										</option>    				           
-										<option value="2" >#i18n{pluginwizard.pluginwizard_create_admin_feature.labelLevel2}           
-										</option>    				           
-										<option value="3" >#i18n{pluginwizard.pluginwizard_create_admin_feature.labelLevel3}           
-										</option>				         
-									</select>               
-								</div> 
-							</div>
-							 
-							<div class="form-group">
-								<label class="col-md-3 control-label">#i18n{pluginwizard.pluginwizard_create_admin_feature.labelBusinessClass} :</label>        
-								<div class="col-md-9">
-									<div class="checkbox">
-									<#list combo_business_classes?sort_by('name') as business>
-										<#assign used = false>
-										<#list admin_features as admin_feature> 
-											<#if admin_feature.getIdBusinessClasses()?seq_contains(business.code?number)>
-												<#assign used = true>
+								<!-- Group form Tech Name -->
+								<#if feature.featureRight??>
+									<#assign nameFeature="${feature.featureName}"/>
+								<#else>
+									<#assign nameFeature="Manage${plugin_model.pluginName?keep_after('-')?cap_first}"/>
+								</#if>
+								<@formGroup labelFor='adminFeatureTechName' labelKey='#i18n{pluginwizard.pluginwizard_create_admin_feature.labelFeatureName} * :' formStyle='fullwidth'>  
+										<@input type='text' id='adminFeatureTechName' name='feature_name' value='${nameFeature}' maxlength=100
+	                                         	patternValidationRules=[{'name':'adminFeatureTechNameRule','regex':'^[A-Z][a-zA-Z]*$','message':'#i18n{pluginwizard.pluginwizard_create_admin_feature.helpRulesFeatureTechName}'},
+	                                         							{'name':'adminFeatureTechNameSizeRule','regex':'^.{1,100}$','message':'#i18n{pluginwizard.pluginwizard_create_admin_feature.helpRulesFeatureTechNameSize}'}
+	                                         						   ] />
+								</@formGroup>
+
+								<!-- Group form Management -->
+								<#if feature.featureRight??>
+										<#assign rightFeature="${feature.featureRight}"/>
+									<#else>
+										<#assign rightFeature="${plugin_model.pluginName?replace('-','_')?upper_case}_MANAGEMENT"/>
+								</#if>
+								<@formGroup labelFor='adminFeatureRight' labelKey='#i18n{pluginwizard.pluginwizard_create_admin_feature.labelFeatureManagement} * :' formStyle='fullwidth'>
+										<@input type='text' id='adminFeatureRight' name='feature_right' value='${rightFeature}' maxlength=255
+                                        		patternValidationRules=[{'name':'adminFeatureRightRule','regex':'^[A-Z_]+$','message':'#i18n{pluginwizard.pluginwizard_create_admin_feature.helpRulesFeatureRight}'},
+                                        								{'name':'adminFeatureRightSizeRule','regex':'^.{1,255}$','message':'#i18n{pluginwizard.pluginwizard_create_admin_feature.helpRulesFeatureRightSize}'}
+                                        							   ] />
+								</@formGroup>
+								
+								<!-- Group form Level -->
+								<@formGroup labelFor='featureLevel' labelKey='#i18n{pluginwizard.pluginwizard_create_admin_feature.labelFeatureLevel} * :' formStyle='fullwidth'>
+										<@select id='featureLevel' name='feature_level' default_value='0' 
+										items=[{'name':'#i18n{pluginwizard.pluginwizard_create_admin_feature.labelLevel0}','code':'0'},
+											   {'name':'#i18n{pluginwizard.pluginwizard_create_admin_feature.labelLevel1}','code':'1'},
+											   {'name':'#i18n{pluginwizard.pluginwizard_create_admin_feature.labelLevel2}','code':'2'},
+											   {'name':'#i18n{pluginwizard.pluginwizard_create_admin_feature.labelLevel3}','code':'3'}
+											   
+											  ]/>
+								</@formGroup>
+
+								<!-- Group select form Business Class -->
+								<@formGroup labelKey='#i18n{pluginwizard.pluginwizard_create_admin_feature.labelBusinessClass} * :' formStyle='fullwidth'> 
+										<#list combo_business_classes?sort_by('name') as business>
+											<div class="form-check">
+											<#assign used=false> 
+											<#list admin_features as admin_feature> 
+												<#if admin_feature.getIdBusinessClasses()?seq_contains(business.code?number)>
+													<#assign used=true>
+												</#if> 
+											</#list> 
+											<#if used>  
+												<@checkBox id="business_${business.name}" name="id_business_class${business.code}" value="${business.code}" labelKey="${business.name}" disabled=true />
+											<#else> 
+												<@checkBox id="business_${business.name}" name="id_business_class${business.code}" value="${business.code}" labelKey="${business.name}" />
 											</#if>
+											</div>
 										</#list>
-										<#if used>
-											<label>
-											<input type="checkbox" disabled="disabled" name="id_business_class${business.code}" value="${business.code}" />${business.name}</label><br />
-										<#else>
-											<label><input type="checkbox" name="id_business_class${business.code}" value="${business.code}" />${business.name}</label><br />
-										</#if>
-									</#list>
+								</@formGroup>
+
+								<!-- Submit Buttons -->
+								<div class="row mb-3">
+									<div class="col-md-9 offset-md-3">
+										<button type="submit" name="action_createAdminFeature" class="btn btn-primary me-2">
+											#i18n{pluginwizard.pluginwizard_create_admin_feature.buttonCreateFeature}
+										</button>
+										<button type="submit" name="view_manageAdminFeatures" class="btn btn-secondary">
+											#i18n{pluginwizard.pluginwizard_create_admin_feature.buttonBack}
+										</button>
 									</div>
-								</div>   
-							</div>
-							
-							<div class="form-group">
-								<div class="col-md-offset-3 col-md-9">
-								<button type="submit" name="action_createAdminFeature"class="btn btn-primary">
-									#i18n{pluginwizard.pluginwizard_create_admin_feature.buttonCreateFeature}       
-								</button>                           
-								<button type="submit" name="view_manageAdminFeatures" class="btn btn-default">
-									#i18n{pluginwizard.pluginwizard_create_admin_feature.buttonBack}       
-								</button>	     
-							</div>  
-							</div> 
-					 </form>
+								</div>
+							</fieldset>
+						</form>
+					</div>
+					<!-- End Card Content-->
 				</div>
-				<div class="clearfix"></div>
 			</div>
 		</div>
 	</div>
 </div>
+
+<script src='js/plugins/pluginwizard/wizard-utils.js'></script>
+
+<script>
+document.getElementById('adminFeatureTitle').addEventListener('blur', function(){ 
+	autoFillAdminFeatureForm('create-admin-feature-form');
+});
+</script>

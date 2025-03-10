@@ -1,59 +1,72 @@
 <#include "sidebar.html" />
 
 <div class="row">
-	<div class="container">
-		<div class="panel panel-default">
-			<div class="panel-body">
-				<div class="col-md-3">       
-					<@sidebar step="rest" />
-					<div class="well">      
-						#i18n{pluginwizard.pluginwizard_manage_plugin_rest.pageHelp}
+	<div class="container mt-4 wizard-main-container">
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					
+					<!-- Side Bar-->
+					<div class="col-md-3">    
+						<@sidebar step="rest" />
+						<div class="card bg-light mt-2">
+							<div class="card-body">
+								<div class="card-text">
+									#i18n{pluginwizard.pluginwizard_manage_plugin_rest.pageHelp}
+								</div>
+							</div>
+						</div>
 					</div>
+					<!-- End Side Bar-->
+					
+					<!-- Card Content-->
+					<div class="col-md-9">
+						<fieldset>
+							<legend>#i18n{pluginwizard.pluginwizard_manage_plugin_rest.pageTitle}</legend>
+							
+							<#include "infos_handler.html" />      
+							
+							<!-- List of checkbox of business classes -->
+							<form class="form-horizontal" method="post" action="jsp/site/Portal.jsp" >
+								<input type="hidden" name="page" value="pluginwizard" />
+								          
+								<div class="row">
+								  <@formGroup labelKey='#i18n{pluginwizard.pluginwizard_manage_plugin_rest.labelBusinessClass} :' formStyle='fullwidth'> 
+											<#list combo_business_classes?sort_by('name') as business>
+													<#assign used = false>
+													<#if plugin_rest.getIdBusinessClasses() ??>
+														<#if plugin_rest.getIdBusinessClasses()?seq_contains(business.code?number)>
+															<#assign used = true>
+														</#if>
+													</#if>
+													<div class="form-check">
+															<#if used>
+																<@checkBox id="business_${business.code}" name="id_business_class${business.code}" value="${business.code}" labelKey="${business.name}" checked=true />
+															<#else>
+																<@checkBox id="business_${business.code}" name="id_business_class${business.code}" value="${business.code}" labelKey="${business.name}" />
+															</#if>
+													</div>
+											</#list>
+									</@formGroup>
+								</div>
+	
+								<div class="d-flex justify-content-between">      
+									<div class="col-md-offset-3 col-md-9">
+										<button type="submit" name="action_modifyRestBack" class="btn btn-primary">
+											<i class="ti ti-chevron-left"></i>
+											#i18n{pluginwizard.pluginwizard_manage_plugin_rest.buttonBack}
+										</button>                        
+										<button type="submit" name="action_modifyRestNext" class="btn btn-primary">
+											#i18n{pluginwizard.pluginwizard_manage_plugin_rest.buttonNext}
+											<i class="ti ti-chevron-right"></i>
+										</button>  
+									</div> 
+								</div>
+							</form>
+						</fieldset>
+					</div>
+					<!-- End Card Content-->
 				</div>
-
-				<div class="col-md-9">
-					<form class="form-horizontal" method="post" action="jsp/site/Portal.jsp" >
-						<input type="hidden" name="page" value="pluginwizard" />
-						<#include "infos_handler.html" />
-
-						<h4>#i18n{pluginwizard.pluginwizard_manage_plugin_rest.pageTitle}</br></br></h4>                 
-
-						<div class="form-group">
-							<label class="col-md-3 control-label">#i18n{pluginwizard.pluginwizard_manage_plugin_rest.labelBusinessClass} :  </label>        
-							<div class="col-md-9">
-								<#list combo_business_classes?sort_by('name') as business>
-									<div class="checkbox">
-									<#assign used = false>
-									<#if plugin_rest.getIdBusinessClasses() ??>
-									<#if plugin_rest.getIdBusinessClasses()?seq_contains(business.code?number)>
-										<#assign used = true>
-									</#if>
-									</#if>
-									<#if used>
-										<label><input type="checkbox" checked="checked" name="id_business_class${business.code}" value="${business.code}" />&nbsp;${business.name}</label>
-									<#else>
-										<label><input type="checkbox" name="id_business_class${business.code}" value="${business.code}" />&nbsp;${business.name}</label>
-									</#if>
-									</div>
-								</#list>
-							</div>   
-						</div>
-
-						<div class="form-group">      
-							<div class="col-md-offset-3 col-md-9">
-								<button type="submit" name="action_modifyRestBack" class="btn btn-primary">
-									<i class="glyphicon glyphicon-chevron-left"></i>
-									#i18n{pluginwizard.pluginwizard_manage_plugin_rest.buttonBack}
-								</button>                        
-								<button type="submit" name="action_modifyRestNext" class="btn btn-primary">
-									#i18n{pluginwizard.pluginwizard_manage_plugin_rest.buttonNext}
-									<i class="glyphicon glyphicon-chevron-right"></i>
-								</button>  
-							</div> 
-						</div>
-					</form>
-				</div>
-				<div class="clearfix"></div>
 			</div>
 		</div>
 	</div>

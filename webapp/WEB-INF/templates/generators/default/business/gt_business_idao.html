@@ -47,6 +47,7 @@ public interface I${business_class.businessClass}DAO
 {
     /**
      * Insert a new record in the table.
+     *
      * @param ${business_class.instanceName} instance of the ${business_class.businessClass} object to insert
      * @param plugin the Plugin
      */
@@ -54,6 +55,7 @@ public interface I${business_class.businessClass}DAO
 
     /**
      * Update the record in the table
+     *
      * @param ${business_class.instanceName} the reference of the ${business_class.businessClass}
      * @param plugin the Plugin
      */
@@ -61,6 +63,7 @@ public interface I${business_class.businessClass}DAO
 
     /**
      * Delete a record from the table
+     *
      * @param nKey The identifier of the ${business_class.businessClass} to delete
      * @param plugin the Plugin
      */
@@ -71,6 +74,7 @@ public interface I${business_class.businessClass}DAO
 
     /**
      * Load the data from the table
+     *
      * @param nKey The identifier of the ${business_class.instanceName}
      * @param plugin the Plugin
      * @return The instance of the ${business_class.instanceName}
@@ -79,6 +83,7 @@ public interface I${business_class.businessClass}DAO
 
     /**
      * Load the data of all the ${business_class.instanceName} objects and returns them as a list
+     *
      * @param plugin the Plugin
      * @return The list which contains the data of all the ${business_class.instanceName} objects
      */
@@ -86,6 +91,7 @@ public interface I${business_class.businessClass}DAO
     
        /**
      * Load the id of all the ${business_class.instanceName} objects and returns them as a list
+     *
      * @param plugin the Plugin
      * @param mapFilterCriteria contains search bar names/values inputs 
      * @param strColumnToOrder contains the column name to use for orderBy statement in case of sorting request (must be null)
@@ -96,6 +102,7 @@ public interface I${business_class.businessClass}DAO
     
     /**
      * Load the data of all the ${business_class.instanceName} objects and returns them as a referenceList
+     *
      * @param plugin the Plugin
      * @return The referenceList which contains the data of all the ${business_class.instanceName} objects
      */
@@ -103,6 +110,7 @@ public interface I${business_class.businessClass}DAO
     
     /**
      * Load the data of all the avant objects and returns them as a list
+     *
      * @param plugin the Plugin
      * @param listIds liste of ids
      * @return The list which contains the data of all the avant objects

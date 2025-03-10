@@ -1,77 +1,91 @@
-<#include "sidebar.html" />   
+<#include "sidebar.html" />
 
 <div class="row">
-	<div class="container">
-		<div class="panel panel-default">
-			<div class="panel-body">
-				<div class="col-md-3">             
-					<@sidebar step="xpage" />
-					<div class="well">         
-						#i18n{pluginwizard.pluginwizard_modify_application.pageHelp}   
-					</div>  
-				</div>
+	<div class="container mt-4 wizard-main-container">
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
 
-				<div class="col-md-9">
-					<form class="form form-horizontal" method="post" action="jsp/site/Portal.jsp" >       
-						<fieldset>
-							<legend>#i18n{pluginwizard.pluginwizard_modify_application.pageTitle}</legend>
-							<input type="hidden" name="page" value="pluginwizard" />                
-							<input type="hidden" name="id" value="${application.id}" />                                            
-
-							 <#include "errors_handler.html" />
-
-							 <div class="form-group">
-								<label class="control-label col-md-3">#i18n{pluginwizard.pluginwizard_modify_application.labelApplicationName} :</label>  
-								<div class="col-md-9">
-									<input type="text" name="application_name" value="${application.applicationName}" class="form-control" />  
-								</div>
+					<!-- Side Bar-->
+					<div class="col-md-3">
+						<@sidebar step="xpage" />
+						<div class="card bg-light mt-2">
+							<div class="card-body">
+								<div class="card-text">
+									#i18n{pluginwizard.pluginwizard_modify_application.pageHelp}</div>
 							</div>
-							<div class="form-group">
-								<label class="control-label col-md-3">#i18n{pluginwizard.pluginwizard_modify_application.labelApplicationClass} :</label> 
-								<div class="col-md-9">
-									<input type="text" name="application_class" value="${application.applicationClass}" class="form-control" />
-								</div>     
-							</div>
-							 
-							<div class="form-group">
-								<label class="control-label col-md-3">#i18n{pluginwizard.pluginwizard_modify_application.labelBusinessClass} :  </label>        
-								<div class="col-md-9">
-									<#list combo_business_classes?sort_by('name') as business>
-										<div class="checkbox">
-										<#if application.getIdBusinessClasses()?seq_contains(business.code?number)>
-											<label><input type='checkbox' checked='checked' name='id_business_class${business.code}' value='${business.code}'/>&nbsp; ${business.name}</label>
-										<#else>
-											<#assign used = false>
-											<#list plugin_applications as plugin_application> 
-												<#if plugin_application.getIdBusinessClasses()?seq_contains(business.code?number)>
-													<#assign used = true>
+						</div>
+					</div>
+					<!-- End Side Bar-->
+
+					<!-- Card Content-->
+					<div class="col-md-9">
+						<form id="modify-application-form" class="form-horizontal" method="post" action="jsp/site/Portal.jsp">
+							<fieldset>
+								<legend>#i18n{pluginwizard.pluginwizard_modify_application.pageTitle}</legend>
+
+								<#include "errors_handler.html" />
+
+								<input type="hidden" name="page" value="pluginwizard" /> 
+								<input type="hidden" name="id" value="${application.id}" />
+
+								<!-- Group form Application Name -->
+								 <@formGroup labelFor='applicationName' labelKey='#i18n{pluginwizard.pluginwizard_modify_application.labelApplicationName} * :' formStyle='fullwidth'>   
+	                                	<@input type='text' id='applicationName' name='application_name' maxlength=100 value="${application.applicationName}" placeHolder="${application.applicationName}"
+                                         	patternValidationRules=[{'name':'applicationNameRule','regex':'^[a-z]+$','message':'#i18n{pluginwizard.pluginwizard_modify_application.helpRulesApplicationName}'},
+                                         							{'name':'applicationNameSizeRule','regex':'^.{1,100}$','message':'#i18n{pluginwizard.pluginwizard_modify_application.helpRulesApplicationNameSize}'}
+                                         						   ]/>                                 
+								</@formGroup>
+
+								<!-- Group form Application Class -->
+								<@formGroup labelFor='applicationClass' labelKey='#i18n{pluginwizard.pluginwizard_modify_application.labelApplicationClass} * :' formStyle='fullwidth'>
+	                                    <@input type='text' id='applicationClass' name='application_class' maxlength=100 value="${application.applicationClass}" placeHolder="${application.applicationClass}"
+                                         	patternValidationRules=[{'name':'applicationClassRule','regex':'^[A-Z][a-zA-Z]+$','message':'#i18n{pluginwizard.pluginwizard_modify_application.helpRulesApplicationClass}'},
+                                         							{'name':'applicationClassSizeRule','regex':'^.{1,100}$','message':'#i18n{pluginwizard.pluginwizard_modify_application.helpRulesApplicationClassSize}}'}
+                                         						   ]/>                                      
+								</@formGroup>
+
+								<!-- Group form Business Class -->
+								<@formGroup labelKey='#i18n{pluginwizard.pluginwizard_modify_application.labelBusinessClass} * :' formStyle='fullwidth'> 
+										<#list combo_business_classes?sort_by('name') as business>
+											<div class="form-check">
+												<#if application.getIdBusinessClasses()?seq_contains(business.code?number)>
+													<@checkBox name="id_business_class${business.code}" id="business_${business.code}" value="${business.code}" labelKey="${business.name}" checked=true />
+												<#else> 
+													<#assign used=false> 
+													<#list plugin_applications as plugin_application> 
+														<#if plugin_application.getIdBusinessClasses()?seq_contains(business.code?number)>
+															<#assign used=true>
+														</#if> 
+													</#list> 
+													<#if used>
+													<@checkBox name="id_business_class${business.code}" id="business_${business.code}" value="${business.code}" labelKey="${business.name}" disabled=true />
+													<#else>
+													<@checkBox name="id_business_class${business.code}" id="business_${business.code}" value="${business.code}" labelKey="${business.name}" /> 
+													</#if>
 												</#if>
-											</#list>
-											<#if used>
-												<label><input type="checkbox" disabled="disabled" name="id_business_class${business.code}" value="${business.code}" /> &nbsp; ${business.name}</label>
-											<#else>
-												<label><input type="checkbox" name="id_business_class${business.code}" value="${business.code}" /> &nbsp; ${business.name}</label>
-											</#if>
-										</#if>
-										</div>
-									</#list>
-								</div>   
-							</div>
-							 
-							<div class="form-group">
-								<div class="col-md-offset-3 col-md-9">
-									<button type="submit" name="action_modifyApplication"class="btn btn-primary">
-										#i18n{pluginwizard.pluginwizard_modify_application.buttonModifyApplication}
-									</button>                    
-									<button type="submit" name="view_manageApplications" class="btn">
-										#i18n{pluginwizard.pluginwizard_modify_application.buttonBack}
-									</button>
-								</div>                
-							</div>                
-						</fieldset>
-					</form>  
-				</div>    
-				<div class="clearfix"></div>
+											</div>
+										</#list>
+								</@formGroup>
+
+								<!-- Submit Buttons -->
+								<div class="row mb-3">
+									<div class="col-md-9 offset-md-3">
+										<button type="submit" name="action_modifyApplication"
+											class="btn btn-primary me-2">
+											#i18n{pluginwizard.pluginwizard_modify_application.buttonModifyApplication}
+										</button>
+										<button type="submit" name="view_manageApplications"
+											class="btn btn-secondary">
+											#i18n{pluginwizard.pluginwizard_modify_application.buttonBack}
+										</button>
+									</div>
+								</div>
+							</fieldset>
+						</form>
+					</div>
+					<!-- End Card Content-->
+				</div>
 			</div>
 		</div>
 	</div>
