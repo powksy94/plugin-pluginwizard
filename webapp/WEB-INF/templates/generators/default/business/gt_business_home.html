@@ -126,9 +126,9 @@ public final class ${business_class.businessClass}Home
      *
      * @return the list which contains the data of all the ${business_class.instanceName} objects
      */
-    public static List&lt;${business_class.businessClass}&gt; get${business_class.businessClass}sList( )
+    public static List&lt;${business_class.businessClass}&gt; get${business_class.pluralBusinessClass}List( )
     {
-        return _dao.select${business_class.businessClass}sList( _plugin );
+        return _dao.select${business_class.pluralBusinessClass}List( _plugin );
     }
     
     /**
@@ -139,9 +139,9 @@ public final class ${business_class.businessClass}Home
      * @param strSortMode contains the sortMode in case of sorting request : ASC or DESC (must be null)
      * @return the list which contains the id of all the project objects
      */
-    public static List&lt;Integer&gt; getId${business_class.businessClass}sList( Map &lt;String,String&gt; mapFilterCriteria, String strColumnToOrder, String strSortMode )
+    public static List&lt;Integer&gt; getId${business_class.pluralBusinessClass}List( Map &lt;String,String&gt; mapFilterCriteria, String strColumnToOrder, String strSortMode )
     {
-        return _dao.selectId${business_class.businessClass}sList( _plugin,mapFilterCriteria,strColumnToOrder,strSortMode );
+        return _dao.selectId${business_class.pluralBusinessClass}List( _plugin,mapFilterCriteria,strColumnToOrder,strSortMode );
     }
     
     /**
@@ -149,9 +149,9 @@ public final class ${business_class.businessClass}Home
      *
      * @return the referenceList which contains the data of all the ${business_class.instanceName} objects
      */
-    public static ReferenceList get${business_class.businessClass}sReferenceList( )
+    public static ReferenceList get${business_class.pluralBusinessClass}ReferenceList( )
     {
-        return _dao.select${business_class.businessClass}sReferenceList( _plugin );
+        return _dao.select${business_class.pluralBusinessClass}ReferenceList( _plugin );
     }
     
     <#if hasFile?? && hasFile>
@@ -171,9 +171,9 @@ public final class ${business_class.businessClass}Home
      * @param listIds liste of ids
      * @return the list which contains the data of all the avant objects
      */
-    public static List<${business_class.businessClass}> get${business_class.businessClass}sListByIds( List<Integer> listIds )
+    public static List<${business_class.businessClass}> get${business_class.pluralBusinessClass}ListByIds( List<Integer> listIds )
     {
-        return _dao.select${business_class.businessClass}sListByIds( _plugin, listIds );
+        return _dao.select${business_class.pluralBusinessClass}ListByIds( _plugin, listIds );
     }
 }
 

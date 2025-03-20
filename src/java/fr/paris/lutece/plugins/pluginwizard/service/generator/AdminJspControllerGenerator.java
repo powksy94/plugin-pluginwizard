@@ -90,7 +90,7 @@ public class AdminJspControllerGenerator extends AbstractGenerator
 
             for ( BusinessClass businessClass : listBusinessClasses )
             {
-                String strJspFileName = "Manage" + businessClass.getBusinessClass( ) + "s.jsp";
+                String strJspFileName = "Manage" + businessClass.getPluralBusinessClass( ) + ".jsp";
 
                 String strPath = getFilePath( pm, PATH, strJspFileName );
 

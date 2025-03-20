@@ -181,7 +181,7 @@ public final class ${business_class.businessClass}DAO extends AbstractFilterDao 
      * {@inheritDoc }
      */
     @Override
-    public List<${business_class.businessClass}> select${business_class.businessClass}sList( Plugin plugin )
+    public List<${business_class.businessClass}> select${business_class.pluralBusinessClass}List( Plugin plugin )
     {
         List<${business_class.businessClass}> ${business_class.instanceName}List = new ArrayList<>(  );
         try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin ) )
@@ -201,7 +201,7 @@ public final class ${business_class.businessClass}DAO extends AbstractFilterDao 
      * {@inheritDoc }
      */
     @Override
-    public List<Integer> selectId${business_class.businessClass}sList( Plugin plugin,  Map <String,String> mapFilterCriteria, String strColumnToOrder, String strSortMode )
+    public List<Integer> selectId${business_class.pluralBusinessClass}List( Plugin plugin,  Map <String,String> mapFilterCriteria, String strColumnToOrder, String strSortMode )
     {
         List<Integer> ${business_class.instanceName}List = new ArrayList<>( );
         
@@ -236,7 +236,7 @@ public final class ${business_class.businessClass}DAO extends AbstractFilterDao 
      * {@inheritDoc }
      */
     @Override
-    public ReferenceList select${business_class.businessClass}sReferenceList( Plugin plugin )
+    public ReferenceList select${business_class.pluralBusinessClass}ReferenceList( Plugin plugin )
     {
         ReferenceList ${business_class.instanceName}List = new ReferenceList( );
         try ( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECTALL, plugin ) )
@@ -256,7 +256,7 @@ public final class ${business_class.businessClass}DAO extends AbstractFilterDao 
      * {@inheritDoc }
      */
 	@Override
-	public List<${business_class.businessClass}> select${business_class.businessClass}sListByIds( Plugin plugin, List<Integer> listIds ) 
+	public List<${business_class.businessClass}> select${business_class.pluralBusinessClass}ListByIds( Plugin plugin, List<Integer> listIds ) 
 	{
 		List<${business_class.businessClass}> ${business_class.instanceName}List = new ArrayList<>(  );
 		

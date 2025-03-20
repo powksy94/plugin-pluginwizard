@@ -35,7 +35,7 @@
 				</#list>
         		<${macro}formGroup>
           			<${macro}button name='action_create${business_class.businessClass}' type='submit' tabIndex='${business_class.attributes?size}' title='${i18n_open}portal.util.labelCreate${i18n_close}' buttonIcon='plus' />
-					<${macro}button name='view_manage${business_class.businessClass}s' type='submit' title='${i18n_open}portal.util.labelCancel${i18n_close}' buttonIcon='close' color='btn-secondary' cancel=true />
+					<${macro}button name='view_manage${business_class.pluralBusinessClass}' type='submit' title='${i18n_open}portal.util.labelCancel${i18n_close}' buttonIcon='close' color='btn-secondary' cancel=true />
 				</${macro}formGroup>
     </${macro}tform>
 	</${macro}boxBody>
@@ -71,7 +71,7 @@
 
 				<${macro}formGroup>
          			<${macro}button name='action_modify${business_class.businessClass}' type='submit' tabIndex='${business_class.attributes?size}' title='${i18n_open}portal.util.labelModify${i18n_close}' buttonIcon='plus' />
-          			<${macro}button name='view_manage${business_class.businessClass}s' type='submit' title='${i18n_open}portal.util.labelCancel${i18n_close}' buttonIcon='close' color='btn-secondary' cancel=true />
+          			<${macro}button name='view_manage${business_class.pluralBusinessClass}' type='submit' title='${i18n_open}portal.util.labelCancel${i18n_close}' buttonIcon='close' color='btn-secondary' cancel=true />
 				</${macro}formGroup>
 		</${macro}tform>
 	</${macro}boxBody>
@@ -87,15 +87,15 @@
 	<${macro}columns>
 		<${macro}messages infos=infos />
 		<${macro}tform action='jsp/site/Portal.jsp?page=${business_class.businessClass?lower_case}'>
-			<${macro}button type='submit' name='view_create${business_class.businessClass}' class='pull-right' buttonIcon='plus' title='${i18n_open}${plugin_name}.manage_${business_class.businessClass?lower_case}s.buttonAdd${i18n_close}' />
+			<${macro}button type='submit' name='view_create${business_class.businessClass}' class='pull-right' buttonIcon='plus' title='${i18n_open}${plugin_name}.manage_${business_class.pluralBusinessClass?lower_case}.buttonAdd${i18n_close}' />
 		</${macro}tform>
 
-    	<h4>${i18n_open}${plugin_name}.manage_${business_class.businessClass?lower_case}s.title${i18n_close}</h4>
+    	<h4>${i18n_open}${plugin_name}.manage_${business_class.pluralBusinessClass?lower_case}.title${i18n_close}</h4>
         
     	<${macro}table>
 			<tr>
 				<#list business_class.attributes as attribute>
-					<th>${i18n_open}${plugin_name}.manage_${business_class.businessClass?lower_case}s.column${attribute.name}${i18n_close}</th>
+					<th>${i18n_open}${plugin_name}.manage_${business_class.pluralBusinessClass?lower_case}.column${attribute.name}${i18n_close}</th>
 				</#list>
 					<th>${i18n_open}portal.util.labelActions${i18n_close}</th>
         	</tr>

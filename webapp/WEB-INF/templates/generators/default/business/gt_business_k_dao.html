@@ -148,7 +148,7 @@ public final class ${business_class.businessClass}DAO
      * @param plugin The plugin
      * @return The list
      */
-    fun select${business_class.businessClass}sList( plugin: Plugin ): ArrayList&lt;${business_class.businessClass}&gt;
+    fun select${business_class.pluralBusinessClass}List( plugin: Plugin ): ArrayList&lt;${business_class.businessClass}&gt;
     {
         val list${business_class.businessClass} = ArrayList&lt;${business_class.businessClass}&gt;(  )
         val daoUtil = DAOUtil( SQL_QUERY_SELECTALL, plugin )
@@ -178,7 +178,7 @@ public final class ${business_class.businessClass}DAO
      * @return The list
      */
     @Override
-    fun select${business_class.businessClass}sReferenceList( plugin: Plugin ): ReferenceList
+    fun select${business_class.pluralBusinessClass}ReferenceList( plugin: Plugin ): ReferenceList
     {
         val list${business_class.businessClass} = ReferenceList()
         val daoUtil = DAOUtil( SQL_QUERY_SELECTALL, plugin )

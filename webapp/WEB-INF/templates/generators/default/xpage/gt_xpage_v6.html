@@ -70,7 +70,7 @@ import javax.servlet.http.HttpServletRequest;
 public class ${business_class.businessClass}XPage extends MVCApplication
 {
     // Templates
-    private static final String TEMPLATE_MANAGE_${business_class.businessClass?upper_case}S = "/skin/plugins/${radicalPackage?replace(".","/")}/manage_${business_class.businessClass?lower_case}s.html";
+    private static final String TEMPLATE_MANAGE_${business_class.pluralBusinessClass?upper_case} = "/skin/plugins/${radicalPackage?replace(".","/")}/manage_${business_class.pluralBusinessClass?lower_case}.html";
     private static final String TEMPLATE_CREATE_${business_class.businessClass?upper_case} = "/skin/plugins/${radicalPackage?replace(".","/")}/create_${business_class.businessClass?lower_case}.html";
     private static final String TEMPLATE_MODIFY_${business_class.businessClass?upper_case} = "/skin/plugins/${radicalPackage?replace(".","/")}/modify_${business_class.businessClass?lower_case}.html";
     
@@ -85,7 +85,7 @@ public class ${business_class.businessClass}XPage extends MVCApplication
     private static final String MESSAGE_CONFIRM_REMOVE_${business_class.businessClass?upper_case} = "${msg}.message.confirmRemove${business_class.businessClass?cap_first}";
     
     // Views
-    private static final String VIEW_MANAGE_${business_class.businessClass?upper_case}S = "manage${business_class.businessClass}s";
+    private static final String VIEW_MANAGE_${business_class.pluralBusinessClass?upper_case} = "manage${business_class.pluralBusinessClass}";
     private static final String VIEW_CREATE_${business_class.businessClass?upper_case} = "create${business_class.businessClass}";
     private static final String VIEW_MODIFY_${business_class.businessClass?upper_case} = "modify${business_class.businessClass}";
 
@@ -104,18 +104,18 @@ public class ${business_class.businessClass}XPage extends MVCApplication
     private ${business_class.businessClass?cap_first} _${business_class.businessClass?lower_case};
     
     /**
-     * return the form to manage ${business_class.businessClass?lower_case}s
+     * return the form to manage ${business_class.pluralBusinessClass?lower_case}
      * @param request The Http request
-     * @return the html code of the list of ${business_class.businessClass?lower_case}s
+     * @return the html code of the list of ${business_class.pluralBusinessClass?lower_case}
      */
-    @View( value = VIEW_MANAGE_${business_class.businessClass?upper_case}S, defaultView = true )
-    public XPage getManage${business_class.businessClass}s( HttpServletRequest request )
+    @View( value = VIEW_MANAGE_${business_class.pluralBusinessClass?upper_case}, defaultView = true )
+    public XPage getManage${business_class.pluralBusinessClass}( HttpServletRequest request )
     {
         _${business_class.businessClass?lower_case} = null;
         Map<String, Object> model = getModel(  );
-        model.put( MARK_${business_class.businessClass?upper_case}_LIST, ${business_class.businessClass?cap_first}Home.get${business_class.businessClass?cap_first}sList(  ) );
+        model.put( MARK_${business_class.businessClass?upper_case}_LIST, ${business_class.businessClass?cap_first}Home.get${business_class.pluralBusinessClass?cap_first}List(  ) );
         
-        return getXPage( TEMPLATE_MANAGE_${business_class.businessClass?upper_case}S, request.getLocale(  ), model );
+        return getXPage( TEMPLATE_MANAGE_${business_class.pluralBusinessClass?upper_case}, request.getLocale(  ), model );
     }
 
     /**
@@ -162,7 +162,7 @@ public class ${business_class.businessClass}XPage extends MVCApplication
         ${business_class.businessClass}Home.create( _${business_class.businessClass?lower_case} );
         addInfo( INFO_${business_class.businessClass?upper_case}_CREATED, getLocale( request ) );
 
-        return redirectView( request, VIEW_MANAGE_${business_class.businessClass?upper_case}S );
+        return redirectView( request, VIEW_MANAGE_${business_class.pluralBusinessClass?upper_case} );
     }
 
     /**
@@ -189,7 +189,7 @@ public class ${business_class.businessClass}XPage extends MVCApplication
      * Handles the removal form of a ${business_class.businessClass?lower_case}
      *
      * @param request The Http request
-     * @return the jsp URL to display the form to manage ${business_class.businessClass?lower_case}s
+     * @return the jsp URL to display the form to manage ${business_class.pluralBusinessClass?lower_case}
      */
     @Action( ACTION_REMOVE_${business_class.businessClass?upper_case} )
     public XPage doRemove${business_class.businessClass?cap_first}( HttpServletRequest request )
@@ -198,7 +198,7 @@ public class ${business_class.businessClass}XPage extends MVCApplication
         ${business_class.businessClass}Home.remove( nId );
         addInfo( INFO_${business_class.businessClass?upper_case}_REMOVED, getLocale( request ) );
 
-        return redirectView( request, VIEW_MANAGE_${business_class.businessClass?upper_case}S );
+        return redirectView( request, VIEW_MANAGE_${business_class.pluralBusinessClass?upper_case} );
     }
 
     /**
@@ -250,7 +250,7 @@ public class ${business_class.businessClass}XPage extends MVCApplication
         ${business_class.businessClass}Home.update( _${business_class.businessClass?lower_case} );
         addInfo( INFO_${business_class.businessClass?upper_case}_UPDATED, getLocale( request ) );
 
-        return redirectView( request, VIEW_MANAGE_${business_class.businessClass?upper_case}S );
+        return redirectView( request, VIEW_MANAGE_${business_class.pluralBusinessClass?upper_case} );
     }
 }
 <#else>

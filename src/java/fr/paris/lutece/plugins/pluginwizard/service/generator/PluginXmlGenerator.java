@@ -106,7 +106,7 @@ public class PluginXmlGenerator extends AbstractFileGenerator
                 }
 
                 BusinessClass businessClass = listBusiness.get( id );
-                feature.setJspName( "Manage" + businessClass.getBusinessClassCapsFirst( ) + "s.jsp" );
+                feature.setJspName( "Manage" + businessClass.getPluralBusinessClassCapsFirst( ) + ".jsp" );
             }
             else
             {

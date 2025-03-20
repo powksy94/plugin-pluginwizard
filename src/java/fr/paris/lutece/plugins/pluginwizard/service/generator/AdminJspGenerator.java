@@ -95,9 +95,20 @@ public class AdminJspGenerator extends AbstractGenerator
             {
                 for ( int i = 0; i < _jsp_prefix.length; i++ )
                 {
-                    String strSuffix = ( i == 4 ) ? ( "s" + EXT_JSP ) : EXT_JSP;
-                    String strJspFileName = _jsp_prefix [i] + businessClass.getBusinessClass( ) + strSuffix;
+                   
+                	String strSuffix =  EXT_JSP;
+                    String strJspFileName = "";
 
+                    //Manage files case where plural business class name is used
+                    if( i == 4 )
+                    {
+                        strJspFileName = _jsp_prefix [i] + businessClass.getPluralBusinessClass( ) + strSuffix;
+                    }
+                    else
+                    {
+                        strJspFileName = _jsp_prefix [i] + businessClass.getBusinessClass( ) + strSuffix;
+                    }
+                    
                     String strPath = getFilePath( pm, PATH, strJspFileName );
 
                     String strSourceCode = getJspBusinessFile( businessClass, feature.getFeatureName( ), strPluginName, i + 1, pm.isModule( ) );

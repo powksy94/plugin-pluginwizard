@@ -89,9 +89,19 @@ public class XPageTemplateGenerator extends AbstractGenerator
                 {
                     for ( int i = 0; i < _template_prefix.length; i++ )
                     {
-                        String strSuffix = ( i == 2 ) ? "s.html" : ".html";
-                        String strPath = getFilePath( pm, PATH, _template_prefix [i] + businessClass.getBusinessClass( ).toLowerCase( ) + strSuffix );
-
+                    	String strSuffix = ".html";
+                        String strPath ="";
+ 
+                        //manage files case where plural business name is used 
+                        if( i == 2 )
+                        {
+                            strPath = getFilePath( pm, PATH, _template_prefix [i] + businessClass.getPluralBusinessClass( ).toLowerCase( ) + strSuffix );
+                        }
+                        else
+                        {
+                            strPath = getFilePath( pm, PATH, _template_prefix [i] + businessClass.getBusinessClass( ).toLowerCase( ) + strSuffix );
+                        }
+                    	
                         String strSourceCode = getCreateHtmlCode( listBusinessClasses, application, businessClass, i, strPluginName );
                         map.put( strPath, strSourceCode );
                     }

@@ -61,7 +61,7 @@ public final class Constants
     public static final String ERROR_BAD_REQUEST_EMPTY_PARAMETER = "Empty parameter";
     <#list business_classes as business_class>
     
-    public static final String ${business_class.businessClass?upper_case}_PATH = "/${business_class.businessClass?lower_case}s";
+    public static final String ${business_class.businessClass?upper_case}_PATH = "/${business_class.pluralBusinessClass?lower_case}";
     <#list business_class.attributes as attribute>
     public static final String ${business_class.businessClass?upper_case}_ATTRIBUTE_${attribute.paramName?upper_case} = "${attribute.paramName?lower_case}";
     </#list>

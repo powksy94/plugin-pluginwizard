@@ -220,9 +220,9 @@ public class ResourcesGenerator extends AbstractGenerator
         {
             sb.append( "\n# keys for business classes keys : " ).append( bc.getBusinessClass( ) ).append( "\n" );
 
-            String strPrefix = "manage_" + bc.getBusinessClass( ).toLowerCase( ) + "s.";
+            String strPrefix = "manage_" + bc.getPluralBusinessClass( ).toLowerCase( ) + ".";
             sb.append( strPrefix ).append( "pageTitle=" ).append( bc.getBusinessClass( ) ).append( "\n" );
-            sb.append( strPrefix ).append( "title=" ).append( getLabel( "title.manage", strLanguage, bc.getBusinessClass( ) ) ).append( "\n" );
+            sb.append( strPrefix ).append( "title=" ).append( getLabel( "title.manage", strLanguage, bc.getPluralBusinessClass( ) ) ).append( "\n" );
             sb.append( strPrefix ).append( "buttonAdd=" ).append( getLabel( "buttonAdd", strLanguage, bc.getBusinessClass( ) ) ).append( "\n" );
 
             for ( Attribute attribute : bc.getAttributes( ) )

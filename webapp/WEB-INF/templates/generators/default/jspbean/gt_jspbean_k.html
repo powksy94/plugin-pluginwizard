@@ -53,7 +53,7 @@ import fr.paris.lutece.util.url.UrlItem
 import javax.servlet.http.HttpServletRequest
 
 // Templates
-private const val TEMPLATE_MANAGE_${business_class.businessClass?upper_case}S = "/admin/plugins/${radicalPackage?replace(".","/")}/manage_${business_class.businessClass?lower_case}s.html"
+private const val TEMPLATE_MANAGE_${business_class.pluralBusinessClass?upper_case} = "/admin/plugins/${radicalPackage?replace(".","/")}/manage_${business_class.pluralBusinessClass?lower_case}.html"
 private const val TEMPLATE_CREATE_${business_class.businessClass?upper_case} = "/admin/plugins/${radicalPackage?replace(".","/")}/create_${business_class.businessClass?lower_case}.html"
 private const val TEMPLATE_MODIFY_${business_class.businessClass?upper_case} = "/admin/plugins/${radicalPackage?replace(".","/")}/modify_${business_class.businessClass?lower_case}.html"
 
@@ -61,7 +61,7 @@ private const val TEMPLATE_MODIFY_${business_class.businessClass?upper_case} = "
 private const val PARAMETER_ID_${business_class.businessClass?upper_case} = "id"
 
 // Properties for page titles
-private const val PROPERTY_PAGE_TITLE_MANAGE_${business_class.businessClass?upper_case}S = "${msg?lower_case}.manage_${business_class.businessClass?lower_case}s.pageTitle"
+private const val PROPERTY_PAGE_TITLE_MANAGE_${business_class.pluralBusinessClass?upper_case} = "${msg?lower_case}.manage_${business_class.pluralBusinessClass?lower_case}.pageTitle"
 private const val PROPERTY_PAGE_TITLE_MODIFY_${business_class.businessClass?upper_case} = "${msg?lower_case}.modify_${business_class.businessClass?lower_case}.pageTitle"
 private const val PROPERTY_PAGE_TITLE_CREATE_${business_class.businessClass?upper_case} = "${msg?lower_case}.create_${business_class.businessClass?lower_case}.pageTitle"
 
@@ -69,7 +69,7 @@ private const val PROPERTY_PAGE_TITLE_CREATE_${business_class.businessClass?uppe
 private const val MARK_${business_class.businessClass?upper_case}_LIST = "${business_class.businessClass?lower_case}_list"
 private const val MARK_${business_class.businessClass?upper_case} = "${business_class.businessClass?lower_case}"
 
-private const val JSP_MANAGE_${business_class.businessClass?upper_case}S = "jsp/admin/plugins/${radicalPackage?replace(".","/")}/Manage${business_class.businessClass?cap_first}s.jsp"
+private const val JSP_MANAGE_${business_class.pluralBusinessClass?upper_case} = "jsp/admin/plugins/${radicalPackage?replace(".","/")}/Manage${business_class.pluralBusinessClass?cap_first}.jsp"
 
 // Properties
 private const val MESSAGE_CONFIRM_REMOVE_${business_class.businessClass?upper_case} = "${msg}.message.confirmRemove${business_class.businessClass?cap_first}"
@@ -78,7 +78,7 @@ private const val MESSAGE_CONFIRM_REMOVE_${business_class.businessClass?upper_ca
 private const val VALIDATION_ATTRIBUTES_PREFIX = "${msg}.model.entity.${business_class.businessClass?lower_case}.attribute."
 
 // Views
-private const val VIEW_MANAGE_${business_class.businessClass?upper_case}S = "manage${business_class.businessClass}s"
+private const val VIEW_MANAGE_${business_class.pluralBusinessClass?upper_case} = "manage${business_class.pluralBusinessClass}"
 private const val VIEW_CREATE_${business_class.businessClass?upper_case} = "create${business_class.businessClass}"
 private const val VIEW_MODIFY_${business_class.businessClass?upper_case} = "modify${business_class.businessClass}"
 
@@ -96,7 +96,7 @@ private const val INFO_${business_class.businessClass?upper_case}_REMOVED = "${m
 /**
  * This class provides the user interface to manage ${business_class.businessClass} features ( manage, create, modify, remove )
  */
-@Controller( controllerJsp = "Manage${business_class.businessClass}s.jsp", controllerPath = "jsp/admin/plugins/${radicalPackage?replace(".","/")}/", right = "${feature_right}" )
+@Controller( controllerJsp = "Manage${business_class.pluralBusinessClass}.jsp", controllerPath = "jsp/admin/plugins/${radicalPackage?replace(".","/")}/", right = "${feature_right}" )
 class ${business_class.businessClass}JspBean : Abstract${feature_name}JspBean()
 {
     // Session variable to store working values
@@ -107,14 +107,14 @@ class ${business_class.businessClass}JspBean : Abstract${feature_name}JspBean()
      * @param request The HTTP request
      * @return The page
      */
-    @View( value = VIEW_MANAGE_${business_class.businessClass?upper_case}S, defaultView = true )
-    fun getManage${business_class.businessClass}s( request: HttpServletRequest ) : String
+    @View( value = VIEW_MANAGE_${business_class.pluralBusinessClass?upper_case}, defaultView = true )
+    fun getManage${business_class.pluralBusinessClass}( request: HttpServletRequest ) : String
     {
         _${business_class.businessClass?lower_case} = null
-        val list${business_class.businessClass}s = ${business_class.businessClass}Home.get${business_class.businessClass}sList(  ) as ArrayList<Any>
-        val model = getPaginatedListModel( request, MARK_${business_class.businessClass?upper_case}_LIST, list${business_class.businessClass}s, JSP_MANAGE_${business_class.businessClass?upper_case}S )
+        val list${business_class.pluralBusinessClass} = ${business_class.businessClass}Home.get${business_class.pluralBusinessClass}List(  ) as ArrayList<Any>
+        val model = getPaginatedListModel( request, MARK_${business_class.businessClass?upper_case}_LIST, list${business_class.pluralBusinessClass}, JSP_MANAGE_${business_class.pluralBusinessClass?upper_case} )
 
-        return getPage( PROPERTY_PAGE_TITLE_MANAGE_${business_class.businessClass?upper_case}S, TEMPLATE_MANAGE_${business_class.businessClass?upper_case}S, model )
+        return getPage( PROPERTY_PAGE_TITLE_MANAGE_${business_class.pluralBusinessClass?upper_case}, TEMPLATE_MANAGE_${business_class.pluralBusinessClass?upper_case}, model )
     }
 
     /**
@@ -157,7 +157,7 @@ class ${business_class.businessClass}JspBean : Abstract${feature_name}JspBean()
         ${business_class.businessClass}Home.create( _${business_class.businessClass?lower_case}!! )
         addInfo( INFO_${business_class.businessClass?upper_case}_CREATED, getLocale( ) )
 
-        return redirectView( request, VIEW_MANAGE_${business_class.businessClass?upper_case}S )
+        return redirectView( request, VIEW_MANAGE_${business_class.pluralBusinessClass?upper_case} )
     }
 
     /**
@@ -183,7 +183,7 @@ class ${business_class.businessClass}JspBean : Abstract${feature_name}JspBean()
      * Handles the removal form of a ${business_class.businessClass?lower_case}
      *
      * @param request The Http request
-     * @return the jsp URL to display the form to manage ${business_class.businessClass?lower_case}s
+     * @return the jsp URL to display the form to manage ${business_class.pluralBusinessClass?lower_case}
      */
     @Action( ACTION_REMOVE_${business_class.businessClass?upper_case} )
     fun doRemove${business_class.businessClass}( request: HttpServletRequest ): String
@@ -192,7 +192,7 @@ class ${business_class.businessClass}JspBean : Abstract${feature_name}JspBean()
         ${business_class.businessClass}Home.remove( nId )
         addInfo( INFO_${business_class.businessClass?upper_case}_REMOVED, getLocale( ) )
 
-        return redirectView( request, VIEW_MANAGE_${business_class.businessClass?upper_case}S )
+        return redirectView( request, VIEW_MANAGE_${business_class.pluralBusinessClass?upper_case} )
     }
 
     /**
@@ -237,6 +237,6 @@ class ${business_class.businessClass}JspBean : Abstract${feature_name}JspBean()
         ${business_class.businessClass}Home.update( _${business_class.businessClass?lower_case}!! )
         addInfo( INFO_${business_class.businessClass?upper_case}_UPDATED, getLocale( ) )
 
-        return redirectView( request, VIEW_MANAGE_${business_class.businessClass?upper_case}S )
+        return redirectView( request, VIEW_MANAGE_${business_class.pluralBusinessClass?upper_case} )
     }
 }

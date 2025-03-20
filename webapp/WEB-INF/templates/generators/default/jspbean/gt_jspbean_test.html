@@ -112,7 +112,7 @@ public void testJspBeans(  ) throws AccessDeniedException, IOException
 
 		//display admin ${business_class.businessClass} management JSP
 		${business_class.businessClass}JspBean jspbean = new ${business_class.businessClass}JspBean();
-		String html = jspbean.getManage${business_class.businessClass}s( request );
+		String html = jspbean.getManage${business_class.pluralBusinessClass}( request );
 		assertNotNull(html);
 
 		//display admin ${business_class.businessClass} creation JSP
@@ -213,7 +213,7 @@ public void testJspBeans(  ) throws AccessDeniedException, IOException
         request.addParameter( "${attribute.paramName}" , String.valueOf( ${attribute.name?upper_case}1) );
         </#if>
 		</#list>
-		List<Integer> listIds = ${business_class.businessClass}Home.getId${business_class.businessClass}sList();
+		List<Integer> listIds = ${business_class.businessClass}Home.getId${business_class.pluralBusinessClass}List();
         assertTrue( !listIds.isEmpty( ) );
         request.addParameter( "id", String.valueOf( listIds.get( 0 ) ) );
 		jspbean = new ${business_class.businessClass}JspBean();
@@ -260,7 +260,7 @@ public void testJspBeans(  ) throws AccessDeniedException, IOException
         request.addParameter( "${attribute.paramName}" , String.valueOf( ${attribute.name?upper_case}2) );
         </#if>
 		</#list>
-		request.setRequestURI("jsp/admin/plugins/example/Manage${business_class.businessClass}s.jsp");
+		request.setRequestURI("jsp/admin/plugins/example/Manage${business_class.pluralBusinessClass}.jsp");
 		//important pour que MVCController sache quelle action effectuer, sinon, il redirigera vers create${business_class.businessClass}, qui est l'action par défaut
 		request.addParameter("action","modify${business_class.businessClass}");
 		request.addParameter( "token", SecurityTokenService.getInstance( ).getToken( request, "modify${business_class.businessClass}" ));
@@ -290,7 +290,7 @@ public void testJspBeans(  ) throws AccessDeniedException, IOException
 		
 		//get remove ${business_class.businessClass}
 		request = new MockHttpServletRequest();
-        //request.setRequestURI("jsp/admin/plugins/example/Manage${business_class.businessClass}s.jsp");
+        //request.setRequestURI("jsp/admin/plugins/example/Manage${business_class.pluralBusinessClass}.jsp");
         request.addParameter( "id", String.valueOf( listIds.get( 0 ) ) );
 		jspbean = new ${business_class.businessClass}JspBean();
 		request.addParameter("action","confirmRemove${business_class.businessClass}");

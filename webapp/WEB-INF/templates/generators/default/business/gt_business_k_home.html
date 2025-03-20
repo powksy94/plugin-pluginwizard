@@ -94,9 +94,9 @@ object ${business_class.businessClass}Home
      * Load the data of all the ${business_class.instanceName} objects and returns them as a list
      * @return the list which contains the data of all the ${business_class.instanceName} objects
      */
-    fun get${business_class.businessClass}sList( ):  ArrayList&lt;${business_class.businessClass}&gt;
+    fun get${business_class.pluralBusinessClass}List( ):  ArrayList&lt;${business_class.businessClass}&gt;
     {
-        return _dao.select${business_class.businessClass}sList( _plugin )
+        return _dao.select${business_class.pluralBusinessClass}List( _plugin )
     }
     
    
@@ -104,9 +104,9 @@ object ${business_class.businessClass}Home
      * Load the data of all the ${business_class.instanceName} objects and returns them as a referenceList
      * @return the referenceList which contains the data of all the ${business_class.instanceName} objects
      */
-    fun get${business_class.businessClass}sReferenceList( ): ReferenceList
+    fun get${business_class.pluralBusinessClass}ReferenceList( ): ReferenceList
     {
-        return _dao.select${business_class.businessClass}sReferenceList( _plugin )
+        return _dao.select${business_class.pluralBusinessClass}ReferenceList( _plugin )
     }
 }
 

@@ -87,7 +87,7 @@ import fr.paris.lutece.plugins.${radicalPackage}.business.${business_class.busin
 /**
  * This class provides the user interface to manage ${business_class.businessClass} features ( manage, create, modify, remove )
  */
-@Controller( controllerJsp = "Manage${business_class.businessClass}s.jsp", controllerPath = "jsp/admin/plugins/${radicalPackage?replace(".","/")}/", right = "${feature_right}" )
+@Controller( controllerJsp = "Manage${business_class.pluralBusinessClass}.jsp", controllerPath = "jsp/admin/plugins/${radicalPackage?replace(".","/")}/", right = "${feature_right}" )
 public class ${business_class.businessClass}JspBean extends AbstractJspBean <Integer, ${business_class.businessClass}>
 {
 
@@ -95,7 +95,7 @@ public class ${business_class.businessClass}JspBean extends AbstractJspBean <Int
 	public static final String RIGHT_${feature_name?upper_case} = "${feature_right}";
 		
     // Templates
-    private static final String TEMPLATE_MANAGE_${business_class.businessClass?upper_case}S = "/admin/plugins/${radicalPackage?replace(".","/")}/manage_${business_class.businessClass?lower_case}s.html";
+    private static final String TEMPLATE_MANAGE_${business_class.pluralBusinessClass?upper_case} = "/admin/plugins/${radicalPackage?replace(".","/")}/manage_${business_class.pluralBusinessClass?lower_case}.html";
     private static final String TEMPLATE_CREATE_${business_class.businessClass?upper_case} = "/admin/plugins/${radicalPackage?replace(".","/")}/create_${business_class.businessClass?lower_case}.html";
     private static final String TEMPLATE_MODIFY_${business_class.businessClass?upper_case} = "/admin/plugins/${radicalPackage?replace(".","/")}/modify_${business_class.businessClass?lower_case}.html";
 
@@ -103,7 +103,7 @@ public class ${business_class.businessClass}JspBean extends AbstractJspBean <Int
     private static final String PARAMETER_ID_${business_class.businessClass?upper_case} = "id";
 
     // Properties for page titles
-    private static final String PROPERTY_PAGE_TITLE_MANAGE_${business_class.businessClass?upper_case}S = "${msg?lower_case}.manage_${business_class.businessClass?lower_case}s.pageTitle";
+    private static final String PROPERTY_PAGE_TITLE_MANAGE_${business_class.pluralBusinessClass?upper_case} = "${msg?lower_case}.manage_${business_class.pluralBusinessClass?lower_case}.pageTitle";
     private static final String PROPERTY_PAGE_TITLE_MODIFY_${business_class.businessClass?upper_case} = "${msg?lower_case}.modify_${business_class.businessClass?lower_case}.pageTitle";
     private static final String PROPERTY_PAGE_TITLE_CREATE_${business_class.businessClass?upper_case} = "${msg?lower_case}.create_${business_class.businessClass?lower_case}.pageTitle";
 
@@ -111,7 +111,7 @@ public class ${business_class.businessClass}JspBean extends AbstractJspBean <Int
     private static final String MARK_${business_class.businessClass?upper_case}_LIST = "${business_class.businessClass?lower_case}_list";
     private static final String MARK_${business_class.businessClass?upper_case} = "${business_class.businessClass?lower_case}";
 
-    private static final String JSP_MANAGE_${business_class.businessClass?upper_case}S = "jsp/admin/plugins/${radicalPackage?replace(".","/")}/Manage${business_class.businessClass?cap_first}s.jsp";
+    private static final String JSP_MANAGE_${business_class.pluralBusinessClass?upper_case} = "jsp/admin/plugins/${radicalPackage?replace(".","/")}/Manage${business_class.pluralBusinessClass?cap_first}.jsp";
 
     // Properties
     private static final String MESSAGE_CONFIRM_REMOVE_${business_class.businessClass?upper_case} = "${msg}.message.confirmRemove${business_class.businessClass?cap_first}";
@@ -120,7 +120,7 @@ public class ${business_class.businessClass}JspBean extends AbstractJspBean <Int
     private static final String VALIDATION_ATTRIBUTES_PREFIX = "${msg}.model.entity.${business_class.businessClass?lower_case}.attribute.";
 
     // Views
-    private static final String VIEW_MANAGE_${business_class.businessClass?upper_case}S = "manage${business_class.businessClass}s";
+    private static final String VIEW_MANAGE_${business_class.pluralBusinessClass?upper_case} = "manage${business_class.pluralBusinessClass}";
     private static final String VIEW_CREATE_${business_class.businessClass?upper_case} = "create${business_class.businessClass}";
     private static final String VIEW_MODIFY_${business_class.businessClass?upper_case} = "modify${business_class.businessClass}";
 
@@ -140,7 +140,7 @@ public class ${business_class.businessClass}JspBean extends AbstractJspBean <Int
     
     // Session variable to store working values
     private ${business_class.businessClass} _${business_class.businessClass?lower_case};
-    private List<Integer> _listId${business_class.businessClass}s;
+    private List<Integer> _listId${business_class.pluralBusinessClass};
     private HashMap<String,String> _mapFilterCriteria = new HashMap<>();
     private String _optionOrderBy;
     
@@ -149,8 +149,8 @@ public class ${business_class.businessClass}JspBean extends AbstractJspBean <Int
      * @param request The HTTP request
      * @return The page
      */
-    @View( value = VIEW_MANAGE_${business_class.businessClass?upper_case}S, defaultView = true )
-    public String getManage${business_class.businessClass}s( HttpServletRequest request )
+    @View( value = VIEW_MANAGE_${business_class.pluralBusinessClass?upper_case}, defaultView = true )
+    public String getManage${business_class.pluralBusinessClass}( HttpServletRequest request )
     {
         _${business_class.businessClass?lower_case} = null;
         
@@ -165,25 +165,25 @@ public class ${business_class.businessClass}JspBean extends AbstractJspBean <Int
         		String strOrderByColumn =  (String)request.getParameter(PARAMETER_SEARCH_ORDER_BY);
         		String strSortMode = getSortMode(); 
         		
-        		_listId${business_class.businessClass}s = ${business_class.businessClass}Home.getId${business_class.businessClass}sList( _mapFilterCriteria, strOrderByColumn, strSortMode );
+        		_listId${business_class.pluralBusinessClass} = ${business_class.businessClass}Home.getId${business_class.pluralBusinessClass}List( _mapFilterCriteria, strOrderByColumn, strSortMode );
                	
 	       	}
 	       	else
 	       	{
 	       		// reload the filter criteria and search
 	       		_mapFilterCriteria = (HashMap<String, String>) getFilterCriteriaFromRequest( request );
-	       		_listId${business_class.businessClass}s = ${business_class.businessClass}Home.getId${business_class.businessClass}sList( _mapFilterCriteria, null ,null);
+	       		_listId${business_class.pluralBusinessClass} = ${business_class.businessClass}Home.getId${business_class.pluralBusinessClass}List( _mapFilterCriteria, null ,null);
 	       	}
         	
         	//set CurrentPageIndex of Paginator to null in aim of displays the first page of results
         	resetCurrentPageIndexOfPaginator();
         }
        	
-       	Map<String, Object> model = getPaginatedListModel( request, MARK_${business_class.businessClass?upper_case}_LIST, _listId${business_class.businessClass}s, JSP_MANAGE_${business_class.businessClass?upper_case}S );
+       	Map<String, Object> model = getPaginatedListModel( request, MARK_${business_class.businessClass?upper_case}_LIST, _listId${business_class.pluralBusinessClass}, JSP_MANAGE_${business_class.pluralBusinessClass?upper_case} );
              
         addSearchParameters(model,_mapFilterCriteria); //allow the persistence of search values in inputs search bar inputs
                      
-        return getPage( PROPERTY_PAGE_TITLE_MANAGE_${business_class.businessClass?upper_case}S, TEMPLATE_MANAGE_${business_class.businessClass?upper_case}S, model );
+        return getPage( PROPERTY_PAGE_TITLE_MANAGE_${business_class.pluralBusinessClass?upper_case}, TEMPLATE_MANAGE_${business_class.pluralBusinessClass?upper_case}, model );
 
     }
 
@@ -195,7 +195,7 @@ public class ${business_class.businessClass}JspBean extends AbstractJspBean <Int
 	@Override
 	List<${business_class.businessClass}> getItemsFromIds( List<Integer> listIds ) 
 	{
-		List<${business_class.businessClass}> list${business_class.businessClass} = ${business_class.businessClass}Home.get${business_class.businessClass}sListByIds( listIds );
+		List<${business_class.businessClass}> list${business_class.businessClass} = ${business_class.businessClass}Home.get${business_class.pluralBusinessClass}ListByIds( listIds );
 		<#if hasFile?? && hasFile>
         for (${business_class.businessClass} fil : list${business_class.businessClass})
         {
@@ -237,11 +237,11 @@ public class ${business_class.businessClass}JspBean extends AbstractJspBean <Int
 	}
     
     /**
-    * reset the _listId${business_class.businessClass}s list
+    * reset the _listId${business_class.pluralBusinessClass} list
     */
     public void resetListId( )
     {
-    	_listId${business_class.businessClass}s = new ArrayList<>( );
+    	_listId${business_class.pluralBusinessClass} = new ArrayList<>( );
     }
 
     /**
@@ -315,7 +315,7 @@ public class ${business_class.businessClass}JspBean extends AbstractJspBean <Int
         addInfo( INFO_${business_class.businessClass?upper_case}_CREATED, getLocale(  ) );
         resetListId( );
 
-        return redirectView( request, VIEW_MANAGE_${business_class.businessClass?upper_case}S );
+        return redirectView( request, VIEW_MANAGE_${business_class.pluralBusinessClass?upper_case} );
     }
 
     /**
@@ -341,7 +341,7 @@ public class ${business_class.businessClass}JspBean extends AbstractJspBean <Int
      * Handles the removal form of a ${business_class.businessClass?lower_case}
      *
      * @param request The Http request
-     * @return the jsp URL to display the form to manage ${business_class.businessClass?lower_case}s
+     * @return the jsp URL to display the form to manage ${business_class.pluralBusinessClass?lower_case}
      */
     @Action( ACTION_REMOVE_${business_class.businessClass?upper_case} )
     public String doRemove${business_class.businessClass}( HttpServletRequest request )
@@ -377,7 +377,7 @@ public class ${business_class.businessClass}JspBean extends AbstractJspBean <Int
         addInfo( INFO_${business_class.businessClass?upper_case}_REMOVED, getLocale(  ) );
         resetListId( );
 
-        return redirectView( request, VIEW_MANAGE_${business_class.businessClass?upper_case}S );
+        return redirectView( request, VIEW_MANAGE_${business_class.pluralBusinessClass?upper_case} );
     }
 
     /**
@@ -485,7 +485,7 @@ public class ${business_class.businessClass}JspBean extends AbstractJspBean <Int
         addInfo( INFO_${business_class.businessClass?upper_case}_UPDATED, getLocale(  ) );
         resetListId( );
 
-        return redirectView( request, VIEW_MANAGE_${business_class.businessClass?upper_case}S );
+        return redirectView( request, VIEW_MANAGE_${business_class.pluralBusinessClass?upper_case} );
     }
 }
 <#else>

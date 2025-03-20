@@ -30,7 +30,7 @@
                     <button name="action_create${business_class.businessClass}" class="btn btn-primary" type="submit" tabindex="${business_class.attributes?size}">
                         ${i18n_open}portal.util.labelCreate${i18n_close}
                     </button>
-                    <button name="view_manage${business_class.businessClass}s" class="btn" type="submit" >
+                    <button name="view_manage${business_class.pluralBusinessClass}" class="btn" type="submit" >
                         ${i18n_open}portal.util.labelCancel${i18n_close}
                     </button>
                 </div>
@@ -71,7 +71,7 @@
                     <button name="action_modify${business_class.businessClass}" class="btn btn-primary" type="submit" tabindex="${business_class.attributes?size}" >
                         ${i18n_open}portal.util.labelModify${i18n_close}
                     </button>
-                    <button name="view_manage${business_class.businessClass}s" class="btn" type="submit" >
+                    <button name="view_manage${business_class.pluralBusinessClass}" class="btn" type="submit" >
                         ${i18n_open}portal.util.labelCancel${i18n_close}
                     </button>	
                 </div>
@@ -96,11 +96,11 @@
         <form method="post"  action="jsp/site/Portal.jsp?page=${business_class.businessClass?lower_case}">
             <button name="view_create${business_class.businessClass}" class="btn btn-primary pull-right" type="submit">
                 <span class="fa fa-plus"></span>
-                ${i18n_open}${plugin_name}.manage_${business_class.businessClass?lower_case}s.buttonAdd${i18n_close}
+                ${i18n_open}${plugin_name}.manage_${business_class.pluralBusinessClass?lower_case}.buttonAdd${i18n_close}
             </button>
         </form>
 
-    <h4>${i18n_open}${plugin_name}.manage_${business_class.businessClass?lower_case}s.title{i18n_close}</h4>
+    <h4>${i18n_open}${plugin_name}.manage_${business_class.pluralBusinessClass?lower_case}.title{i18n_close}</h4>
         
     <table class="table table-condensed table-striped">
         <tr>

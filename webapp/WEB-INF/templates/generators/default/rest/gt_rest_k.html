@@ -96,16 +96,16 @@ public class ${business_class.businessClass?cap_first}Rest
      */
     private Response get${business_class.businessClass?cap_first}ListV1( )
     {
-        val _list${business_class.businessClass?cap_first}s = ${business_class.businessClass?cap_first}Home.get${business_class.businessClass?cap_first}sList( )
+        val _list${business_class.pluralBusinessClass?cap_first} = ${business_class.businessClass?cap_first}Home.get${business_class.pluralBusinessClass?cap_first}List( )
         
-        if( _list${business_class.businessClass?cap_first}s.isEmpty( ) )
+        if( _list${business_class.pluralBusinessClass?cap_first}.isEmpty( ) )
         {
             return Response.status( Response.Status.NO_CONTENT )
                 .entity( JsonUtil.buildJsonResponse( new JsonResponse( Constants.EMPTY_OBJECT ) ) )
                 .build( )
         }
         return Response.status( Response.Status.OK )
-                .entity( JsonUtil.buildJsonResponse( new JsonResponse( _list${business_class.businessClass?cap_first}s ) ) )
+                .entity( JsonUtil.buildJsonResponse( new JsonResponse( _list${business_class.pluralBusinessClass?cap_first} ) ) )
                 .build( )
     }
     

@@ -87,7 +87,7 @@ public interface I${business_class.businessClass}DAO
      * @param plugin the Plugin
      * @return The list which contains the data of all the ${business_class.instanceName} objects
      */
-    List<${business_class.businessClass}> select${business_class.businessClass}sList( Plugin plugin );
+    List<${business_class.businessClass}> select${business_class.pluralBusinessClass}List( Plugin plugin );
     
        /**
      * Load the id of all the ${business_class.instanceName} objects and returns them as a list
@@ -98,7 +98,7 @@ public interface I${business_class.businessClass}DAO
      * @param strSortMode contains the sortMode in case of sorting request : ASC or DESC (must be null)
      * @return The list which contains the id of all the project objects fitting with the seach criteria.
      */
-    List<Integer> selectId${business_class.businessClass}sList( Plugin plugin, Map <String,String> mapFilterCriteria, String strColumnToOrder, String strSortMode );
+    List<Integer> selectId${business_class.pluralBusinessClass}List( Plugin plugin, Map <String,String> mapFilterCriteria, String strColumnToOrder, String strSortMode );
     
     /**
      * Load the data of all the ${business_class.instanceName} objects and returns them as a referenceList
@@ -106,7 +106,7 @@ public interface I${business_class.businessClass}DAO
      * @param plugin the Plugin
      * @return The referenceList which contains the data of all the ${business_class.instanceName} objects
      */
-    ReferenceList select${business_class.businessClass}sReferenceList( Plugin plugin );
+    ReferenceList select${business_class.pluralBusinessClass}ReferenceList( Plugin plugin );
     
     /**
      * Load the data of all the avant objects and returns them as a list
@@ -115,5 +115,5 @@ public interface I${business_class.businessClass}DAO
      * @param listIds liste of ids
      * @return The list which contains the data of all the avant objects
      */
-	List<${business_class.businessClass}> select${business_class.businessClass}sListByIds( Plugin _plugin, List<Integer> listIds );
+	List<${business_class.businessClass}> select${business_class.pluralBusinessClass}ListByIds( Plugin _plugin, List<Integer> listIds );
 }

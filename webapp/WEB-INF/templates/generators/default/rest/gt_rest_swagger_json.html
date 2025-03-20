@@ -10,7 +10,7 @@
     ],
     "paths": {
         <#list business_classes as business_class>
-        "/${business_class.businessClass?lower_case}s": {
+        "/${business_class.pluralBusinessClass?lower_case}": {
             "get": {
                 "description": "Get ${business_class.businessClass?cap_first} list",
                 "tags": [
@@ -75,7 +75,7 @@
                 }
             }
         },
-        "/${business_class.businessClass?lower_case}s/{id}": {
+        "/${business_class.pluralBusinessClass?lower_case}/{id}": {
             "get": {
                 "description": "Get ${business_class.businessClass?cap_first}",
                 "tags": [

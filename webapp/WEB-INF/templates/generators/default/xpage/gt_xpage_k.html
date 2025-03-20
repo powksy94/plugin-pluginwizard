@@ -58,7 +58,7 @@ import javax.servlet.http.HttpServletRequest
 
 
 // Templates
-private const val TEMPLATE_MANAGE_${business_class.businessClass?upper_case}S="/skin/plugins/${radicalPackage?replace(".","/")}/manage_${business_class.businessClass?lower_case}s.html"
+private const val TEMPLATE_MANAGE_${business_class.pluralBusinessClass?upper_case}="/skin/plugins/${radicalPackage?replace(".","/")}/manage_${business_class.pluralBusinessClass?lower_case}.html"
 private const val TEMPLATE_CREATE_${business_class.businessClass?upper_case}="/skin/plugins/${radicalPackage?replace(".","/")}/create_${business_class.businessClass?lower_case}.html"
 private const val TEMPLATE_MODIFY_${business_class.businessClass?upper_case}="/skin/plugins/${radicalPackage?replace(".","/")}/modify_${business_class.businessClass?lower_case}.html"
 
@@ -73,7 +73,7 @@ private const val MARK_${business_class.businessClass?upper_case} = "${business_
 private const val MESSAGE_CONFIRM_REMOVE_${business_class.businessClass?upper_case} = "${msg}.message.confirmRemove${business_class.businessClass?cap_first}"
 
 // Views
-private const val VIEW_MANAGE_${business_class.businessClass?upper_case}S = "manage${business_class.businessClass}s"
+private const val VIEW_MANAGE_${business_class.pluralBusinessClass?upper_case} = "manage${business_class.pluralBusinessClass}"
 private const val VIEW_CREATE_${business_class.businessClass?upper_case} = "create${business_class.businessClass}"
 private const val VIEW_MODIFY_${business_class.businessClass?upper_case} = "modify${business_class.businessClass}"
 
@@ -106,14 +106,14 @@ class ${business_class.businessClass}XPage : MVCApplication()
      * @param request The HTTP request
      * @return The Xpage
      */
-    @View( value = VIEW_MANAGE_${business_class.businessClass?upper_case}S, defaultView = true )
-    fun getManage${business_class.businessClass}s( request: HttpServletRequest  ): XPage
+    @View( value = VIEW_MANAGE_${business_class.pluralBusinessClass?upper_case}, defaultView = true )
+    fun getManage${business_class.pluralBusinessClass}( request: HttpServletRequest  ): XPage
     {
         _${business_class.businessClass?lower_case} = null
         var model = getModel(  )
-        model.put( MARK_${business_class.businessClass?upper_case}_LIST, ${business_class.businessClass?cap_first}Home.get${business_class.businessClass?cap_first}sList(  ) )
+        model.put( MARK_${business_class.businessClass?upper_case}_LIST, ${business_class.businessClass?cap_first}Home.get${business_class.pluralBusinessClass?cap_first}List(  ) )
         
-        return getXPage( TEMPLATE_MANAGE_${business_class.businessClass?upper_case}S, getLocale( request ), model )
+        return getXPage( TEMPLATE_MANAGE_${business_class.pluralBusinessClass?upper_case}, getLocale( request ), model )
     }
 
     /**
@@ -153,7 +153,7 @@ class ${business_class.businessClass}XPage : MVCApplication()
         ${business_class.businessClass}Home.create( _${business_class.businessClass?lower_case}!! )
         addInfo( INFO_${business_class.businessClass?upper_case}_CREATED, getLocale( request ) )
 
-        return redirectView( request, VIEW_MANAGE_${business_class.businessClass?upper_case}S )
+        return redirectView( request, VIEW_MANAGE_${business_class.pluralBusinessClass?upper_case} )
     }
 
     /**
@@ -180,7 +180,7 @@ class ${business_class.businessClass}XPage : MVCApplication()
      * Handles the removal form of a ${business_class.businessClass?lower_case}
      *
      * @param request The Http request
-     * @return the jsp URL to display the form to manage ${business_class.businessClass?lower_case}s
+     * @return the jsp URL to display the form to manage ${business_class.pluralBusinessClass?lower_case}
      */
     @Action( ACTION_REMOVE_${business_class.businessClass?upper_case} )
     fun doRemove${business_class.businessClass?cap_first}( request: HttpServletRequest ): XPage
@@ -189,7 +189,7 @@ class ${business_class.businessClass}XPage : MVCApplication()
         ${business_class.businessClass}Home.remove( nId )
         addInfo( INFO_${business_class.businessClass?upper_case}_REMOVED, getLocale( request ) )
 
-        return redirectView( request, VIEW_MANAGE_${business_class.businessClass?upper_case}S )
+        return redirectView( request, VIEW_MANAGE_${business_class.pluralBusinessClass?upper_case} )
     }
 
     /**
@@ -234,7 +234,7 @@ class ${business_class.businessClass}XPage : MVCApplication()
         ${business_class.businessClass}Home.update( _${business_class.businessClass?lower_case}!! )
         addInfo( INFO_${business_class.businessClass?upper_case}_UPDATED, getLocale( request ) )
 
-        return redirectView( request, VIEW_MANAGE_${business_class.businessClass?upper_case}S )
+        return redirectView( request, VIEW_MANAGE_${business_class.pluralBusinessClass?upper_case} )
     }
 }
 <#else>
