@@ -1,6 +1,15 @@
-# {plugin.pluginName} properties file
+<#if  plugin.type!="WORKFLOWTASK">
+# ${plugin.pluginName} properties file
 
 #######################################################################################################
 # Default Labels for XPage
 ${plugin.pluginName}.pageTitle=${plugin.pluginName}
 ${plugin.pluginName}.pagePathLabel=${plugin.pluginName}
+<#else>
+# ${plugin.workflowNameWithPrefix} properties file
+
+#######################################################################################################
+# Default Labels for XPage
+${plugin.workflowNameWithPrefix}.pageTitle=${plugin.workflowNameWithPrefix}
+${plugin.workflowNameWithPrefix}.pagePathLabel=${plugin.workflowNameWithPrefix}
+</#if>

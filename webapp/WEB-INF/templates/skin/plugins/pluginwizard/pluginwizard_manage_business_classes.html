@@ -8,11 +8,14 @@
 					
 					<!-- Side Bar-->
 					<div class="col-md-3">
-                        <@sidebar step="model" />
+                        <@sidebar step="model" project_type="${project_type!''}"/>
                         <div class="card bg-light mt-2">
 							<div class="card-body">
 								<div class="card-text">
                                     #i18n{pluginwizard.pluginwizard_manage_business_classes.pageHelp}
+                                    <#if (project_type?? && project_type == 'WORKFLOWTASK')>  
+                                    #i18n{pluginwizard.pluginwizard_manage_business_classes.pageHelpWorkflowComplement}
+                                    </#if>
                                 </div>
                             </div>
                         </div>
@@ -22,14 +25,25 @@
                     <!-- Card Content-->
                     <div class="col-md-9">
                     	<fieldset>
-							<legend>#i18n{pluginwizard.pluginwizard_manage_business_classes.pageTitle}</legend>
+                    		<legend>
+                    		<#if (project_type?? && project_type == 'WORKFLOWTASK')>
+								#i18n{pluginwizard.pluginwizard_manage_business_classes.pageTitleConfigurationClass}
+							<#else>
+								#i18n{pluginwizard.pluginwizard_manage_business_classes.pageTitle}
+							</#if>
+							</legend>
                             
                             <#include "infos_handler.html" />
+                            <#include "errors_handler.html" />
                         
 	                        <div class="d-flex justify-content-end mb-3">
 	                            <form method="post" action="jsp/site/Portal.jsp">
 	                                <input type="hidden" name="page" value="pluginwizard" />
-	                                <input type="hidden" name="view" value="createBusinessClass" />
+	                                 <#if (project_type?? && project_type == 'WORKFLOWTASK')>
+	                                	<input type="hidden" name="action" value="nextManageConfigurationClass" />
+	                                <#else>
+	                                	<input type="hidden" name="view" value="createBusinessClass" />
+	                                </#if>
 	                                <button type="submit" class="btn btn-primary">
 	                                    <i class="ti ti-plus"></i> #i18n{pluginwizard.pluginwizard_manage_business_classes.buttonAddBusinessClass}
 	                                </button>
@@ -54,7 +68,7 @@
 			                                    <td>${business_class.pluralBusinessClass!''}</td>
 			                                    <td>${business_class.businessTableName!''}</td>
 			                                    <td>
-			                                        <a href="jsp/site/Portal.jsp?page=pluginwizard&view=modifyBusinessClass&business_class_id=${business_class.id}" 
+			                                        <a href="jsp/site/Portal.jsp?page=pluginwizard&view=<#if (project_type?? && project_type == 'WORKFLOWTASK')>modifyConfigurationClass<#else>modifyBusinessClass</#if>&business_class_id=${business_class.id}" 
 			                                           class="btn btn-primary btn-sm me-1" 
 			                                           title="#i18n{pluginwizard.pluginwizard_manage_plugin_admin_features.buttonModifyFeature}">
 			                                            <i class="ti ti-edit"></i>
@@ -74,10 +88,10 @@
 	                        <div class="d-flex justify-content-between">
 	                            <form method="post" action="jsp/site/Portal.jsp">
 	                                <input type="hidden" name="page" value="pluginwizard" />
-	                                <button type="submit" name="view_modifyDescription" class="btn btn-primary">
+	                                <button type="submit" name="action_previousBusinessClass" class="btn btn-primary">
 	                                    <i class="ti ti-chevron-left"></i> #i18n{pluginwizard.pluginwizard_manage_business_classes.buttonBack}
 	                                </button>
-	                                <button type="submit" name="view_manageAdminFeatures" class="btn btn-primary">
+	                                <button type="submit" name=<#if (project_type?? && project_type == 'WORKFLOWTASK')>"action_validateConfigurationClass"<#else>"view_manageAdminFeatures"</#if> class="btn btn-primary">
 	                                    #i18n{pluginwizard.pluginwizard_manage_business_classes.buttonNext} <i class="ti ti-chevron-right"></i>
 	                                </button>
 	                            </form>

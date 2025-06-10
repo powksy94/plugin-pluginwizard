@@ -50,6 +50,7 @@ import java.util.Map;
 public class AdminJspBeanGenerator extends AbstractGenerator
 {
     private static final String PATH_JAVA = "java/fr/paris/lutece/plugins/{plugin_name}/web/";
+    private static final String PATH_JAVA_WORKFLOW = "java/fr/paris/lutece/plugins/workflow/modules/{plugin_name}/web/";
     private static final String PATH_KOTLIN = "kotlin/fr/paris/lutece/plugins/{plugin_name}/web/";
     private static final String PREFIX_JSPBEAN = "Abstract";
     private static final String PREFIX_JSPBEAN_PATH = "src/";
@@ -91,7 +92,8 @@ public class AdminJspBeanGenerator extends AbstractGenerator
     public Map<String, String> generate( PluginModel pm, String generationSchemeName )
     {
         HashMap<String, String> map = new HashMap<>( );
-        String strFilesPath = ( isKotlin( ) ) ? PATH_KOTLIN : PATH_JAVA;
+
+        String strFilesPath = ( isKotlin( ) ) ? PATH_KOTLIN : ( pm.isWorkflowTask( ) ? PATH_JAVA_WORKFLOW.replace( "{plugin_name}",pm.getPluginNameForRessource( ) ) : PATH_JAVA );
         String strSuffix = SUFFIX_JSPBEAN_CLASS + ( ( isKotlin( ) ) ? SUFFIX_KOTLIN_EXTENSION : SUFFIX_JAVA_EXTENSION );
 
         for ( Feature feature : pm.getFeatures( ) )
@@ -104,7 +106,7 @@ public class AdminJspBeanGenerator extends AbstractGenerator
                 {
                     String strSuffixConfig = SUFFIX_JSPBEAN_CLASS + file.getSuffix( ) + ( ( isKotlin( ) ) ? SUFFIX_KOTLIN_EXTENSION : SUFFIX_JAVA_EXTENSION );
                     String strFilename = feature.getFeatureName( ) + strSuffixConfig;
-                    String strPath = getFilePath( pm, file.getSourcePath( ) + ( isKotlin( ) ? PATH_KOTLIN : PATH_JAVA ), strFilename );
+                    String strPath = getFilePath( pm, file.getSourcePath( ) + ( isKotlin( ) ? PATH_KOTLIN : ( pm.isWorkflowTask( ) ? PATH_JAVA_WORKFLOW.replace( "{plugin_name}",pm.getPluginNameForRessource( ) ) : PATH_JAVA ) ), strFilename );
                     String strSourceCode = getJspBeanCode( pm, feature.getFeatureName( ), feature.getFeatureRight( ), file.getTemplate( ),
                             pm.getPluginNameAsRadicalPackage( ), pm.getPluginName( ) );
                     map.put( strPath, strSourceCode );
@@ -119,7 +121,7 @@ public class AdminJspBeanGenerator extends AbstractGenerator
                         String strSuffixConfig = SUFFIX_JSPBEAN_CLASS + file.getSuffix( )
                                 + ( ( isKotlin( ) ) ? SUFFIX_KOTLIN_EXTENSION : SUFFIX_JAVA_EXTENSION );
                         String strFilename = business.getBusinessClassCapsFirst( ) + strSuffixConfig;
-                        String strPath = getFilePath( pm, file.getSourcePath( ) + ( isKotlin( ) ? PATH_KOTLIN : PATH_JAVA ), strFilename );
+                        String strPath = getFilePath( pm, file.getSourcePath( ) + ( isKotlin( ) ? PATH_KOTLIN : ( pm.isWorkflowTask( ) ? PATH_JAVA_WORKFLOW.replace( "{plugin_name}",pm.getPluginNameForRessource( ) ) : PATH_JAVA ) ), strFilename );
                         String strSourceCode = getJspBeanCode( pm, feature.getFeatureName( ), feature.getFeatureRight( ), business, file.getTemplate( ),
                                 pm.getPluginNameAsRadicalPackage( ), pm.getPluginName( ) );
                         map.put( strPath, strSourceCode );
@@ -127,8 +129,10 @@ public class AdminJspBeanGenerator extends AbstractGenerator
                 }
             }
         }
+        
         String strPath = getFilePath( pm, PREFIX_JSPBEAN_PATH + strFilesPath, PREFIX_JSPBEAN + strSuffix );
-        String strSourceCode = getAbstractJspBeanCode( pm, pm.getPluginNameAsRadicalPackage( ), pm.getPluginName( ) );
+        String strSourceCode = getAbstractJspBeanCode( pm, pm.getPluginNameAsRadicalPackage( ),
+                pm.getPluginName( ) );
         map.put( strPath, strSourceCode );
 
         return map;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2022, City of Paris
+ * Copyright (c) 2002-2025, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,57 +31,59 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.pluginwizard.web.formbean;
 
-import java.io.Serializable;
+package fr.paris.lutece.plugins.pluginwizard.service.generator;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
+import fr.paris.lutece.plugins.pluginwizard.business.model.PluginModel;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Form name
- */
-public class ModuleNameFormBean implements Serializable, FormBean
+* 
+* This class generates service class (naming convention: [TaskName]Service, Located in the service directory.)
+* that implements the business logic for a specific workflow task.
+*/
+public class TaskServiceGenerator extends AbstractGenerator
 {
-    @NotEmpty( message = "pluginwizard.error.module.name.notEmpty" )
-    @Pattern( regexp = "(^[a-z]+-[a-z]+$)", message = "pluginwizard.error.module.name.pattern" )
-    @Pattern( regexp = "([a-z-]*)", message = "pluginwizard.error.module.name.forbidden.caracters" )
-    @Pattern( regexp = "(^[^-].*[^-]$)", message = "pluginwizard.error.module.name.forbidden.pattern" )
-    private String _strName;
-    @Pattern( regexp = "^(MODULE|PLUGIN|WORKFLOWTASK)$", message = "pluginwizard.error.project.type" )
-    private String _strType;
+	
+    private static final String PATH = "src/java/fr/paris/lutece/plugins/workflow/modules/{plugin_name}/service/";
+    private static final String EXT = "Service.java";
+    
+    /**
+     * {@inheritDoc }
+     */
+	@Override
+	public Map<String, String> generate( PluginModel pm, String generationSchemeName )
+	{
+		
+		HashMap<String, String> map = new HashMap<>( );
+		
+		String strFileName = pm.getConfiguration( ).getWorkflowTaskName( ) + EXT;
+		String strPath = getFilePath( pm, PATH.replace( "{plugin_name}",pm.getPluginNameForRessource( ) ), strFileName );
+		
+		String strSourceCode = getCode( pm );
+		
+		map.put( strPath, strSourceCode );
+		
+		return map;
+	}
+	
 
     /**
-     * @return the name
+     * Produces the file code in a map
+     *
+     * @param pm
+     * 
+     * @return the map
      */
-    public String getName( )
+    protected String getCode( PluginModel pm )
     {
-        return _strName;
+    	Map<String, Object> model = new HashMap<>( );
+    	model.put( Markers.MARK_TASK_NAME, pm.getConfiguration().getWorkflowTaskName( ) );
+        model.put( Markers.MARK_RADICAL_PACKAGE, pm.getPluginNameAsRadicalPackage( ) );
+        
+        return build( model );
     }
 
-    /**
-     * @param strName
-     *            the name to set
-     */
-    public void setName( String strName )
-    {
-        _strName = strName;
-    }
-
-    /**
-     * @return the type
-     */
-    public String getType( )
-    {
-        return _strType;
-    }
-
-    /**
-     * @param strType
-     *            the type to set
-     */
-    public void setType( String strType )
-    {
-        _strType = strType;
-    }
 }

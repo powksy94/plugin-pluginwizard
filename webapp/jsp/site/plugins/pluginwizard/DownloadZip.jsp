@@ -6,21 +6,31 @@
 <%
 	try
 	{
-		byte[] fileContent = PluginWizardZipService.getInstance().exportZip(request);
-		if (fileContent != null)
+		byte[] fileContent = PluginWizardZipService.getInstance( ).exportZip( request );
+		if ( fileContent != null )
 		{
 			
-			String strFileName = "plugin-" + PluginWizardZipService.getInstance().getPluginName(request) + ".zip";
+			String strFileName;
+			
+			if ( PluginWizardZipService.getInstance( ).getProjectType( request ).equals( "WORKFLOWTASK" ) )
+			{
+				strFileName = "module-workflow-" + PluginWizardZipService.getInstance( ).getPluginName( request ) + ".zip";
+			}
+			else
+			{
+				strFileName = "plugin-" + PluginWizardZipService.getInstance( ).getPluginName( request ) + ".zip";
+			}
+			
 			//the header and also the names set by which user will be prompted to save
-			response.setHeader("Content-Disposition", "attachment;filename=\"" + strFileName + "\"");
-			response.setContentType(application.getMimeType(strFileName));
-			response.setHeader("Cache-Control", "must-revalidate");
-			response.getOutputStream().write(fileContent);
+			response.setHeader( "Content-Disposition", "attachment;filename=\"" + strFileName + "\"" );
+			response.setContentType( application.getMimeType( strFileName ) );
+			response.setHeader( "Cache-Control", "must-revalidate" );
+			response.getOutputStream( ).write( fileContent );
 		}
-	} catch (Exception e)
+	} catch ( Exception e )
 	{
-		AppLogService.error(e.getMessage(), e);
+		AppLogService.error( e.getMessage(), e );
 	}
-	out.clear();
-	out = pageContext.pushBody();
+	out.clear( );
+	out = pageContext.pushBody( );
 %>

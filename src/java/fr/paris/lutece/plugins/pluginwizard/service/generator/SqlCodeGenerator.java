@@ -46,6 +46,7 @@ import java.util.Map;
 public class SqlCodeGenerator extends AbstractGenerator
 {
     private static final String PATH = "src/sql/plugins/{plugin_name}/";
+    private static final String PATH_WORKFLOW = "src/sql/plugins/workflow/modules/{plugin_name}/";
     private static String [ ] _prefix = {
             "plugin/create_db_", "plugin/init_db_", "plugin/init_db_", "core/init_core_", "core/create_"
     };
@@ -67,13 +68,19 @@ public class SqlCodeGenerator extends AbstractGenerator
             {
                 String strSqlFile = getSqlFileName( pm.getPluginName( ).toLowerCase( ), i );
 
-                String strPath = getFilePath( pm, PATH, strSqlFile );
+                String strPath = getFilePath( pm, ( pm.isWorkflowTask( ) ? PATH_WORKFLOW.replace( "{plugin_name}", pm.getPluginNameForRessource( ) ) : PATH ), strSqlFile );
 
                 String strSourceCode = getSqlScript( pm, i );
                 strSourceCode = strSourceCode.replace( "&lt;", "<" );
                 strSourceCode = strSourceCode.replace( "&gt;", ">" );
                 map.put( strPath, strSourceCode );
             }
+
+	   //Only create_db file is necessary for workflow task
+            if( pm.isWorkflowTask( ) )
+        	{	
+        		break;
+        	}
         }
 
         return map;

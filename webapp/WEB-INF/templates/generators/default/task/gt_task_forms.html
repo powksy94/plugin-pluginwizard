@@ -1,0 +1,25 @@
+<#switch template_type>
+<#case 'information'>
+//TODO : Add code for task information
+<#break>	
+<#case 'config'>
+<${macro}messages errors=errors />
+<#list business_class.attributes as attribute>
+<${macro}formGroup labelFor="${attribute.paramName}" labelKey="${i18n_open}module.workflow.${plugin_name}.task.config.label${attribute.name}${i18n_close}" helpKey="${i18n_open}module.workflow.${plugin_name}.task.config.label${attribute.name}.help${i18n_close}" mandatory=true>
+<#if attribute.typeDescription = "File">
+	<${macro}input type="file" id="${attribute.paramName}" name="${attribute.paramName}" value=config.${attribute.paramName?uncap_first}!'' <#if attribute.maxLength &gt; 0> maxlength=${attribute.maxLength + 1}</#if> tabIndex="${attribute_index}" />
+<#elseif attribute.type = "boolean">
+	<${macro}checkBox id="${attribute.paramName}" name="${attribute.paramName}" value="1" checked=config.${attribute.paramName?uncap_first}!false tabIndex="${attribute_index + 1}" />
+<#elseif attribute.type = "Date">
+	<${macro}input type="date" id="${attribute.paramName}" name="${attribute.paramName}" value=config.${attribute.paramName?uncap_first}!'' tabIndex="${attribute_index + 1}" />			
+<#else>
+	<${macro}input type="text" id="${attribute.paramName}" name="${attribute.paramName}" value=config.${attribute.paramName?uncap_first}!'' <#if attribute.maxLength &gt; 0> maxlength=${attribute.maxLength}</#if> tabIndex="${attribute_index + 1}" />
+</#if>
+</${macro}formGroup>
+</#list>
+<#break>
+<#case 'form'>
+//TODO : Add code for task form 
+<#break>
+<#default>
+</#switch>

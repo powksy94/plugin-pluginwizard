@@ -1,11 +1,11 @@
-const listProjectType = ['plugin','module'];
+ const listProjectType = ['plugin','module','workflowtask'];
  
 /* Function to automatically change help message div according to the project type selected
 (In first page : pluginwizard_create_plugin.html) */
 function switchTypeProject(dictProject) 
 {	
 	//Get the project type selected
-	const radios = document.querySelectorAll('input[name="project_type_selector"]');
+	const radios = document.querySelectorAll('input[name="type"]');
 	const selectedRadio = Array.from(radios).find(radio => radio.checked); // Find selected radio
 	const projectType = selectedRadio ? selectedRadio.value.toLowerCase() : '';
 	
@@ -93,6 +93,39 @@ function autoFillBusinessClassForm()
 	
 }
 
+
+/* Function to auto fill the form of configuration class (In Business section : pluginwizard_create_configuration_class.html) */
+function autoFillConfigurationClassForm(strConfigurationClassFormId)
+{
+	
+	const MAX_SQL = 64; 
+	const suffixClass="Config";
+	
+	// Select plugin name value
+	const strTaskName = document.getElementById('taskName').value;
+	const strWorkflowTask = "workflow_task_";
+	
+    // Select form inputs		
+	const configurationClassNameInput = document.getElementById('configurationClassName');
+    const pluralConfigurationClassNameInput = document.getElementById('pluralConfigurationClassName');
+    const configurationTableNameInput = document.getElementById('configurationTableName');
+    
+	//erase forbidden caracters
+	var strCleanTaskName = strTaskName.replace(/[^a-zA-Z _]/g,""); 
+	
+	//Formated names
+	var strConfigurationClassNameFormated = strCleanTaskName.replace(/[_\s]+(.)/g, (_, letter) => letter.toUpperCase()).replace(/[ _]/g,"");
+	strConfigurationClassNameFormated = strConfigurationClassNameFormated.charAt(0).toUpperCase() + strConfigurationClassNameFormated.slice(1);
+	strConfigurationClassNameFormated = strConfigurationClassNameFormated;
+	
+	//Assign values ​​to form inputs
+	configurationClassNameInput.value = strConfigurationClassNameFormated+suffixClass;
+	pluralConfigurationClassNameInput.value = pluralize(strConfigurationClassNameFormated+suffixClass);
+	configurationTableNameInput.value = (strWorkflowTask+strConfigurationClassNameFormated.slice(0, -4)+'_'+suffixClass).toLowerCase().slice(0,MAX_SQL);
+	
+}
+
+
 /* Function to auto fill the form of the admin feature (in Administration section : pluginwizard_create_admin_feature.html) */
 function autoFillAdminFeatureForm()
 {
@@ -118,4 +151,74 @@ function autoFillAdminFeatureForm()
     featureNameInput.value = ("Manage"+cleanFeatureTitleInput).slice(0,max_length_featureName);
     featureRightInput.value = (pluginName.toUpperCase()+"_MANAGEMENT"+cleanFeatureTitleInput.replace(/([A-Z])/g, '_$1').toUpperCase()).slice(0,max_length_RightInput);
 	
+}
+
+
+function updateDivInfoVisibility(strFormId)
+{
+	// Sélectionner all text type inputs in form
+	const form = document.getElementById(strFormId);
+	
+	if(form){
+		const selects = form.querySelectorAll('select');
+	
+		selects.forEach(select => {
+		    switchDivInfoVisibility(select.id);
+		});
+	}	
+}
+
+
+/* Switch message when select value change  */
+function switchDivInfoVisibility(selectId)
+{	
+	
+	const selectForm = document.getElementById(selectId);
+	const selectValue = selectForm.value==0?"False":"True";
+	const HelpMessageDivId = selectId+"-help-message-div";
+
+	const helpMessageDiv = document.getElementById(HelpMessageDivId);
+	
+	
+	if(helpMessageDiv){
+		
+		const helperSpans = helpMessageDiv.querySelectorAll('span');
+			
+		helperSpans.forEach(span => {
+			
+			if (span.id.includes(selectValue)) {
+				span.classList.remove('d-none');
+				span.classList.add('d-block');
+			}
+			else {
+				span.classList.remove('d-block');
+				span.classList.add('d-none');
+			}
+		});
+	}
+}
+
+
+/* Switch message when automatic task select value change  */
+function switchSelectTaskFormVisibility()
+{
+	
+	const autoTastId='workflowTaskForAutomaticAction';
+	const formTaskid='workflowFormTaskRequired';
+	
+	const autoTaskSelect = document.getElementById(autoTastId);
+	const formTaskSelect = document.getElementById(formTaskid);
+    
+	if(autoTaskSelect.value==1)
+	{
+		formTaskSelect.value = 0;
+		formTaskSelect.disabled = true;	
+	}
+	else
+	{
+		formTaskSelect.disabled = false;
+	}
+	
+	switchDivInfoVisibility(formTaskid);
+
 }

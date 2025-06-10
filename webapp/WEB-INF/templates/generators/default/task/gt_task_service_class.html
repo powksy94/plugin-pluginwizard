@@ -1,0 +1,121 @@
+/*
+ * Copyright (c) 2002-${.now?string('yyyy')}, City of Paris
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ *  1. Redistributions of source code must retain the above copyright notice
+ *     and the following disclaimer.
+ *
+ *  2. Redistributions in binary form must reproduce the above copyright notice
+ *     and the following disclaimer in the documentation and/or other materials
+ *     provided with the distribution.
+ *
+ *  3. Neither the name of 'Mairie de Paris' nor 'Lutece' nor the names of its
+ *     contributors may be used to endorse or promote products derived from
+ *     this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ * License 1.0
+ */
+ 
+package fr.paris.lutece.plugins.${radical_package}.service;
+
+import java.util.Locale;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
+
+import fr.paris.lutece.api.user.User;
+import fr.paris.lutece.plugins.workflowcore.service.config.ITaskConfigService;
+import fr.paris.lutece.plugins.workflowcore.service.task.SimpleTask;
+import fr.paris.lutece.portal.service.i18n.I18nService;
+
+/**
+ * ${configuration.workflowTaskName} contains all the application code launched when your task is executed in the Lutece workflow. It implements the specific business logic 
+ * via processTaskWithResult() while respecting the contract of the SimpleTask interface, which ensures its integration into the workflow framework. 
+ */ 
+public class ${configuration.workflowTaskName} extends SimpleTask  
+{
+	
+	//Messages
+    public static final String MESSAGE_TASK_TITLE = "module.${plugin.workflowNameWithPrefix}.service.taskTitle"; 
+    
+    //Config
+    private static final String BEAN_CONFIG_SERVICE = "${plugin.workflowNameWithPrefix?replace('.','-')}.${configuration.workflowTaskName?uncap_first}Service"; //Must be equal to Service Bean Id in xml spring context file
+            
+    //Service
+	@Inject
+    @Named( BEAN_CONFIG_SERVICE )
+    private ITaskConfigService _taskConfigService;
+    
+    
+	/**
+     * Initialize the task
+     */
+	@Override
+    public void init( ) 
+	{
+        // TODO : Implement the initialization of the task here
+    }
+ 
+    /**
+     * returns the task title
+     * 
+     * @param locale
+     *            locale
+     * @return the task title
+     */
+    @Override
+    public String getTitle(Locale locale)
+    {
+    	return I18nService.getLocalizedString( MESSAGE_TASK_TITLE, locale );
+    }
+	
+	
+	/**
+     * Process the task and send a boolean result : 
+     *  - if true : next resource state will be the default "state_after"
+     *  - if false : next resource state will be the alternative "state_after"
+     *  
+     * @param nIdResource
+     * @param strResourceType
+     * @param nIdResourceHistory
+     * @param request
+     * @param locale
+     * @param user
+     * @return true by default, false to set the alternative state
+     */
+	@Override
+    public boolean processTaskWithResult( int nIdResource, String strResourceType, int nIdResourceHistory, HttpServletRequest request, Locale locale, User user ) 
+    {
+        //TODO: Implement the task processing here
+        return true;
+    }   
+	
+   /**
+    * Anonymize taskInformation associate to the history
+    * 
+    * @param nIdHistory
+    *            the document id
+   */
+   @Override
+   public void doAnonymizeTaskInformation( int nIdHistory )
+   {
+	   //TODO : If necessary, implement specific anonymization.
+   }
+
+}

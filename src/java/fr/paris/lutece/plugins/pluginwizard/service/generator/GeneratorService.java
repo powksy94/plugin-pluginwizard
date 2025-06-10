@@ -43,6 +43,7 @@ import fr.paris.lutece.util.ReferenceItem;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Generator Service
@@ -105,6 +106,30 @@ public class GeneratorService
             list.add( item );
         }
 
+        return list;
+    }
+
+    /**
+     * Returns Generation schemes
+     * 
+     * @return Generation schemes
+     */
+    public static ReferenceList getGenerationSchemes( Boolean isWorkflowTask )
+    {
+        _listSchemes = SpringContextService.getBeansOfType( GenerationScheme.class );
+        _listSchemes = _listSchemes.stream( ).filter( scheme -> scheme.isWorkflow( ) == isWorkflowTask ).collect( Collectors.toList( ) );
+        
+        ReferenceList list = new ReferenceList( );
+
+        for ( int i = 0; i < _listSchemes.size( ); i++ )
+        {
+            ReferenceItem item = new ReferenceItem( );
+            item.setCode( String.valueOf( i ) );
+            item.setName( _listSchemes.get( i ).getName( ) );
+            item.setChecked( _listSchemes.get( i ).isDefault( ) );
+            list.add( item );
+        }
+        
         return list;
     }
 

@@ -1,9 +1,17 @@
 <#if plugin.module = true>
+	<#assign name= plugin.pluginName/>
     <#assign description="module." + plugin.pluginName?replace("-",".") + ".module.description" />
     <#assign provider="module." + plugin.pluginName?replace("-",".") + ".module.provider" />
     <#assign feat= "module."+plugin.pluginName?replace("-",".")/>
     <#assign url= plugin.pluginName?split("-")[0]+"/modules/"+plugin.pluginName?split("-")[1]/>
+<#elseif plugin.type=="WORKFLOWTASK">
+    <#assign name= "workflow-"+plugin.pluginName?replace("-","")/>
+    <#assign description="module.workflow." + plugin.pluginName + ".module.description" />
+    <#assign provider="module.workflow." + plugin.pluginName + ".module.provider" />
+    <#assign feat= "module.workflow."+plugin.pluginName/>
+    <#assign url= "module.workflow."+plugin.pluginName/>
 <#else>
+	<#assign name= plugin.pluginName/>
     <#assign description= plugin.pluginName + ".plugin.description">
     <#assign provider= plugin.pluginName + ".plugin.provider" >
     <#assign feat= plugin.pluginName >
@@ -11,7 +19,7 @@
 </#if>
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <plug-in>
-    <name>${plugin.pluginName}</name>
+    <name>${name}</name>
     <class>${plugin.pluginClass}</class>
     <version>${plugin.pluginVersion}-SNAPSHOT</version>
     <documentation><#if plugin.pluginDocumentation??>${plugin.pluginDocumentation}</#if></documentation>

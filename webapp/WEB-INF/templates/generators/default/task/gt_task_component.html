@@ -1,0 +1,237 @@
+/*
+ * Copyright (c) 2002-${.now?string('yyyy')}, City of Paris
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ *  1. Redistributions of source code must retain the above copyright notice
+ *     and the following disclaimer.
+ *
+ *  2. Redistributions in binary form must reproduce the above copyright notice
+ *     and the following disclaimer in the documentation and/or other materials
+ *     provided with the distribution.
+ *
+ *  3. Neither the name of 'Mairie de Paris' nor 'Lutece' nor the names of its
+ *     contributors may be used to endorse or promote products derived from
+ *     this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ *
+ * License 1.0
+ */
+<#if ( configuration.workflowFormConfigRequired=="1" || configuration.workflowFormTaskRequired=="1" ) >
+<#assign extends="AbstractTaskComponent" />
+<#else>
+<#assign extends="NoFormTaskComponent" />
+</#if>
+<#if configuration.workflowTaskName?length &gt; 4>
+<#assign radicalTaskName=configuration.workflowTaskName[0..*configuration.workflowTaskName?length-4]?lower_case />
+<#else>
+<#assign radicalTaskName=configuration.workflowTaskName?lower_case />
+</#if>
+package fr.paris.lutece.plugins.${radical_package}.web;
+
+<#if extends=="AbstractTaskComponent">
+import java.util.HashMap;
+import java.util.Map;
+</#if>
+import java.util.Locale;
+
+import fr.paris.lutece.plugins.${radical_package}.business.${task_name}Config;
+import fr.paris.lutece.plugins.workflow.web.task.${extends};
+import fr.paris.lutece.plugins.workflowcore.business.config.ITaskConfig;
+import fr.paris.lutece.plugins.workflowcore.service.task.ITask;
+<#if extends=="AbstractTaskComponent">
+import fr.paris.lutece.portal.service.template.AppTemplateService;
+import fr.paris.lutece.util.html.HtmlTemplate;
+</#if>
+import javax.servlet.http.HttpServletRequest;
+
+/**
+* This Web component class make link between the web interface (Config form and/or Task execution form) 
+* and the task configuration business logic.
+*/
+public class ${task_name}Component extends ${extends}
+{
+
+    // Templates
+    private static final String TEMPLATE_TASK_INFORMATION = "admin/plugins/${plugin.getPluginNameAsRadicalPath( )}/task_${radicalTaskName}_information.html";  //TODO: Create template file ( See getDisplayTaskInformaiton function ).
+    <#if configuration.workflowFormTaskRequired=="1" >
+    private static final String TEMPLATE_TASK_FORM = "admin/plugins/${plugin.getPluginNameAsRadicalPath( )}/task_${radicalTaskName}_form.html";
+    </#if>
+    <#if configuration.workflowFormConfigRequired=="1" >
+    private static final String TEMPLATE_TASK_CONFIG = "admin/plugins/${plugin.getPluginNameAsRadicalPath( )}/task_${radicalTaskName}_config.html";
+
+	//MARKERS
+    private static final String MARK_CONFIG = "config";
+    </#if>
+    
+    // Messages
+    private static final String MESSAGE_INFORMATION_TASK = "module.workflow.${plugin.pluginName?lower_case}.message.task.information"; //TODO: defined message (key:message.task.information) in messages properties files. ( See getDisplayTaskInformaiton function ).
+    
+	
+	////////////////////////////Config form/////////////////////////////
+	
+    /**
+     * Returns task configuration form
+     * 
+     * @param request
+     *            request
+     * @param locale
+     *            locale
+     * @param task
+     *            the task
+     * @return the information which must be displayed in the task configuration
+     */
+	@Override
+	public String getDisplayConfigForm( HttpServletRequest request, Locale locale, ITask task ) 
+	{	
+		<#if configuration.workflowFormConfigRequired?? && configuration.workflowFormConfigRequired=="1" >
+		${task_name}Config config = this.getTaskConfigService( ).findByPrimaryKey( task.getId( ) ); 
+		
+		if( config==null )
+		{
+			config=new ${task_name}Config( );
+		}
+		
+        Map<String, Object> model = new HashMap<String, Object>( );
+        model.put( MARK_CONFIG, config );
+        
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_TASK_CONFIG, locale, model );
+        return template.getHtml( );
+        <#else>
+        return null;
+        </#if>
+	}
+	
+	 /**
+     * Validate inputs of config form
+     * 
+     * @param config
+     *            the config to validate
+     * @param request
+     *            the HTTP request
+     * @return the JSP error if the config is not validated, an empty String otherwise
+     */
+	@Override
+	public String validateConfig( ITaskConfig config, HttpServletRequest request )
+	{
+	    return super.validateConfig( config, request );
+	}
+
+	<#if extends=="AbstractTaskComponent">
+	/////////////////////////Task Form////////////////////////////
+	
+	/**
+     * Returns tasks form
+     * 
+     * @param nIdResource
+     *            the resource id
+     * @param strResourceType
+     *            the resource type
+     * @param request
+     *            request
+     * @param locale
+     *            locale
+     * @param task
+     *            the task
+     * @return the information which must be displayed in the tasks form
+     */
+	@Override
+	public String getDisplayTaskForm( int nIdResource, String strResourceType, HttpServletRequest request, Locale locale, ITask task ) 
+	{
+		<#if configuration.workflowFormTaskRequired?? && configuration.workflowFormTaskRequired=="1" >
+		//TODO: Add code for displayTaskForm 
+		
+        Map<String, Object> model = new HashMap<String, Object>( );
+        //model.put(...;
+        
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_TASK_FORM, locale, model );
+        return template.getHtml( );
+        <#else>
+        return null;
+        </#if>
+	}
+	
+    /**
+     * validates the user input of task form associated to the task
+     * 
+     * @param nIdResource
+     *            the resource id
+     * @param strResourceType
+     *            the resource type
+     * @param request
+     *            request
+     * @param locale
+     *            locale
+     * @param task
+     *            the task
+     * @return null if there is no error in the task form else return the error message url
+     */    
+	@Override
+	public String doValidateTask( int nIdRessource, String strResourceType, HttpServletRequest request, Locale locale, ITask task ) 
+	{
+		<#if configuration.workflowFormTaskRequired?? && configuration.workflowFormTaskRequired=="1" >
+		// Task form validation
+        // TODO : validation Code 
+        </#if>
+		return null;
+	}
+    </#if>
+    
+	///////////////////////////Information Task//////////////////////////////
+
+    /**
+     * Returns the information stored for a document during the processing task
+     * 
+     * @param nIdHistory
+     *            the document id
+     * @param request
+     *            the request
+     * @param locale
+     *            locale
+     * @param task
+     *            the task
+     * @return the information stored during processing task
+     */
+	@Override
+	public String getDisplayTaskInformation( int nIdHistory, HttpServletRequest request, Locale locale, ITask task ) 
+	{
+			
+         /*
+        	This function is called in the WorkflowProvider class of the plugin lutece-wf-plugin-workflow. 
+        	It allows to display information about task progression or ressource state 
+            in the history section of a resource (e.g., form) to which a workflow tasks are associated. 
+            
+            1) If you don't want to display any information about the task, you can return null.
+            return null;
+            
+            2) If you want to display a constant string, you have to use an internationalisation key i18n
+            return I18nService.getLocalizedString( MESSAGE_INFORMATION_TASK, locale );
+            
+            3) If you want to display more than a constant string, you can create an html template with all information.
+            //Add code to get task information
+            // ...
+            
+            Map<String, Object> model = new HashMap<String, Object>( );
+            model.put(...);
+
+            HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_TASK_INFORMATION, locale, model );
+            return template.getHtml( );
+        */
+        
+        return null; //TODO: ADD MESSAGE INFORMATION
+	}
+}

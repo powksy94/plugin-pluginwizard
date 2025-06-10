@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <#if plugin.module = true>
 	<#assign url= plugin.pluginName?split("-")[0]+".modules."+plugin.pluginName?split("-")[1]/>
+<#elseif plugin.type=="WORKFLOWTASK">
+    <#assign url= "workflow.modules."+plugin.pluginName/>  
+    <#assign prefixId= "workflow-"+plugin.pluginName/>
+    <#assign radicalName = plugin.configuration.workflowTaskName?uncap_first?substring(0, plugin.configuration.workflowTaskName?length - 4)/>
 <#else>
 	<#assign url= plugin.pluginName >
 </#if>
 
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd" >
 
+<#if plugin.type!="WORKFLOWTASK">
 <#if plugin.businessClasses?? && plugin.businessClasses?has_content >
 <#list plugin.businessClasses as business_class>
     <bean id="${plugin.pluginName}.${business_class.businessClass?uncap_first}DAO" class="fr.paris.lutece.plugins.${url}.business.${business_class.businessClass?cap_first}DAO" />
@@ -31,4 +37,47 @@
     <bean id="${plugin.pluginName}.${portlet.portletClass}DAO" class="fr.paris.lutece.plugins.${url}.business.portlet.${portlet.portletClass}DAO" />    
 </#if>    
 </#list>
+
+<#else>
+	<#if plugin.businessClasses?? && plugin.businessClasses?has_content >
+		
+	<!-- DAO -->
+    <bean id="${prefixId}.${plugin.businessClasses[0].businessClass?uncap_first}DAO" 
+    	class="fr.paris.lutece.plugins.${url}.business.${plugin.businessClasses[0].businessClass}DAO" />
+	
+	<!-- Service Bean -->
+    <bean id="${prefixId}.${plugin.configuration.workflowTaskName?uncap_first}Service" 
+        class="fr.paris.lutece.plugins.${url}.service.${plugin.configuration.workflowTaskName}Service"
+        p:taskConfigDAO-ref="${prefixId}.${plugin.businessClasses[0].businessClass?uncap_first}DAO" />
+        
+	<!-- Task Type -->
+    <bean id="${prefixId}.${radicalName}TypeTask" 
+        class="fr.paris.lutece.plugins.workflowcore.business.task.TaskType"
+        p:key="${radicalName}Task" 
+        p:titleI18nKey="module.workflow.${plugin.pluginName}.task.${plugin.configuration.workflowTaskName?lower_case}.title" 
+        p:beanName="${prefixId}.${radicalName}Task"
+        p:configBeanName="${prefixId}.${plugin.businessClasses[0].businessClass?uncap_first}"
+        p:configRequired="<#if plugin.configuration.workflowFormConfigRequired=='1'>true<#else>false</#if>"
+        p:formTaskRequired="<#if plugin.configuration.workflowFormTaskRequired=='1'>true<#else>false</#if>"
+        p:taskForAutomaticAction="<#if plugin.configuration.workflowTaskForAutomaticAction=='1'>true<#else>false</#if>" />
+	
+	<!--Task Bean -->
+    <bean id="${prefixId}.${plugin.configuration.workflowTaskName?uncap_first}" 
+        class="fr.paris.lutece.plugins.${url}.service.${plugin.configuration.workflowTaskName}" 
+        scope="prototype" />
+	
+	<!-- Config Bean-->
+    <bean id="${prefixId}.${plugin.businessClasses[0].businessClass?uncap_first}" 
+        class="fr.paris.lutece.plugins.${url}.business.${plugin.businessClasses[0].businessClass}" 
+        scope="prototype" />
+
+	<!-- Component Bean -->
+    <bean id="${prefixId}.${plugin.configuration.workflowTaskName?uncap_first}Component" 
+        class="fr.paris.lutece.plugins.${url}.web.${plugin.configuration.workflowTaskName}Component" 
+        p:taskType-ref="${prefixId}.${radicalName}TypeTask"
+        p:taskConfigService-ref="${prefixId}.${plugin.configuration.workflowTaskName?uncap_first}Service" />
+
+	</#if>
+</#if>
+
 </beans>

@@ -34,6 +34,7 @@
 package fr.paris.lutece.plugins.pluginwizard.service.generator;
 
 import fr.paris.lutece.plugins.pluginwizard.business.model.BusinessClass;
+import fr.paris.lutece.plugins.pluginwizard.business.model.Configuration;
 import fr.paris.lutece.plugins.pluginwizard.business.model.PluginModel;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -111,7 +112,17 @@ public class BusinessClassGenerator extends AbstractGenerator
                     }
 
                 String strFilename = strClassName + ".java";
-                String strSourceCode = getSourceCode( strPluginName, businessClass, file.getTemplate( ), strRadicalPackage, pm.getPluginName( ) );
+                String strSourceCode;
+                
+                if ( pm.isWorkflowTask( ) ) 
+                {
+                	strSourceCode = getSourceCode( strPluginName, businessClass, file.getTemplate( ), strRadicalPackage, pm.getPluginName( ), pm.getType( ), pm.getConfiguration( ) );
+                }
+                else
+                {
+                	strSourceCode = getSourceCode( strPluginName, businessClass, file.getTemplate( ), strRadicalPackage, pm.getPluginName( ), pm.getType( ) );
+                }                
+                
                 strSourceCode = strSourceCode.replace( "&lt;", "<" );
                 strSourceCode = strSourceCode.replace( "&gt;", ">" );
                 strSourceCode = strSourceCode.replace( "@i18n", "#i18n" );
@@ -136,13 +147,38 @@ public class BusinessClassGenerator extends AbstractGenerator
      *            The type of generation(DAO,Home,etc)
      * @return The java source code of the business object
      */
-    private String getSourceCode( String strPluginName, BusinessClass businessClass, String strTemplate, String strRadicalPackage, String strBeanName )
+    private String getSourceCode( String strPluginName, BusinessClass businessClass, String strTemplate, String strRadicalPackage, String strBeanName, String strProjectType )
     {
         Map<String, Object> model = new HashMap<>( );
         model.put( Markers.MARK_BUSINESS_CLASS, businessClass );
         model.put( Markers.MARK_PLUGIN_NAME, strPluginName );
         model.put( Markers.MARK_RADICAL_PACKAGE, strRadicalPackage );
         model.put( Markers.MARK_BEAN_NAME, strBeanName );
+        model.put( Markers.MARK_PROJECT_TYPE , strProjectType );
+
+        return build( strTemplate, model );
+    }
+    
+    /**
+     * Returns the source code of a business object
+     * 
+     * @param strPluginName
+     *            The plugin name
+     * @param businessClass
+     *            The business class
+     * @param strTemplate
+     *            The type of generation(DAO,Home,etc)
+     * @return The java source code of the business object
+     */
+    private String getSourceCode( String strPluginName, BusinessClass businessClass, String strTemplate, String strRadicalPackage, String strBeanName, String strProjectType, Configuration configuration )
+    {
+        Map<String, Object> model = new HashMap<>( );
+        model.put( Markers.MARK_BUSINESS_CLASS, businessClass );
+        model.put( Markers.MARK_PLUGIN_NAME, strPluginName );
+        model.put( Markers.MARK_RADICAL_PACKAGE, strRadicalPackage );
+        model.put( Markers.MARK_BEAN_NAME, strBeanName );
+        model.put( Markers.MARK_PROJECT_TYPE , strProjectType );
+        model.put( Markers.MARK_CONFIGURATION, configuration );
 
         return build( strTemplate, model );
     }

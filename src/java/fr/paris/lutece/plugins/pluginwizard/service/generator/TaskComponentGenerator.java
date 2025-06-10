@@ -1,5 +1,6 @@
 /*
- * Copyright (c) 2002-2022, City of Paris
+ * Copyright (c) 2002-2025, City of 
+
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,49 +32,63 @@
  *
  * License 1.0
  */
+
 package fr.paris.lutece.plugins.pluginwizard.service.generator;
 
 import fr.paris.lutece.plugins.pluginwizard.business.model.PluginModel;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Class generates properties needed by the plugin
- */
-public class PropertiesGenerator extends AbstractFileGenerator
+*
+* This class generates Web component class (naming convention: [TaskName]Component, Located in the web directory.) 
+* that handles the integration between task forms (configuration and execution) and the TaskConfig object in a Lutece workflow plugin.
+* It serves as a bridge between the web interface and the task configuration business logic.
+*
+*/
+public class TaskComponentGenerator extends AbstractGenerator
 {
-    private static final String PATH = "webapp/WEB-INF/conf/plugins/";
-    private static final String EXT = ".properties";
-
+	
+    private static final String PATH = "src/java/fr/paris/lutece/plugins/workflow/modules/{plugin_name}/web/";
+    private static final String EXT = "Component.java";
+    
     /**
      * {@inheritDoc }
      */
-    @Override
-    public Map generate( PluginModel pm, String generationSchemeName )
-    {
-        return generateFile( pm, generationSchemeName );
-    }
-
+	@Override
+	public Map<String, String> generate( PluginModel pm, String generationSchemeName )
+	{
+		
+		HashMap<String, String> map = new HashMap<>( );
+		
+		String strFileName = pm.getConfiguration( ).getWorkflowTaskName( ) + EXT;
+		String strPath = getFilePath( pm, PATH, strFileName );
+		
+		String strSourceCode = getCode( pm );
+        strSourceCode = strSourceCode.replace( "&lt;", "<" );
+        strSourceCode = strSourceCode.replace( "&gt;", ">" );
+		
+		map.put( strPath, strSourceCode );
+		
+		return map;
+	}
+	
     /**
-     * {@inheritDoc }
+     * Produces the file code in a string
+     *
+     * @param pm
+     * 
+     * @return the string
      */
-    @Override
-    protected String getFilename( PluginModel pm )
+    protected String getCode( PluginModel pm )
     {
-        if( pm.isWorkflowTask( ) )
-        {
-        	return "workflow-" + pm.getPluginNameForRessource( ) + EXT;
-        }
+    	Map<String, Object> model = new HashMap<>( );
+        model.put( Markers.MARK_PLUGIN, pm );
+        model.put( Markers.MARK_RADICAL_PACKAGE, pm.getPluginNameAsRadicalPackage( ) );
+        model.put( Markers.MARK_TASK_NAME, pm.getConfiguration( ).getWorkflowTaskName( ) );
+        model.put( Markers.MARK_CONFIGURATION, pm.getConfiguration( ) );
         
-        return pm.getPluginNameForRessource( ) + EXT;
-    }
-
-    /**
-     * {@inheritDoc }
-     */
-    @Override
-    public String getPath( )
-    {
-        return PATH;
+        return build( model );
     }
 }

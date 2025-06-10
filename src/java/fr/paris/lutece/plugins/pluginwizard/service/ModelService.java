@@ -43,6 +43,7 @@ import fr.paris.lutece.plugins.pluginwizard.business.model.PluginModel;
 import fr.paris.lutece.plugins.pluginwizard.business.model.Portlet;
 import fr.paris.lutece.plugins.pluginwizard.business.model.Rest;
 import fr.paris.lutece.plugins.pluginwizard.web.formbean.BusinessClassFormBean;
+import fr.paris.lutece.plugins.pluginwizard.web.formbean.ConfigurationFormBean;
 import fr.paris.lutece.plugins.pluginwizard.web.formbean.DescriptionFormBean;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppException;
@@ -57,7 +58,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * Model Service provides all plugin'model manipulations
@@ -88,6 +88,7 @@ public final class ModelService
 
         PluginModel pm = new PluginModel( );
         pm.setPluginName( strPluginName );
+
         model = ModelHome.create( model );
         pm.setIdPlugin( model.getIdPlugin( ) );
         savePluginModel( pm );
@@ -1224,6 +1225,14 @@ public final class ModelService
         return _serviceAttribute.getType( nAttributeTypeId ).getDescription( );
     }
 
+    /**
+    * Update the description
+    *
+    * @param nPluginId
+    *            The plugin's ID
+    * @param description
+    *            The description with new values from pluginwizard form
+    */
     public static void updateDescription( int nPluginId, DescriptionFormBean description )
     {
         PluginModel pm = getPluginModel( nPluginId );
@@ -1240,6 +1249,14 @@ public final class ModelService
         savePluginModel( pm );
     }
 
+    /**
+    * Get description
+    *
+    * @param nPluginId
+    *            The plugin's ID
+    * @return descriptionFormBean
+    *            Description of plugin
+    */
     public static DescriptionFormBean getDescription( int nPluginId )
     {
         PluginModel pm = getPluginModel( nPluginId );
@@ -1255,6 +1272,14 @@ public final class ModelService
         }
     }
 
+    /**
+    * Get Form Business Class
+    *
+    * @param nPluginId
+    *            The plugin's ID
+    * @return businessClassFormBean
+    *            A business class of plugin
+    */
     public static BusinessClassFormBean getFormBusinessClass( int nPluginId, int nBusinessClassId )
     {
         PluginModel pm = getPluginModel( nPluginId );
@@ -1268,4 +1293,28 @@ public final class ModelService
             throw new AppException( "JSON exception", e );
         }
     }
+
+   /**
+     * Set the configuration in plugin model
+     * 
+     * @param nPLuginId
+     *            PLugin ID
+     * @param configurationFormBean 
+     */
+    public static void updateConfiguration( int nPluginId, ConfigurationFormBean configuration )
+    {
+        PluginModel pm = getPluginModel( nPluginId );
+        		
+        try
+        {
+            BeanUtils.copyProperties( pm.getConfiguration( ), configuration );
+        }
+        catch( IllegalAccessException | InvocationTargetException e )
+        {
+            throw new AppException( "Bean exception", e );
+        }
+
+        savePluginModel( pm );
+    }
+
 }

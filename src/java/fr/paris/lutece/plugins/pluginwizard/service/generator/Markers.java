@@ -81,6 +81,12 @@ public final class Markers
     public static final String MARK_GLOBAL_POM_VERSION = "pom_parent_version";
     public static final String MARK_DEPENDECY_REST_VERSION = "dependecy_rest_version";
     public static final String MARK_POM_MODEL_VERSION = "pom_model_version";
+    public static final String MARK_POM_DEPENDENCY_WORKFLOW_VERSION = "pom_dependencies_workflow_version";
+    public static final String MARK_POM_DEPENDENCY_FORMS_VERSION = "pom_dependencies_forms_version";
+    public static final String MARK_POM_DEPENDENCY_GENERICATTRIBUTES_VERSION = "pom_dependencies_genericattributes_version";
+    public static final String MARK_CONFIGURATION = "configuration";
+    public static final String MARK_TASK_NAME = "task_name";
+    public static final String MARK_PROJECT_TYPE = "project_type";
 
     /** Private constructor */
     private Markers( )

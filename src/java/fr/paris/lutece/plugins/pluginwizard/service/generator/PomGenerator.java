@@ -36,8 +36,6 @@ package fr.paris.lutece.plugins.pluginwizard.service.generator;
 import fr.paris.lutece.plugins.pluginwizard.business.ConfigurationKey;
 import fr.paris.lutece.plugins.pluginwizard.business.ConfigurationKeyHome;
 import fr.paris.lutece.plugins.pluginwizard.business.model.PluginModel;
-import fr.paris.lutece.portal.service.datastore.DatastoreService;
-import fr.paris.lutece.util.ReferenceList;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -56,6 +54,9 @@ public class PomGenerator extends AbstractFileGenerator
     private String _strGlobalPomVersion;
     private String _strDependencyCoreVersion;
     private String _strDependencyRestVersion;
+    private String _strDependencyWorkflowVersion;
+    private String _strDependencyFormsVersion;
+    private String _strDependencyGenericattributesVersion;
 
     /**
      * {@inheritDoc }
@@ -90,6 +91,11 @@ public class PomGenerator extends AbstractFileGenerator
         model.put( Markers.MARK_CORE_VERSION, getDependencyCoreVersion( ) );
         model.put( Markers.MARK_DEPENDECY_REST_VERSION, getDependencyRestVersion( ) );
         model.put( Markers.MARK_POM_MODEL_VERSION, getModelVersion( ) );
+        model.put( Markers.MARK_CORE_VERSION, getDependencyCoreVersion( ) );
+        model.put( Markers.MARK_DEPENDECY_REST_VERSION, getDependencyRestVersion( ) );
+        model.put( Markers.MARK_POM_DEPENDENCY_WORKFLOW_VERSION, getDependencyWorkflowVersion( ) );
+        model.put( Markers.MARK_POM_DEPENDENCY_FORMS_VERSION, getDependencyFormsVersion( ) );
+        model.put( Markers.MARK_POM_DEPENDENCY_GENERICATTRIBUTES_VERSION, getDependencyGenericattributesVersion( ) );
 
         return build( model );
     }
@@ -191,4 +197,64 @@ public class PomGenerator extends AbstractFileGenerator
     {
         this._strDependencyRestVersion = strDependencyRestVersion;
     }
+
+    /**
+     * get Dependency Workflow Version
+     * 
+     * @return the Workflow Rest Version
+     */
+	public String getDependencyWorkflowVersion( )
+	{
+		return _strDependencyWorkflowVersion;
+	}
+
+    /**
+     * set Dependency Workflow Version
+     * 
+     * @param strDependencyWorkflowVersion
+     */
+	public void setDependencyWorkflowVersion( String strDependencyWorkflowVersion )
+	{
+		this._strDependencyWorkflowVersion = strDependencyWorkflowVersion;
+	}
+
+    /**
+     * get Dependency Genericattributes Version
+     * 
+     * @return the Dependency Genericattributes Version
+     */
+	public String getDependencyGenericattributesVersion( )
+	{
+		return _strDependencyGenericattributesVersion;
+	}
+
+    /**
+     * set Dependency Genericattributes Version
+     * 
+     * @param strDependencyGenericattributesVersion
+     */
+	public void setDependencyGenericattributesVersion( String strDependencyGenericattributesVersion )
+	{
+		this._strDependencyGenericattributesVersion = strDependencyGenericattributesVersion;
+	}
+
+    /**
+     * get Dependency Forms Version
+     * 
+     * @return the Dependency Forms Version
+     */
+	public String getDependencyFormsVersion( )
+	{
+		return _strDependencyFormsVersion;
+	}
+
+    /**
+     * set Dependency Forms Version
+     * 
+     * @param strDependencyFormsVersion
+     */
+	public void setDependencyFormsVersion( String strDependencyFormsVersion )
+	{
+		this._strDependencyFormsVersion = strDependencyFormsVersion;
+	}
 }

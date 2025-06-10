@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2022, City of Paris
+ * Copyright (c) 2002-${.now?string('yyyy')}, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,57 +31,42 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.pluginwizard.web.formbean;
+package fr.paris.lutece.plugins.${radical_package}.business;
 
-import java.io.Serializable;
-
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
+import fr.paris.lutece.plugins.workflowcore.business.config.TaskConfig;
 
 /**
- * Form name
- */
-public class ModuleNameFormBean implements Serializable, FormBean
+ * Business class ${business_class.businessClass}
+ * Contains all configurations task.
+ */ 
+public class ${business_class.businessClass} extends TaskConfig
 {
-    @NotEmpty( message = "pluginwizard.error.module.name.notEmpty" )
-    @Pattern( regexp = "(^[a-z]+-[a-z]+$)", message = "pluginwizard.error.module.name.pattern" )
-    @Pattern( regexp = "([a-z-]*)", message = "pluginwizard.error.module.name.forbidden.caracters" )
-    @Pattern( regexp = "(^[^-].*[^-]$)", message = "pluginwizard.error.module.name.forbidden.pattern" )
-    private String _strName;
-    @Pattern( regexp = "^(MODULE|PLUGIN|WORKFLOWTASK)$", message = "pluginwizard.error.project.type" )
-    private String _strType;
-
+	<#if business_class.attributes?has_content>
+    // Variables declaration
+    </#if>
+    <#list business_class.attributes as attribute>
+    private ${attribute.type} _${attribute.variableName};
+    </#list>
+    <#if business_class.attributes??>
+    <#list business_class.attributes as attribute>
+    
     /**
-     * @return the name
+     * Returns the ${attribute.name}
+     * @return The ${attribute.name}
      */
-    public String getName( )
+    public ${attribute.type} get${attribute.name}( )
     {
-        return _strName;
+        return _${attribute.variableName};
     }
 
     /**
-     * @param strName
-     *            the name to set
-     */
-    public void setName( String strName )
+     * Sets the ${attribute.name}
+     * @param ${attribute.variableName} The ${attribute.name}
+     */ 
+    public void set${attribute.name}( ${attribute.type} ${attribute.variableName} )
     {
-        _strName = strName;
-    }
-
-    /**
-     * @return the type
-     */
-    public String getType( )
-    {
-        return _strType;
-    }
-
-    /**
-     * @param strType
-     *            the type to set
-     */
-    public void setType( String strType )
-    {
-        _strType = strType;
-    }
+        _${attribute.variableName} = ${attribute.variableName};
+    }   
+    </#list>
+    </#if>
 }

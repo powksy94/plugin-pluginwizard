@@ -17,24 +17,26 @@
 
     <modelVersion>${pom_model_version}</modelVersion>
     <groupId>fr.paris.lutece.plugins</groupId>
-
 <#if plugin.module = true>
     <artifactId>module-${plugin.pluginName?lower_case}</artifactId>
-    <#else>
+<#elseif plugin.type=="WORKFLOWTASK">
+    <artifactId>module-workflow-${plugin.pluginName?lower_case}</artifactId>
+<#else>
     <artifactId>plugin-${plugin.pluginName?lower_case}</artifactId>
-    </#if>
+</#if>
     <packaging>lutece-plugin</packaging>
-    
-    <#if plugin.pluginName?lower_case = "plugin-rest">
+<#if plugin.pluginName?lower_case = "plugin-rest">
     <version>${dependecy_rest_version}</version>
-    <#else>
+<#else>
     <version>${plugin.pluginVersion}-SNAPSHOT</version>
-	</#if>
-    <#if plugin.module = true>
+</#if>
+<#if plugin.module = true>
     <name>Lutece ${plugin.pluginName?replace("-", " ")?lower_case} module</name>
-    <#else>
+<#elseif plugin.type=="WORKFLOWTASK">
+    <name>Lutece workflow ${plugin.pluginName?lower_case} module</name>
+<#else>
     <name>Lutece ${plugin.pluginName?lower_case} plugin</name>
-    </#if>
+</#if>
 
     <repositories>
         <repository>
@@ -71,6 +73,15 @@
             <type>lutece-plugin</type>
         </dependency>
         </#if>
+        <#if plugin.type=="WORKFLOWTASK" >
+        <dependency>
+            <groupId>fr.paris.lutece.plugins</groupId>
+            <artifactId>plugin-workflow</artifactId>
+            <version>${pom_dependencies_workflow_version}</version>
+            <type>lutece-plugin</type>
+        </dependency>
+        </#if>        
+        
     </dependencies>
 
     <properties>

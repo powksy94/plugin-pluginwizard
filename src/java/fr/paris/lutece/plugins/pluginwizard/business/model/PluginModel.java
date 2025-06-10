@@ -33,7 +33,7 @@
  */
 package fr.paris.lutece.plugins.pluginwizard.business.model;
 
-import org.hibernate.validator.constraints.URL;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +42,8 @@ import java.util.Locale;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.URL;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -81,6 +83,7 @@ public class PluginModel
     private List<Portlet> _listPluginPortlets;
     private List<BusinessClass> _listBusinessClasses;
     private Rest _rest;
+    private Configuration _configuration;
     private boolean _bIsModule;
 
     /**
@@ -93,6 +96,7 @@ public class PluginModel
         _listPluginPortlets = new ArrayList<>( );
         _listBusinessClasses = new ArrayList<>( );
         _rest = new Rest( );
+        _configuration = new Configuration( );
     }
 
     /**
@@ -138,11 +142,14 @@ public class PluginModel
         {
             return _strPluginName.split( "-" ) [0] + ".modules." + _strPluginName.split( "-" ) [1];
         }
+        else if ( isWorkflowTask( ) ) 
+		{
+			return "workflow.modules." + _strPluginName;
+		} 
         else
         {
             return _strPluginName;
         }
-
     }
 
     /**
@@ -157,6 +164,10 @@ public class PluginModel
         {
             return _strPluginName.split( "-" ) [0] + "/modules/" + _strPluginName.split( "-" ) [1];
         }
+        else if ( isWorkflowTask( ) ) 
+		{
+			return "workflow/modules/" + _strPluginName;
+		} 
         else
         {
             return _strPluginName;
@@ -175,11 +186,14 @@ public class PluginModel
         {
             return "module." + _strPluginName.replace( "-", "." );
         }
+        else if ( isWorkflowTask( ) ) 
+		{
+			return "module." + _strPluginName;
+		} 
         else
         {
             return _strPluginName;
         }
-
     }
 
     /**
@@ -193,12 +207,23 @@ public class PluginModel
         if ( isModule( ) )
         {
             return getModuleName( ).toLowerCase( );
-        }
+        } 
         else
         {
             return _strPluginName.toLowerCase( );
         }
 
+    }
+
+    /**
+     * Returns the workflow task name with prefix workflow
+     * 
+     * @return "workflow taskname"
+     */
+    @JsonIgnore
+    public String getWorkflowNameWithPrefix( )
+    {
+    	return "workflow." + _strPluginName.toLowerCase( );
     }
 
     /**
@@ -553,6 +578,27 @@ public class PluginModel
     }
 
     /**
+     * Returns the configuration
+     * 
+     * @return The configuration
+     */
+    public Configuration getConfiguration( )
+    {
+        return _configuration;
+    }
+    
+    /**
+     * Sets the configuration
+     * 
+     * @param configuration
+     *            The configuration
+     */
+	public void setConfiguration( Configuration configuration ) 
+	{	
+		_configuration = configuration;
+	}
+
+    /**
      * Sets the list of plugin features
      * 
      * @param listPluginFeatures
@@ -629,7 +675,7 @@ public class PluginModel
     }
 
     /**
-     * Returns the Type (module or plugin)
+     * Returns the Type (module, plugin or workflowtask)
      * 
      * @return The Type
      */
@@ -681,4 +727,13 @@ public class PluginModel
         this._bIsModule = bIsModule;
     }
 
+    /**
+     * Returns true if this instance is a workflow task
+     * 
+     * @return True if _strType is equal to "WORKFLOWTASK"
+     */
+    public boolean isWorkflowTask( )
+    {
+        return ( StringUtils.equals( "WORKFLOWTASK", _strType ) );
+    }
 }

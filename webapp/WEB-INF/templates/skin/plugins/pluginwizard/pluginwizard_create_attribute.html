@@ -8,7 +8,7 @@
                     
                     <!-- Side Bar-->
                     <div class="col-md-3">
-                        <@sidebar step="model" />
+                        <@sidebar step="model" project_type="${project_type!''}"/>
                         <div class="card bg-light mt-2">
                             <div class="card-body">
                                 <div class="card-text">
@@ -37,13 +37,33 @@
                                          							{'name':'attributeNameSizeRule','regex':'^.{1,64}$','message':'#i18n{pluginwizard.pluginwizard_create_attribute.helpRulesAttributSize}'}
                                          						   ] />
                                 </@formGroup>
-
+								
+								<#if ( project_type?? && project_type = 'WORKFLOWTASK')>
+									<#assign filteredTypes = []>
+									<#assign isFile=false>
+									<#assign isDate=false>
+									<#list combo_attribute_type as ref>
+										<#if ref.code="11">
+											<#assign isFile=true>
+										</#if>
+										<#if ref.code="7">
+											<#assign isDate=true>
+										</#if>										
+										<#if !isFile && !isDate >
+										<#assign filteredTypes += [ref]>
+										<#assign isFile=false>
+										<#assign isDate=false>
+										</#if>
+									</#list>
+								<#else>
+									<#assign filteredTypes = combo_attribute_type>
+							    </#if>	
 								<!-- Group form attribute type -->
                                  <@formGroup labelFor='attributeType' labelKey='#i18n{pluginwizard.pluginwizard_create_attribute.labelAttributeType} * :' formStyle='fullwidth'>
                                         <@select id="attributeType"
                                                  name="attribute_type_id" 
                                                  default_value="${attribute.attributeTypeId!'1'}" 
-                                                 items=combo_attribute_type />
+                                                 items= filteredTypes/>
                                 </@formGroup>
 								
 								<!-- Group form Mandatory-->
@@ -56,14 +76,14 @@
                                             </#if>
                                         </div>
                                 </@formGroup>
-
+                                
 								<!-- Submit Buttons -->
 								<div class="row mb-3">
                                     <div class="col-md-9 offset-md-3">
                                         <button type="submit" name="action_createAttribute" class="btn btn-primary me-2">
                                             #i18n{pluginwizard.pluginwizard_create_attribute.buttonCreateAttribute}
                                         </button>
-                                        <button type="submit" name="view_modifyBusinessClass" class="btn btn-secondary">
+                                        <button type="submit" name=<#if (project_type?? && project_type == 'WORKFLOWTASK')>"view_modifyConfigurationClass"<#else>"view_modifyBusinessClass"</#if> class="btn btn-secondary">
                                             #i18n{pluginwizard.pluginwizard_create_attribute.buttonBack}
                                         </button>
                                     </div>

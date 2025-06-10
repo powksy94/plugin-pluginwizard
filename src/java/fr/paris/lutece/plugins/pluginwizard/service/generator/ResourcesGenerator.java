@@ -55,6 +55,7 @@ import java.util.Map;
 public class ResourcesGenerator extends AbstractGenerator
 {
     private static final String PATH_JAVA = "src/java/fr/paris/lutece/plugins/{plugin_name}/resources/";
+    private static final String PATH_JAVA_WORKFLOW = "src/java/fr/paris/lutece/plugins/workflow/modules/{plugin_name}/resources/";
     private static final String PATH_KOTLIN = "src/kotlin/fr/paris/lutece/plugins/{plugin_name}/resources/";
     private static String [ ] _languages = {
             "", "fr"
@@ -81,7 +82,7 @@ public class ResourcesGenerator extends AbstractGenerator
 
         for ( String strLanguage : _languages )
         {
-            String strFilesPath = ( isKotlin( ) ) ? PATH_KOTLIN : PATH_JAVA;
+            String strFilesPath = ( isKotlin( ) ) ? PATH_KOTLIN : ( pm.isWorkflowTask( ) ? PATH_JAVA_WORKFLOW.replace( "{plugin_name}",pm.getPluginNameForRessource( ) ) : PATH_JAVA );
             String strPath = getFilePath( pm, strFilesPath,
                     prefixFileName + "_messages" + ( strLanguage.length( ) > 0 ? "_" : "" ) + strLanguage + ".properties" );
 
@@ -104,12 +105,24 @@ public class ResourcesGenerator extends AbstractGenerator
     private String getCode( PluginModel pm, String strLanguage )
     {
         StringBuilder sb = new StringBuilder( );
-        generatePluginKeys( sb, pm );
-        generateFeaturesKeys( sb, pm );
-        generateXPagesKeys( sb, pm );
-        generateBusinessClassKeys( sb, pm, strLanguage );
-        generatePortletsKeys( sb, pm );
-        generateInfosKeys( sb, pm, strLanguage );
+        
+        if( pm.isWorkflowTask( ) )
+        {
+        	generatePluginKeys( sb, pm );
+            generateConfigurationClassKeys( sb, pm, strLanguage );
+            generateTaskServiceKeys( sb, pm, strLanguage ); 
+            generateTaskMessageKeys( sb, pm, strLanguage );
+        }
+        else
+        {
+        	generatePluginKeys( sb, pm );
+            generateFeaturesKeys( sb, pm );
+            generateXPagesKeys( sb, pm );
+            generateBusinessClassKeys( sb, pm, strLanguage );
+            generatePortletsKeys( sb, pm );
+            generateInfosKeys( sb, pm, strLanguage );
+        }
+        
 
         return sb.toString( );
     }
@@ -124,14 +137,24 @@ public class ResourcesGenerator extends AbstractGenerator
      */
     private void generatePluginKeys( StringBuilder sb, PluginModel pm )
     {
-        sb.append( "# Plugin's keys\n" );
+        
         if ( pm.isModule( ) )
         {
+        	sb.append( "# Module's keys\n" );
             sb.append( "module.provider=" ).append( pm.getPluginProvider( ) ).append( "\n" );
             sb.append( "module.description=" ).append( pm.getPluginDescription( ) ).append( "\n" );
         }
         else
+        	if ( pm.isWorkflowTask( ) )
         {
+            	sb.append( "# Workflow module's keys\n" );
+                sb.append( "module.provider=" ).append( pm.getPluginProvider( ) ).append( "\n" );
+                sb.append( "module.description=" ).append( pm.getPluginDescription( ) ).append( "\n" );    
+                sb.append( "task." ).append( pm.getConfiguration( ).getWorkflowTaskName( ).toLowerCase( ) ).append(".title=").append( pm.getConfiguration( ).getWorkflowTaskName( ).toLowerCase( ) ).append( "\n" );
+        }
+        else
+        {
+        	sb.append( "# Plugin's keys\n" );
             sb.append( "plugin.provider=" ).append( pm.getPluginProvider( ) ).append( "\n" );
             sb.append( "plugin.description=" ).append( pm.getPluginDescription( ) ).append( "\n" );
         }
@@ -233,6 +256,7 @@ public class ResourcesGenerator extends AbstractGenerator
             for ( String strTitlePrefix : _titlePrefix )
             {
                 strPrefix = strTitlePrefix + "_" + bc.getBusinessClass( ).toLowerCase( ) + ".";
+                sb.append( strPrefix ).append( "pageTitle=" ).append( bc.getBusinessClass( ) ).append( "\n" );
                 sb.append( strPrefix ).append( "title=" ).append( getLabel( "title." + strTitlePrefix, strLanguage, bc.getBusinessClass( ) ) ).append( "\n" );
             }
 
@@ -283,6 +307,107 @@ public class ResourcesGenerator extends AbstractGenerator
                 sb.append( strPrefix ).append( Utils.firstLowerCase( attribute.getName( ) ) ).append( "=" ).append( attribute.getLabelName( ) ).append( "\n" );
             }
         }
+    }
+    
+    /**
+     * Writes in the buffer resources keys for configuration classes
+     *
+     * @param sb
+     *            The buffer
+     * @param pm
+     *            The plugin model
+     * @param strLanguage
+     *            The language
+     */
+    private void generateConfigurationClassKeys( StringBuilder sb, PluginModel pm, String strLanguage )
+    {
+        if ( !pm.getBusinessClasses( ).isEmpty( ) )
+        {
+        	
+        	BusinessClass bc = pm.getBusinessClasses( ).get( 0 );
+        	
+        	if( !bc.getAttributes().isEmpty( ) )
+	        {
+	        	String strPrefixTask = "task.config.";
+	        	String strPrefix = strPrefixTask;
+	        	
+	        	sb.append( "\n# Business classes keys (" ).append( bc.getBusinessClass( ) ).append( ")\n" );
+	        	sb.append( "\n# Keys for config form" ).append( "\n" );
+	        	
+	            //Config forms labels and helper's label 
+	            for ( Attribute attribute : bc.getAttributes( ) )
+	            {
+	                sb.append( strPrefix ).append( "label" ).append( attribute.getName( ) ).append( "=" ).append( attribute.getLabelName( ) ).append( "\n" );
+	                sb.append( strPrefix ).append( "label" ).append( attribute.getName( ) ).append( ".help=" ).append( attribute.getLabelName( ) )
+	                        .append( " (" ).append( getLabel( "helpText", strLanguage ) ).append( ")\n" );
+	            }
+	         
+	            // Constraints messages from Business classes
+	            sb.append( "\n#JSR 303 constraint validator messages\n" );
+	            strPrefix = "validation." + strPrefixTask;
+	
+	            for ( Attribute attribute : bc.getAttributes( ) )
+	            {
+	                if ( !attribute.getType( ).equals( "int" ) )
+	                {
+	                    if ( attribute.getNotNull( ) )
+	                    {
+	                        sb.append( strPrefix ).append( attribute.getName( ) ).append( ".notEmpty=" )
+	                                .append( getLabel( "validation.notEmpty", strLanguage, attribute.getLabelName( ) ) ).append( "\n" );
+	                    }
+	
+	                    if ( attribute.getMaxLength( ) > 0 )
+	                    {
+	                        sb.append( strPrefix ).append( attribute.getName( ) ).append( ".size=" )
+	                                .append( getLabel( "validation.size", strLanguage, attribute.getLabelName( ), "" + attribute.getMaxLength( ) ) ).append( "\n" );
+	                    }
+	                }
+	            }
+	            
+	            //Model entity
+	            sb.append( "\n#Model attributes for validation messages\n" );
+	            strPrefix = "model.entity." + strPrefixTask + "attribute.";
+	
+	            for ( Attribute attribute : bc.getAttributes( ) )
+	            {
+	                sb.append( strPrefix ).append( Utils.firstLowerCase( attribute.getName( ) ) ).append( "=" ).append( attribute.getLabelName( ) ).append( "\n" );
+	            }
+	        }
+        }
+    }
+
+    /**
+     * Writes in the buffer resources keys for TaskServiceKeys
+     *
+     * @param sb
+     *            The buffer
+     * @param pm
+     *            The plugin model
+     * @param strLanguage
+     *            The language
+     */
+    private void generateTaskServiceKeys( StringBuilder sb, PluginModel pm , String strLanguage )
+    {
+    	sb.append( "\n# keys for task service class keys : " ).append( "\n" );
+    	
+    	String strPrefix = pm.getWorkflowNameWithPrefix( );
+        sb.append( "service.taskTitle=" ).append(pm.getConfiguration().getWorkflowTaskName().replace( "([a-z])([A-Z])", "$1 $2" ) ).append( "\n" );
+    }
+
+        /**
+     * Writes in the buffer resources keys for TaskServiceKeys
+     *
+     * @param sb
+     *            The buffer
+     * @param pm
+     *            The plugin model
+     * @param strLanguage
+     *            The language
+     */
+    private void generateTaskMessageKeys( StringBuilder sb, PluginModel pm , String strLanguage )
+    {
+        sb.append( "\n# Messages : " ).append( "\n" );
+        sb.append( "message" ).append( "." ).append( "task.information=TODO add message information" ).append( "\n" );
     }
 
     /**

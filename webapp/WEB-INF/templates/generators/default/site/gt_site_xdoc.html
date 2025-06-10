@@ -1,5 +1,7 @@
 <#switch template_type>
 <#case 0>
+
+<#if plugin_model.type!="WORKFLOWTASK">
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
     <body>
@@ -24,10 +26,36 @@
         <menu ref="reports" />
     </body>
 </project>
+<#else>
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <body>
+        <links>
+            <item name="FR" href="/fr/index.html" />
+        </links>
+        
+        <menu name="Module Workflow ${plugin_model.pluginName?replace('-',' ')}">
+            <item name="Home" href="index.html"/>
+        </menu>
+        
+        <menu name="Downloads" inherit="bottom">
+            <item name="Released versions" href="../../stable_builds/plugins/module-workflow-${plugin_model.pluginName?lower_case}/"/>
+            <item name="Nightly builds" href="../../nightly_builds/plugins/module-workflow-${plugin_model.pluginName?lower_case}/" />
+        </menu>
+
+    <!--
+        <menu name="Other links">
+            <item name="" href="" target="_blank"/>
+        </menu>
+    -->
+        <menu ref="reports" />
+    </body>
+</project>
+</#if>
 <#break>
 
-
 <#case 1>
+<#if plugin_model.type!="WORKFLOWTASK">
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
     <body>
@@ -52,9 +80,38 @@
         
         <menu ref="reports" />
     </body>
-</project><#break>
+</project>
+<#else>
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+    <body>
+        <links>
+            <item name="EN" href="../index.html" />
+        </links>
+        
+        <menu name="Module Workflow ${plugin_model.pluginName?replace('-',' ')}">
+            <item name="Accueil" href="index.html"/>
+        </menu>
+        
+        <menu name="Téléchargements" inherit="bottom" >
+            <item name="Versions stables" href="../../../stable_builds/plugins/module-workflow-${plugin_model.pluginName?lower_case}/"/>
+            <item name="Nightly builds" href="../../../nightly_builds/plugins/module-workflow-${plugin_model.pluginName?lower_case}/" />
+        </menu>
+
+    <!--
+        <menu name="Other links">
+            <item name="" href="" target="_blank"/>
+        </menu>
+    -->
+        
+        <menu ref="reports" />
+    </body>
+</project>
+</#if>
+<#break>
 
 <#case 2>
+<#if plugin_model.type!="WORKFLOWTASK">
 <?xml version="1.0" encoding="UTF-8"?>
 <document>
     <properties>
@@ -84,9 +141,41 @@
         </section>
     </body>
 </document>
+<#else>
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <properties>
+        <title>Module Workflow ${plugin_model.pluginName?replace('-',' ')}</title>
+    </properties>
+    <head>
+        <!-- Keywords example : "cms, authentication, cms, workflow, seo, collaborative, ..." 
+             Use the language of this xdoc -->
+        <meta name="keywords" content="" />
+    </head>
+    <body>
+        <section name="Module Workflow ${plugin_model.pluginName?replace('-',' ')}">
+            <!--
+            <p>
+                <img src="images/${plugin_model.pluginName?lower_case}.png" />
+            </p>
+            -->
+            <subsection name="Introduction">
+                <p></p>
+            </subsection>
+            <subsection name="Configuration">
+                <p></p>
+            </subsection>
+            <subsection name="Usage">
+                <p></p>
+            </subsection>
+        </section>
+    </body>
+</document>
+</#if>
 <#break>
 
 <#case 3>
+<#if plugin_model.type!="WORKFLOWTASK">
 <?xml version="1.0" encoding="UTF-8"?>
 <document>
     <properties>
@@ -116,6 +205,36 @@
         </section>
     </body>
 </document>
+<#else>
+<document>
+    <properties>
+        <title>Module Workflow ${plugin_model.pluginName?replace('-',' ')}</title>
+    </properties>
+    <head>
+        <!-- Keywords example : "cms, authentication, cms, workflow, seo, collaborative, ..." 
+             Use the language of this xdoc -->
+        <meta name="keywords" content="" />
+    </head>
+    <body>
+        <section name="Module Workflow ${plugin_model.pluginName?replace('-',' ')}">
+            <!--
+            <p>
+                <img src="images/${plugin_model.pluginName?lower_case}.png" />
+            </p>
+            -->
+            <subsection name="Introduction">
+                <p></p>
+            </subsection>
+            <subsection name="Configuration">
+                <p></p>
+            </subsection>
+            <subsection name="Usage">
+                <p></p>
+            </subsection>
+        </section>
+    </body>
+</document>
+</#if>
 <#break>
 
 <#case 4>

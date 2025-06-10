@@ -8,11 +8,15 @@
 
 					<!-- Side Bar-->
 					<div class="col-md-3">         
-                    	<@sidebar step="generate" />
+                    	<@sidebar step="generate" project_type="${project_type!''}"/>
                         <div class="card bg-light mt-2">
 							<div class="card-body">
 								<div class="card-text">     
-                        			#i18n{pluginwizard.pluginwizard_plugin_recapitulate.pageHelp} 
+                        			<#if (project_type?? && project_type == 'WORKFLOWTASK')>
+                        				#i18n{pluginwizard.pluginwizard_plugin_recapitulate.pageHelpWorkflowTask} 
+                        			<#else>
+                        				#i18n{pluginwizard.pluginwizard_plugin_recapitulate.pageHelp}
+                        			</#if>
                     			</div>  
                 			</div>
                 		</div>
@@ -24,7 +28,13 @@
 	                    <#include "infos_handler.html" />
 	                    <#include "errors_handler.html" />
 	
-	                    <h3 class="mt-2 mb-2" >#i18n{pluginwizard.pluginwizard_plugin_recapitulate.pageTitle} </h3> 
+	                    <h3 class="mt-2 mb-2" >
+	                    <#if (project_type?? && project_type == 'WORKFLOWTASK')>
+	                    		#i18n{pluginwizard.pluginwizard_plugin_recapitulate.pageTitleWorkflowTask}
+                            <#else>
+                                #i18n{pluginwizard.pluginwizard_plugin_recapitulate.pageTitle}
+                        </#if>	
+	                    </h3> 
 	
 	                    <div class="card bg-light border rounded">
 							<div class="card-body">
@@ -53,7 +63,45 @@
 					                            </li>
 				                            </#if>
 			                            </#if>
-			
+			                            
+										<#if (project_type?? && project_type == 'WORKFLOWTASK')>
+				                            <#if configuration?? > 
+				                            	<#if configuration?size gt 0 > 
+						                            <li>
+						                                <h5>
+						                                    <span class="badge bg-secondary">${business_classes?size}</span> &nbsp; 
+						                                    	#i18n{pluginwizard.pluginwizard_plugin_recapitulate.labelWorkflowConfiguration}
+						                                </h5>
+						                                <ul class="ps-5 pb-1" style="list-style-type: circle;">
+						                                    <li>
+						                                    	<h6>
+						                                    		#i18n{pluginwizard.pluginwizard_plugin_recapitulate.labelWorkflowTaskName} : ${configuration.workflowTaskName} 
+						                                    	</h6>
+						                                    </li>
+						                                    <li> 
+						                                    	<h6>
+						                                    		#i18n{pluginwizard.pluginwizard_plugin_recapitulate.labelWorkflowFormConfigRequired} : 
+						                                    		${configuration.workflowFormConfigRequired?switch( "1", "#i18n{pluginwizard.pluginwizard_plugin_recapitulate.labelTrue}", "0", "#i18n{pluginwizard.pluginwizard_plugin_recapitulate.labelFalse}" ) } 
+						                                    	</h6>
+						                                    </li>
+						                                    <li> 
+						                                    	<h6>
+						                                    		#i18n{pluginwizard.pluginwizard_plugin_recapitulate.labelWorkflowFormTaskRequired} : 
+						                                    		${configuration.workflowFormTaskRequired?switch( "1", "#i18n{pluginwizard.pluginwizard_plugin_recapitulate.labelTrue}", "0", "#i18n{pluginwizard.pluginwizard_plugin_recapitulate.labelFalse}" ) } 
+						                                    	</h6>
+						                                    </li>
+						                                     <li> 
+						                                    	<h6>
+						                                    		#i18n{pluginwizard.pluginwizard_plugin_recapitulate.labelWorkflowTaskForAutomaticAction} :	
+						                                    		${configuration.workflowTaskForAutomaticAction?switch( "1", "#i18n{pluginwizard.pluginwizard_plugin_recapitulate.labelTrue}", "0", "#i18n{pluginwizard.pluginwizard_plugin_recapitulate.labelFalse}" ) }
+						                                    	</h6>
+						                                    </li>
+						                                </ul>
+						                            </li>
+					                            </#if>
+				                            </#if>
+				                        </#if>
+				                        
 			                            <#if admin_features?? > 
 				                            <#if admin_features?size gt 0 > 
 					                            <li>
@@ -123,7 +171,7 @@
 			                        </ul>
 			                        <br>
 			                        <div class="d-flex justify-content-between">
-				                        <a class="btn btn-primary" href="jsp/site/Portal.jsp?page=pluginwizard&view=manageRest" >
+										<a class="btn btn-primary" href="jsp/site/Portal.jsp?page=pluginwizard&view=<#if (project_type?? && project_type == 'WORKFLOWTASK') >manageBusinessClasses<#else>manageRest</#if>" >
 				                            <i class="ti ti-chevron-left"></i>
 				                            	#i18n{pluginwizard.pluginwizard_plugin_recapitulate.buttonBack}
 				                        </a>  

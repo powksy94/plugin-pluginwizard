@@ -114,6 +114,10 @@ public abstract class AbstractGenerator implements Generator
             strBasePath = "module-" + pm.getPluginName( ) + "/"
                     + strPath.replace( "{plugin_name}", ( pm.getPluginName( ).split( "-" ) [0] + "/modules/" + pm.getPluginName( ).split( "-" ) [1] ) );
         }
+        else if( pm.isWorkflowTask( ) )
+        {
+            strBasePath = "module-workflow-" + pm.getPluginName( ) + "/" + strPath.replace( "{plugin_name}", pm.getPluginName( ) );
+        }
         else
         {
             strBasePath = strBasePath.replace( "{plugin_name}", pm.getPluginName( ) );

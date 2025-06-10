@@ -67,17 +67,23 @@
 										<div class="col mb-3 align-items-center">
 		                                    <div class="col-md-10">
 		                                    	<div class="form-check">
-											    	<input type="radio" id="id-project-type-plugin" name="project_type_selector" class="form-check-input" value="plugin" checked>
+											    	<input type="radio" id="id-project-type-plugin" name="type" class="form-check-input" value="PLUGIN" checked>
 											    	<label class="form-check-label" for="id-project-type-plugin">
 											      		#i18n{pluginwizard.pluginwizard_create_plugin.OptionPlugin}
 											    	</label>
 											  	</div>
 											  	<div class="form-check">
-											    	<input type="radio" id="id-project-type-module" name="project_type_selector" class="form-check-input" value="module">
+											    	<input type="radio" id="id-project-type-module" name="type" class="form-check-input" value="MODULE">
 											    	<label class="form-check-label" for="id-project-type-module">
 											      		#i18n{pluginwizard.pluginwizard_create_plugin.OptionModule}
 											    	</label>
-											  	</div> 
+											  	</div>
+											  	<div class="form-check">
+											    	<input type="radio" id="id-project-type-workflowTask" name="type" class="form-check-input" value="WORKFLOWTASK">
+											    	<label class="form-check-label" for="id-project-type-workflowTask">
+											      		#i18n{pluginwizard.pluginwizard_create_plugin.OptionWorkflowTask}
+											    	</label>
+											  	</div>  
 		                                    </div>
 	                                	</div>
 	                                	
@@ -135,14 +141,16 @@
 	
      //Dictionary of projects
    	dictProjects = { 'plugin': { 'placeholder' : '#i18n{pluginwizard.pluginwizard_modify_plugin.placeholderPluginName}','span':[{'name':'pluginMandatory','regex':'^.+$','message':'#i18n{pluginwizard.pluginwizard_create_plugin.helpRulesMandatoryPluginName}'},{'name':'pluginName','regex':'^[a-z]+$','message':'#i18n{pluginwizard.pluginwizard_create_plugin.helpRulesPluginName}'}]},
-             		 'module': { 'placeholder' : '#i18n{pluginwizard.pluginwizard_modify_plugin.placeholderModuleName}','span':[{'name':'moduleMandatory','regex':'^.+$','message':'#i18n{pluginwizard.pluginwizard_create_plugin.helpRulesMandatoryModuleName}'},{'name':'moduleName','regex':'^[a-z-]+$','message':'#i18n{pluginwizard.pluginwizard_create_plugin.helpRulesModuleName}'},{'name':'conventionModuleName','regex':'^[a-z]+-[a-z]+$','message':'#i18n{pluginwizard.pluginwizard_create_plugin.helpRulesConventionModuleName}'}]}
+             		 'module': { 'placeholder' : '#i18n{pluginwizard.pluginwizard_modify_plugin.placeholderModuleName}','span':[{'name':'moduleMandatory','regex':'^.+$','message':'#i18n{pluginwizard.pluginwizard_create_plugin.helpRulesMandatoryModuleName}'},{'name':'moduleName','regex':'^[a-z-]+$','message':'#i18n{pluginwizard.pluginwizard_create_plugin.helpRulesModuleName}'},{'name':'conventionModuleName','regex':'^[a-z]+-[a-z]+$','message':'#i18n{pluginwizard.pluginwizard_create_plugin.helpRulesConventionModuleName}'}]},
+             		 'workflowtask': { 'placeholder' : '#i18n{pluginwizard.pluginwizard_create_plugin.placeholderWorkflowTaskName}','span':[{'name':'workflowTaskMandatory','regex':'^.+$','message':'#i18n{pluginwizard.pluginwizard_create_plugin.helpRulesMandatoryWorkflowTaskName}'},{'name':'workflowTaskName','regex':'^[a-z]+$','message':'#i18n{pluginwizard.pluginwizard_create_plugin.helpRulesWorkflowTaskName}'}]}
              	   };
     
     //Listerners
-	document.querySelectorAll('input[name="project_type_selector"]').forEach(button => {
+	document.querySelectorAll('input[name="type"]').forEach(button => {
 	  button.addEventListener('input', function(){ 
 		switchTypeProject(dictProjects);
 	  });
 	});
-  	   
+    
+	switchTypeProject(dictProjects);
  </script>

@@ -232,6 +232,7 @@
 	  <property name="globalPomVersion" value="4.0.4" />
 	  <property name="dependencyCoreVersion" value="[5.0.0,5.9.9)" />
 	  <property name="dependencyRestVersion" value="3.0.0" />
+      <property name="dependencyWorkflowVersion" value="" />
    </bean>
    <bean id="pluginwizard.generator.lutece6.pom" class="fr.paris.lutece.plugins.pluginwizard.service.generator.PomGenerator">
       <property name="template" value="/generators/default/xml/gt_xml_pom_file.html" />
@@ -239,6 +240,7 @@
 	  <property name="globalPomVersion" value="5.1.2" />
 	  <property name="dependencyCoreVersion" value="[6.0.0,6.9.9)" />
 	  <property name="dependencyRestVersion" value="3.0.0" />
+      <property name="dependencyWorkflowVersion" value="" />
    </bean>
    <bean id="pluginwizard.generator.lutece7.pom" class="fr.paris.lutece.plugins.pluginwizard.service.generator.PomGenerator">
       <property name="template" value="/generators/default/xml/gt_xml_pom_file.html" />
@@ -246,6 +248,7 @@
 	  <property name="globalPomVersion" value="6.1.0" />
 	  <property name="dependencyCoreVersion" value="[7.0.0,)" />
 	  <property name="dependencyRestVersion" value="3.0.0" />
+      <property name="dependencyWorkflowVersion" value="[6.0.3,)" />
    </bean>
    
    
@@ -308,6 +311,20 @@
          </list>
       </constructor-arg>
    </bean>
+   <bean id="pluginwizard.generator.admin.java.configuration.class" class="fr.paris.lutece.plugins.pluginwizard.service.generator.BusinessClassGenerator">
+      <property name="files">
+         <ref bean="pluginwizard.list.files.configuration.class" />
+      </property>
+   </bean>
+   <bean id="pluginwizard.list.files.configuration.class" class="java.util.ArrayList">
+      <constructor-arg>
+         <list>
+            <ref bean="pluginwizard.configuration.class" />
+            <ref bean="pluginwizard.configuration.dao" />
+            <ref bean="pluginwizard.business.test" />
+         </list>
+      </constructor-arg>
+   </bean>
    <bean id="pluginwizard.generator.admin.java.xpage" class="fr.paris.lutece.plugins.pluginwizard.service.generator.XPageGenerator">
       <property name="files">
          <ref bean="pluginwizard.list.files.xpage" />
@@ -339,6 +356,11 @@
          <value>/generators/default/business/gt_business_class.html</value>
       </property>
    </bean>
+   <bean id="pluginwizard.configuration.class" class="fr.paris.lutece.plugins.pluginwizard.service.generator.BusinessFileConfig">
+      <property name="template">
+         <value>/generators/default/business/gt_configuration_class.html</value>
+      </property>
+   </bean>
    <bean id="pluginwizard.business.abstractFilterDao" class="fr.paris.lutece.plugins.pluginwizard.service.generator.BusinessFileConfig">
       <property name="prefix">
          <value>AbstractFilterDao</value>
@@ -361,6 +383,14 @@
       </property>
       <property name="template">
          <value>/generators/default/business/gt_business_dao_v5.html</value>
+      </property>
+   </bean>
+   <bean id="pluginwizard.configuration.dao" class="fr.paris.lutece.plugins.pluginwizard.service.generator.BusinessFileConfig">
+      <property name="suffix">
+         <value>DAO</value>
+      </property>
+      <property name="template">
+         <value>/generators/default/business/gt_configuration_dao.html</value>
       </property>
    </bean>
    <bean id="pluginwizard.business.idao" class="fr.paris.lutece.plugins.pluginwizard.service.generator.BusinessFileConfig">
@@ -471,6 +501,26 @@
       </property>
       <property name="tabsTemplate">
          <value>/generators/default/html/gt_html_admin_tabs_v5.html</value>
+      </property>
+   </bean>
+    <bean id="pluginwizard.generator.task.service.class" class="fr.paris.lutece.plugins.pluginwizard.service.generator.TaskServiceClassGenerator">
+      <property name="template">
+         <value>/generators/default/task/gt_task_service_class.html</value>
+      </property>
+   </bean>
+    <bean id="pluginwizard.generator.task.service.task" class="fr.paris.lutece.plugins.pluginwizard.service.generator.TaskServiceGenerator">
+      <property name="template">
+         <value>/generators/default/task/gt_task_service_task.html</value>
+      </property>
+   </bean>
+   <bean id="pluginwizard.generator.task.component" class="fr.paris.lutece.plugins.pluginwizard.service.generator.TaskComponentGenerator">
+      <property name="template">
+         <value>/generators/default/task/gt_task_component.html</value>
+      </property>
+   </bean>
+   <bean id="pluginwizard.generator.task.forms.html" class="fr.paris.lutece.plugins.pluginwizard.service.generator.TaskFormsGenerator">
+      <property name="template">
+         <value>/generators/default/task/gt_task_forms.html</value>
       </property>
    </bean>
    <bean id="pluginwizard.xpage.java" class="fr.paris.lutece.plugins.pluginwizard.service.generator.XPageFileConfig">
@@ -821,4 +871,33 @@
          </list>
       </property>
    </bean>
+
+   <bean id="schemeLutece7Workflow" class="fr.paris.lutece.plugins.pluginwizard.service.generator.GenerationScheme">
+      <property name="name">
+         <value>Java Lutece 7.0 FOR WORKFLOW TASK (DAO SQL)</value>
+      </property>
+      <property name="isDefault">
+         <value>true</value>
+      </property>
+      <property name="isWorkflow">
+         <value>true</value>
+      </property>
+      <property name="generatorsList">
+         <list>
+            <ref bean="pluginwizard.generator.lutece7.pom" />
+            <ref bean="pluginwizard.generator.pluginXml" />
+            <ref bean="pluginwizard.generator.context" />
+            <ref bean="pluginwizard.generator.properties" />
+            <ref bean="pluginwizard.generator.site" />
+            <ref bean="pluginwizard.generator.resources" />
+            <ref bean="pluginwizard.generator.sql" />
+            <ref bean="pluginwizard.generator.admin.java.configuration.class" />
+            <ref bean="pluginwizard.generator.task.service.task" />
+            <ref bean="pluginwizard.generator.task.service.class" />
+            <ref bean="pluginwizard.generator.task.component" />
+            <ref bean="pluginwizard.generator.task.forms.html" />
+         </list>
+      </property>
+   </bean>
+
 </beans>

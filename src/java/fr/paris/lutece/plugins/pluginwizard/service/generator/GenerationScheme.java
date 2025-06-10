@@ -45,6 +45,7 @@ public class GenerationScheme
     private String _strCoreVersion;
     private List<Generator> _listGenerators;
     private boolean _bIsDefault = false;
+    private boolean _bIsWorkflow = false;
 
     /**
      * @return the _strName
@@ -126,9 +127,29 @@ public class GenerationScheme
      * 
      * @param _bIsDefault
      */
-    public void setIsDefault( boolean _bIsDefault )
+    public void setIsDefault( boolean bIsDefault )
     {
-        this._bIsDefault = _bIsDefault;
+        this._bIsDefault = bIsDefault;
+    }
+
+       /**
+     * get is workflow schema
+     * 
+     * @return true if it's a workflow schema
+     */
+    public boolean isWorkflow( )
+    {
+        return _bIsWorkflow;
+    }
+
+    /**
+     * set is workflow schema
+     * 
+     * @param _bIsWorkflow
+     */
+    public void setIsWorkflow( boolean bIsWorkflow )
+    {
+        this._bIsWorkflow = bIsWorkflow;
     }
 
 }

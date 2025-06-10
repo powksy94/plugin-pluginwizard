@@ -127,11 +127,31 @@ public class PluginWizardZipService
         return fos.toByteArray( );
     }
 
+    /**
+     * Get the project name
+     * 
+     * @param request
+     * @return The name of project generated
+     */
     public String getPluginName( HttpServletRequest request )
     {
         String strPluginId = request.getParameter( PARAM_PLUGIN_ID );
         int nPluginId = Integer.parseInt( strPluginId );
         PluginModel pluginModel = ModelService.getPluginModel( nPluginId );
         return pluginModel.isModule( ) ? pluginModel.getModuleName( ) : pluginModel.getPluginName( );
+    }
+    
+    /**
+     * Get the project type
+     * 
+     * @param request
+     * @return The type of project generated
+     */
+    public String getProjectType( HttpServletRequest request )
+    {
+        String strPluginId = request.getParameter( PARAM_PLUGIN_ID );
+        int nPluginId = Integer.parseInt( strPluginId );
+        PluginModel pluginModel = ModelService.getPluginModel( nPluginId );
+        return pluginModel.getType( );
     }
 }

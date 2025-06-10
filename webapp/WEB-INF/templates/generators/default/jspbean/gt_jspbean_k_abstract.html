@@ -33,7 +33,7 @@
  */
  <#if plugin_model.module = true >
   	<#assign radicalPackage= plugin_model.pluginName?split("-")[0]+".modules."+plugin_model.pluginName?split("-")[1] />
- <#else>
+<#else>
  	<#assign radicalPackage= plugin_model.pluginName />
  </#if>
  
@@ -64,7 +64,7 @@ private const val MARK_NB_ITEMS_PER_PAGE = "nb_items_per_page"
 /**
  * ${feature_name} JSP Bean abstract class for JSP Bean
  */
-abstract class Abstract${feature_name}JspBean : MVCAdminJspBean()
+abstract class Abstract${feature_name}JspBean : MVCAdminJspBean( )
 {
 
     //Variables
@@ -91,13 +91,13 @@ abstract class Abstract${feature_name}JspBean : MVCAdminJspBean()
         val strUrl = url.getUrl(  )
 
         // PAGINATOR
-        val paginator = LocalizedPaginator( list, _nItemsPerPage, strUrl, PARAMETER_PAGE_INDEX, _strCurrentPageIndex, getLocale(  ) )
+        val paginator = LocalizedPaginator( list, _nItemsPerPage, strUrl, PARAMETER_PAGE_INDEX, _strCurrentPageIndex, getLocale( ) )
 
-        val model = getModel(  )
+        val model = getModel( )
 
         model.put( MARK_NB_ITEMS_PER_PAGE, "" + _nItemsPerPage )
         model.put( MARK_PAGINATOR, paginator )
-        model.put( strBookmark, paginator.getPageItems(  ) )
+        model.put( strBookmark, paginator.getPageItems( ) )
 
         return model
     }

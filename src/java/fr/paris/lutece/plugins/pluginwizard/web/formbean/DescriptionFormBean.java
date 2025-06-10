@@ -66,6 +66,7 @@ public class DescriptionFormBean implements Serializable
     @URL( message = "pluginwizard.error.plugin.urlProvider.url" )
     private String _strPluginProviderUrl;
     private String _strPluginDbPoolRequired;
+    @Pattern( regexp = "^(MODULE|PLUGIN|WORKFLOWTASK)$", message = "pluginwizard.error.description.type" )
     private String _strType;
     private boolean _bIsModule;
 

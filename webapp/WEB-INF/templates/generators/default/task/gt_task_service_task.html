@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2022, City of Paris
+ * Copyright (c) 2002-${.now?string('yyyy')}, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -31,57 +31,16 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.pluginwizard.web.formbean;
+ 
+package fr.paris.lutece.plugins.${radical_package}.service;
 
-import java.io.Serializable;
-
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
+import fr.paris.lutece.plugins.workflowcore.service.config.TaskConfigService;
 
 /**
- * Form name
- */
-public class ModuleNameFormBean implements Serializable, FormBean
+ * This is the service class. The TaskConfigService class allows you to directly inherit the create, update, 
+ * and delete functions that link to the DAO. Search functions such as findByPrimaryKey are also available through the TaskConfigService class.
+ */ 
+public class ${task_name}Service extends TaskConfigService   
 {
-    @NotEmpty( message = "pluginwizard.error.module.name.notEmpty" )
-    @Pattern( regexp = "(^[a-z]+-[a-z]+$)", message = "pluginwizard.error.module.name.pattern" )
-    @Pattern( regexp = "([a-z-]*)", message = "pluginwizard.error.module.name.forbidden.caracters" )
-    @Pattern( regexp = "(^[^-].*[^-]$)", message = "pluginwizard.error.module.name.forbidden.pattern" )
-    private String _strName;
-    @Pattern( regexp = "^(MODULE|PLUGIN|WORKFLOWTASK)$", message = "pluginwizard.error.project.type" )
-    private String _strType;
-
-    /**
-     * @return the name
-     */
-    public String getName( )
-    {
-        return _strName;
-    }
-
-    /**
-     * @param strName
-     *            the name to set
-     */
-    public void setName( String strName )
-    {
-        _strName = strName;
-    }
-
-    /**
-     * @return the type
-     */
-    public String getType( )
-    {
-        return _strType;
-    }
-
-    /**
-     * @param strType
-     *            the type to set
-     */
-    public void setType( String strType )
-    {
-        _strType = strType;
-    }
+	//TODO : Add service code
 }

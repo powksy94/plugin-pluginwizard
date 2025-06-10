@@ -36,6 +36,21 @@ package fr.paris.lutece.plugins.${radical_package}.business;
 
 import fr.paris.lutece.test.LuteceTestCase;
 
+<#if project_type="WORKFLOWTASK">
+/**
+ * This is the business class test for the object ${business_class.businessClass}
+ */
+public class ${business_class.businessClass}BusinessTest extends LuteceTestCase
+{
+	/**
+	* test ${business_class.businessClass}
+	*/
+	public void testBusiness(  )
+	{
+		//TODO : ADD TEST CODE
+	}
+}
+<#else>
 import java.util.Optional;
 
 <#list business_class.attributes as attribute>
@@ -131,7 +146,5 @@ public class ${business_class.businessClass}BusinessTest extends LuteceTestCase
         
     }
     
-    
-     
-
 }
+</#if>

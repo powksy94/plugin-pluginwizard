@@ -1,0 +1,167 @@
+<#include "sidebar.html" />
+
+<div class="row">
+	<div class="container mt-4" style="font-size: 14px; line-height: 1.42857143;">
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+                    
+                    <!-- Side Bar-->
+                    <div class="col-md-3">
+                        <@sidebar step="model" project_type="${project_type!''}"/>
+                        <div class="card bg-light mt-2">
+                            <div class="card-body">
+                                <div class="card-text">
+									#i18n{pluginwizard.pluginwizard_modify_configuration_class.pageHelp}
+								</div>
+							</div>
+						</div>
+					</div>
+                    <!-- End Side Bar-->
+
+                    <!-- Card Content-->
+					<div class="col-md-9">
+						<form id="modify-configuration-class-form" class="form-horizontal" role="form" method="post" action="jsp/site/Portal.jsp">
+							<fieldset>
+								<legend>#i18n{pluginwizard.pluginwizard_modify_configuration_class.pageTitle}</legend>
+
+								<#include "errors_handler.html" />
+								<#include "infos_handler.html" />
+
+								<input type="hidden" name="page" value="pluginwizard" /> 
+								<input type="hidden" name="id" value="${business_class.id}" /> 
+								<input type="hidden" name="business_class_id" value="${business_class.id}" />
+								<input type="hidden" id="plugin_name" value="${plugin_model.pluginName}" /> 
+
+								<!-- Group form task name -->
+								<@formGroup labelFor='taskName' labelKey='#i18n{pluginwizard.pluginwizard_modify_configuration_class.labelTaskName} * :' formStyle='fullwidth'>
+									 <@input type='text' id='taskName' name='workflow_task_name' class='wizard-readonly' value="${configuration.workflowTaskName!''}" size="30" maxlength=51
+                                         	patternValidationRules=[{'name':'taskNameSize','regex':'^.{1,51}$','message':'#i18n{pluginwizard.pluginwizard_modify_configuration_class.helpRulesTaskNameSize}'},
+                                         	                        {'name':'taskName','regex':'^[A-Z][A-Za-z]*Task$','message':'#i18n{pluginwizard.pluginwizard_modify_configuration_class.helpRulesTaskName}'}] />
+								</@formGroup>
+                                
+								<!-- Group form configuration class name -->
+								  <@formGroup labelFor='configurationClassName' labelKey='#i18n{pluginwizard.pluginwizard_modify_configuration_class.labelConfigurationClass} * :' formStyle='fullwidth'>
+	                                    <@input type='text' id='configurationClassName' name='business_class' value="${business_class.businessClass!''}" size="30" maxlength=51 placeHolder="#i18n{pluginwizard.pluginwizard_modify_business_class.placeholderBusinessClass}"
+                                         	patternValidationRules=[{'name':'configurationClassNameSize','regex':'^.{11,64}$','message':'#i18n{pluginwizard.pluginwizard_modify_configuration_class.helpRulesConfigurationClassSize}'},
+                                         							{'name':'configurationClassName','regex':'^[A-Z][A-Za-z]*$','message':'#i18n{pluginwizard.pluginwizard_modify_configuration_class.helpRulesConfigurationClass}'},
+                                         							{'name':'configurationClassNamePattern','regex':'^[A-Z][A-Za-z]*TaskConfig$','message':'#i18n{pluginwizard.pluginwizard_modify_configuration_class.helpRulesConfigurationClassPattern}'}
+                                         						   ] />                                       
+								</@formGroup>
+
+								<!-- Group form plural configuration class name -->
+								 <@formGroup labelFor='pluralConfigurationClassName' labelKey='#i18n{pluginwizard.pluginwizard_modify_configuration_class.labelPluralConfigurationClass} * :' formStyle='fullwidth'>
+									 <@input type='text' id='pluralConfigurationClassName' name='plural_business_class' value="${business_class.pluralBusinessClass!''}" size="30" maxlength=100/>
+                                    <div id="pluralConfigurationClassName-help-message-div" class="mt-2 text-muted">
+											<span class="d-block">#i18n{pluginwizard.pluginwizard_modify_configuration_class.helpRulesPluralConfigurationClass}</span>
+											<span class="d-block"><i class="ti ti-info-circle mx-1"></i>#i18n{pluginwizard.pluginwizard_modify_configuration_class.infoPluralConfigurationClass}</span> 
+									</div>    
+								</@formGroup>
+
+								<!-- Group form database table name -->
+								 <@formGroup labelFor='configurationTableName' labelKey='#i18n{pluginwizard.pluginwizard_modify_configuration_class.labelConfigurationTableName} * :' formStyle='fullwidth'>
+	                                    <@input type='text' id='configurationTableName' name='business_table_name' value="${business_class.businessTableName!''}" size="30" maxlength=64 placeholder='#i18n{pluginwizard.pluginwizard_modify_configuration_class.placeholderConfigurationTableName}'
+                                         	patternValidationRules=[{'name':'configurationTableNamePrefix','regex':'^.{1,64}$','message':'#i18n{pluginwizard.pluginwizard_create_configuration_class.helpRulesConfigurationTableNameSize}'},
+                                         							{'name':'configurationTableNameSize','regex':'^workflow_task_.*$','message':'#i18n{pluginwizard.pluginwizard_create_configuration_class.helpRulesConfigurationTableNamePrefix}'},
+                                         							{'name':'configurationTableName','regex':'^[a-z_]+$','message':'#i18n{pluginwizard.pluginwizard_create_configuration_class.helpRulesConfigurationTableName}'}
+                                         						   ] />                                       
+							    </@formGroup>
+									
+								<!-- Submit Buttons -->	
+								<div class="form-group text-center">
+									<button type="submit" name="action_modifyConfigurationClass"
+										class="btn btn-primary" >
+										#i18n{pluginwizard.pluginwizard_modidy_configuration_class.buttonModifyClass}
+									</button>
+									<button type="submit" name="action_validateAttributes"
+										class="btn btn-secondary" >
+										#i18n{pluginwizard.pluginwizard_modify_configuration_class.buttonBack}
+									</button>
+								</div>
+							</fieldset>
+						</form>
+						<br /> <br />
+
+						<!--Group form Add attributes -->
+						<form class="form float-end" method="post" action="jsp/site/Portal.jsp">
+							<input type="hidden" name="page" value="pluginwizard" /> 
+							<input type="hidden" name="view" value="createAttribute" /> 
+							<input type="hidden" name="business_class_id" value="${business_class.id}" />
+
+							<button type="submit" class="btn btn-primary">
+								<i class="ti ti-plus"></i>
+								#i18n{pluginwizard.pluginwizard_modify_configuration_class.labelCreateAttribute}
+							</button>
+						</form>
+						<h4>#i18n{pluginwizard.pluginwizard_modify_configuration_class.labelFielsetAttributes}</h4>
+						
+						<!-- Table of attributes -->
+						<table class="table table-sm table-hover table-striped">
+
+							<thead>
+								<tr>
+									<th>#i18n{pluginwizard.pluginwizard_modify_business_class.labelAttributeName}</th>
+									<th>#i18n{pluginwizard.pluginwizard_modify_business_class.labelAttributeType}</th>
+									<th>#i18n{pluginwizard.pluginwizard_modify_business_class.labelNotNull}</th>
+									<th>#i18n{pluginwizard.pluginwizard_modify_business_class.labelMaxLength}</th>
+									<th>#i18n{pluginwizard.pluginwizard_modify_business_class.labelAttributeAction}</th>
+								</tr>
+							</thead>
+
+							<tbody>
+								<tr>
+									<td>#i18n{pluginwizard.pluginwizard_modify_configuration_class.labelId}</td>
+									<td>#i18n{pluginwizard.pluginwizard_modify_configuration_class.labelPrimaryKey}</td>
+									<td>#i18n{pluginwizard.pluginwizard_modify_configuration_class.labelAuto}</td>
+									<td></td>
+									<td></td>
+								</tr>
+								<#if attributes_list?? && attributes_list?size &gt; 0>		
+									<#list attributes_list as attribute>
+										<tr>
+											<td>${attribute.attributeName}</td>
+											<td>#i18n{pluginwizard.pluginwizard_attributes_types.${attribute.attributeTypeId}.description}</td>
+											<td>
+												<#if attribute.notNull> 
+													<span class="badge bg-success"><i class="ti ti-check"></i></span> 
+												</#if>
+											</td>
+											<td>
+												<#if attribute.maxLength &gt; 0 >
+													${attribute.maxLength}
+												</#if>
+											</td>
+											<td>
+												<a href="jsp/site/Portal.jsp?page=pluginwizard&view=modifyAttribute&attribute_id=${attribute.id}&business_class_id=${business_class.id}"
+												   class="btn btn-primary btn-sm"
+												   title="#i18n{pluginwizard.pluginwizard_modify_business_class.buttonModifyAttribute}">
+												   <i class="ti ti-edit"></i>
+												</a> 
+												<a href="jsp/site/Portal.jsp?page=pluginwizard&action=confirmRemoveAttribute&attribute_id=${attribute.id}&business_class_id=${business_class.id}"
+												   class="btn btn-danger btn-sm"
+												   title="#i18n{pluginwizard.pluginwizard_modify_business_class.buttonRemoveAttribute}">
+												   <i class="ti ti-trash"></i>
+												</a>
+											</td>
+										</tr>
+									</#list>
+								</#if>
+							</tbody>
+						</table>
+					</div>
+					<!-- End Card Content-->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script src='js/plugins/pluginwizard/validator.js'></script>
+<script src='js/plugins/pluginwizard/pluralize.js'></script>
+<script>
+	updateFormFront('modify-configuration-class-form');
+	autoFillConfigurationClassForm('modify-configuration-class-form');
+	document.getElementById('modify-configuration-class-form').addEventListener('input', function(event){
+		validationForm(event);
+	});
+</script>

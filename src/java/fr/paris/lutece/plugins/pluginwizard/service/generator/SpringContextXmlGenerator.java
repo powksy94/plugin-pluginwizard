@@ -67,7 +67,12 @@ public class SpringContextXmlGenerator extends AbstractFileGenerator
     @Override
     protected String getFilename( PluginModel pm )
     {
-        return pm.getPluginName( ).toLowerCase( ) + EXT;
+        if( pm.isWorkflowTask( ) )
+        {
+        	return "workflow-" + pm.getPluginNameForRessource( ) + EXT;
+        }
+        
+        return pm.getPluginNameForRessource( ) + EXT;
     }
 
     /**

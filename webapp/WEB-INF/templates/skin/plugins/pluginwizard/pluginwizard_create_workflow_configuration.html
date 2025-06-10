@@ -1,0 +1,117 @@
+<#include "sidebar.html" />
+
+<div class="row">
+	<div class="container mt-4" style="font-size: 14px; line-height: 1.42857143;">
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					
+					<!-- Side Bar-->
+					<div class="col-md-3">
+                        <@sidebar step="configuration" project_type="${project_type!''}"/>
+                        <div class="card bg-light mt-2">
+                            <div class="card-body">
+                                <div class="card-text">
+                                    #i18n{pluginwizard.pluginwizard_create_workflow_configuration.pageHelp}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Side Bar-->
+
+                    <!-- Card Content-->
+                    <div class="col-md-9">
+                        <form id="create-configuration-form" class="form-horizontal" method="post" action="jsp/site/Portal.jsp">
+                            <fieldset>
+                                <legend>#i18n{pluginwizard.pluginwizard_create_workflow_configuration.pageTitle}</legend>
+                                
+                                <#include "errors_handler.html" />
+
+                            	<input type="hidden" name="page" value="pluginwizard" />
+                            	<input type="hidden" name="id_plugin" value="${plugin_id}" />
+								
+								
+								<!-- Group form task name -->
+								<@formGroup labelFor='taskName' labelKey='#i18n{pluginwizard.pluginwizard_create_workflow_configuration.labelWorkflowTaskName} * : #i18n{pluginwizard.pluginwizard_create_workflow_configuration.labelWorkflowUpperCase}' formStyle='fullwidth'>
+									 <@input type='text' id='taskName' name='workflow_task_name' value="${plugin_model.configuration.workflowTaskName!''}" size="30" maxlength=51
+                                         	patternValidationRules=[{'name':'taskNameSize','regex':'^.{1,51}$','message':'#i18n{pluginwizard.pluginwizard_create_workflow_configuration.helpRulesTaskNameSize}'},
+                                         	                        {'name':'taskName','regex':'^[A-Z][A-Za-z]*Task$','message':'#i18n{pluginwizard.pluginwizard_create_workflow_configuration.helpRulesTaskName}'}] />
+								</@formGroup>
+								
+                                 <!-- Group form configRequired -->
+                                 <@formGroup labelFor='workflowFormConfigRequired' labelKey='#i18n{pluginwizard.pluginwizard_create_workflow_configuration.labelWorkflowFormConfigRequired} * :' formStyle='fullwidth'>
+									<@select id='workflowFormConfigRequired' name='workflow_form_config_required' class='form-select workflowtask-config-select' default_value="${plugin_model.configuration.workflowFormConfigRequired!'0'}" items=[{'name':'#i18n{pluginwizard.pluginwizard_create_workflow_configuration.labelTrue}','code':'1'},{'name':'#i18n{pluginwizard.pluginwizard_create_workflow_configuration.labelFalse}','code':'0'}]/>
+                                        <div id="workflowFormConfigRequired-help-message-div" class="mt-2 text-muted" aria-live="polite" role="alert">
+											<span id="workflowFormConfigRequiredTrue-help-message-span" class="d-none">
+												<i class="ti ti-info-circle mx-1"></i>#i18n{pluginwizard.pluginwizard_create_workflow_configuration.helpRulesWorkflowFormConfigRequiredTrue}
+											</span>
+											<span id="workflowFormConfigRequiredFalse-help-message-span" class="d-block">
+												<i class="ti ti-info-circle mx-1"></i>#i18n{pluginwizard.pluginwizard_create_workflow_configuration.helpRulesWorkflowFormConfigRequiredFalse}
+											</span>
+										</div>
+								</@formGroup>		
+                                
+                                <!-- Group form taskForAutomaticAction -->
+                                <@formGroup labelFor='workflowTaskForAutomaticAction' labelKey='#i18n{pluginwizard.pluginwizard_create_workflow_configuration.labelWorkflowTaskForAutomaticAction} * :' formStyle='fullwidth'>
+                                	<@select id='workflowTaskForAutomaticAction' name='workflow_task_for_automatic_action' class='form-select workflowtask-config-select' default_value="${plugin_model.configuration.workflowTaskForAutomaticAction!'0'}" items=[{'name':'#i18n{pluginwizard.pluginwizard_create_workflow_configuration.labelTrue}','code':'1'},{'name':'#i18n{pluginwizard.pluginwizard_create_workflow_configuration.labelFalse}','code':'0'}]/>       
+                                    <div id="workflowTaskForAutomaticAction-help-message-div" class="mt-2 text-muted" aria-live="polite" role="alert">
+										<span id="workflowTaskForAutomaticActionTrue-help-message-span" class="d-block">
+											<i class="ti ti-info-circle mx-1"></i> #i18n{pluginwizard.pluginwizard_create_workflow_configuration.helpRulesWorkflowTaskForAutomaticActionTrue}
+										</span>
+										<span id="workflowTaskForAutomaticActionFalse-help-message-span" class="d-none">
+											<i class="ti ti-info-circle mx-1"></i> #i18n{pluginwizard.pluginwizard_create_workflow_configuration.helpRulesWorkflowTaskForAutomaticActionFalse}
+										</span>
+									</div>
+                                </@formGroup>
+                                
+                                <!-- Group form formTaskRequired -->
+                                <@formGroup labelFor='workflowFormTaskRequired' labelKey='#i18n{pluginwizard.pluginwizard_create_workflow_configuration.labelWorkflowFormTaskRequired} * :' formStyle='fullwidth'>
+                                	<@select id='workflowFormTaskRequired' name='workflow_form_task_required' class='form-select workflowtask-config-select' default_value="${plugin_model.configuration.workflowFormTaskRequired!'0'}" items=[{'name':'#i18n{pluginwizard.pluginwizard_create_workflow_configuration.labelTrue}','code':'1'},{'name':'#i18n{pluginwizard.pluginwizard_create_workflow_configuration.labelFalse}','code':'0'}]/>       
+                                        <div id="workflowFormTaskRequired-help-message-div" class="mt-2 text-muted" aria-live="polite" role="alert">
+											<span id="workflowFormTaskRequiredTrue-help-message-span" class="d-none">
+												<i class="ti ti-info-circle mx-1"></i>#i18n{pluginwizard.pluginwizard_create_workflow_configuration.helpRulesWorkflowFormTaskRequiredTrue}
+											</span>
+											<span id="workflowFormTaskRequiredFalse-help-message-span" class="d-block">
+												<i class="ti ti-info-circle mx-1"></i>#i18n{pluginwizard.pluginwizard_create_workflow_configuration.helpRulesWorkflowFormTaskRequiredFalse}
+											</span>
+										</div>
+								</@formGroup>
+								              
+                               <!-- Submit Buttons -->
+                                <div class="row mb-3">
+                                    <div class="col-md-9 offset-md-3">
+                                        <button type="submit" name="view_modifyDescription" class="btn btn-primary me-2">
+                                            <i class="ti ti-chevron-left"></i>
+                                            #i18n{pluginwizard.pluginwizard_create_workflow_configuration.buttonBack}
+                                        </button>
+                                        <button type="submit" name="action_configurationNext" class="btn btn-primary">
+                                            #i18n{pluginwizard.pluginwizard_create_workflow_configuration.buttonNext}
+                                            <i class="ti ti-chevron-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <!-- End Card Content-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src='js/plugins/pluginwizard/wizard-utils.js'></script>
+<script>
+
+	document.querySelectorAll('.workflowtask-config-select').forEach(select => {
+	  select.addEventListener('change', (event) => {
+		  switchDivInfoVisibility(event.target.id);
+		  switchSelectTaskFormVisibility();
+	  });
+	});
+
+	switchSelectTaskFormVisibility();
+</script>
+ 
+ 
+ 

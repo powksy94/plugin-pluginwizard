@@ -52,6 +52,7 @@ import java.util.Map;
 public class PluginXmlGenerator extends AbstractFileGenerator
 {
     private static final String PATH = "webapp/WEB-INF/plugins/";
+    private static final String EXT = ".xml";
 
     /**
      * {@inheritDoc }
@@ -121,7 +122,12 @@ public class PluginXmlGenerator extends AbstractFileGenerator
     @Override
     protected String getFilename( PluginModel pm )
     {
-        return pm.getPluginName( ).toLowerCase( ) + ".xml";
+        if( pm.isWorkflowTask( ) )
+        {
+        	return "workflow-" + pm.getPluginNameForRessource( ) + EXT;
+        }
+        
+        return pm.getPluginNameForRessource( ) + EXT;
     }
 
     /**
